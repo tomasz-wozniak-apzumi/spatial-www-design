@@ -29,18 +29,51 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [storedConfig, setStoredConfig] = useState<Record<string, StoredConfigItem>>({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [customInput, setCustomInput] = useState('');
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const [menu, setMenu] = useState<MenuState>({ 
-    visible: false, 
-    x: 0, 
-    y: 0, 
+  const [menu, setMenu] = useState<MenuState>({
+    visible: false,
+    x: 0,
+    y: 0,
     id: null,
     currentText: null
   });
-  
+
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Load from LocalStorage on mount
+  // Fetch from global API on mount
+  const fetchGlobalConfig = async () => {
+    try {
+      const response = await fetch('/api/config');
+      if (response.ok) {
+        const data = await response.json();
+        if (data && Object.keys(data).length > 0) {
+          setStoredConfig(data);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+      }
+    } catch (e) {
+      console.error("Failed to fetch global config", e);
+    }
+  };
+
+  // Push to global API
+  const syncToGlobal = async (config: Record<string, StoredConfigItem>) => {
+    setIsSyncing(true);
+    try {
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config)
+      });
+    } catch (e) {
+      console.error("Failed to sync to global config", e);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  // Load from LocalStorage on mount (for immediate display) then fetch global
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -48,13 +81,14 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setStoredConfig(JSON.parse(saved));
       }
     } catch (e) {
-      console.error("Failed to load text config", e);
+      console.error("Failed to load local config", e);
     } finally {
       setIsLoaded(true);
+      fetchGlobalConfig();
     }
   }, []);
 
-  // Save to LocalStorage whenever config changes
+  // Save to LocalStorage whenever config changes locally
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(storedConfig));
@@ -75,7 +109,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const openMenu = (e: React.MouseEvent, id: string, currentText: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     // Only open if configuration exists for this ID (either in static file or stored state)
     // OR if we want to allow custom text for EVERYTHING (removed the check to allow custom text everywhere)
     // if (!textConfig[id] && !storedConfig[id]) { return; }
@@ -114,13 +148,16 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Ensure unique values just in case
       const uniqueAlternatives = Array.from(new Set(newAlternatives));
 
-      setStoredConfig(prev => ({
-        ...prev,
+      const updatedConfig = {
+        ...storedConfig,
         [id]: {
           current: newText,
           alternatives: uniqueAlternatives
         }
-      }));
+      };
+
+      setStoredConfig(updatedConfig);
+      syncToGlobal(updatedConfig);
     }
     setMenu(prev => ({ ...prev, visible: false }));
   };
@@ -135,6 +172,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const newConfig = { ...storedConfig };
       delete newConfig[menu.id]; // Remove from storage, reverting to JSX default and static config
       setStoredConfig(newConfig);
+      syncToGlobal(newConfig);
       setMenu(prev => ({ ...prev, visible: false }));
     }
   };
@@ -156,50 +194,51 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <TextContext.Provider value={{ getText, openMenu }}>
       {children}
       {menu.visible && menu.id && (
-        <div 
+        <div
           ref={menuRef}
           style={{ top: menu.y, left: menu.x }}
           className="absolute z-[9999] bg-white border border-gray-200 shadow-xl rounded-lg py-2 min-w-[320px] max-w-[400px] animate-in fade-in zoom-in-95 duration-100 flex flex-col"
         >
           {/* Header */}
           <div className="px-4 py-2 border-b border-gray-100 bg-gray-50/50">
-             <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
-               Edytuj treść
-             </div>
-             <div className="text-[10px] text-gray-400 truncate mb-2">
-               ID: {menu.id}
-             </div>
+            <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Edytuj treść
+            </div>
+            <div className="text-[10px] text-gray-400 truncate mb-2 flex justify-between items-center">
+              <span>ID: {menu.id}</span>
+              {isSyncing && <span className="text-blue-500 font-medium animate-pulse">Synchronizowanie...</span>}
+            </div>
           </div>
 
           {/* Custom Input Area */}
           <div className="px-4 py-3 bg-white border-b border-gray-100">
-             <label className="text-xs font-semibold text-gray-700 mb-1 block">Wpisz własny tekst:</label>
-             <div className="flex gap-2">
-               <input 
-                 type="text" 
-                 value={customInput}
-                 onChange={(e) => setCustomInput(e.target.value)}
-                 onKeyDown={(e) => e.key === 'Enter' && handleCustomSave()}
-                 className="flex-1 border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                 placeholder="Nowa treść..."
-                 autoFocus
-               />
-               <button 
-                 onClick={handleCustomSave}
-                 disabled={!customInput.trim()}
-                 className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white rounded px-2 py-1 flex items-center justify-center transition-colors"
-               >
-                 <Check size={16} />
-               </button>
-             </div>
+            <label className="text-xs font-semibold text-gray-700 mb-1 block">Wpisz własny tekst:</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleCustomSave()}
+                className="flex-1 border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Nowa treść..."
+                autoFocus
+              />
+              <button
+                onClick={handleCustomSave}
+                disabled={!customInput.trim()}
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white rounded px-2 py-1 flex items-center justify-center transition-colors"
+              >
+                <Check size={16} />
+              </button>
+            </div>
           </div>
-          
+
           {/* Predefined Alternatives */}
           <div className="max-h-[250px] overflow-y-auto">
             {activeAlternatives.length > 0 && (
-               <div className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider bg-gray-50/30">
-                 Dostępne warianty
-               </div>
+              <div className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider bg-gray-50/30">
+                Dostępne warianty
+              </div>
             )}
             {activeAlternatives.map((option, index) => (
               <button
@@ -219,11 +258,11 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           {/* Reset Button */}
           <button
-             onClick={handleReset}
-             className="w-full text-left px-4 py-3 hover:bg-red-50 text-xs font-semibold text-red-500 border-t border-gray-100 mt-auto flex items-center gap-2 group"
+            onClick={handleReset}
+            className="w-full text-left px-4 py-3 hover:bg-red-50 text-xs font-semibold text-red-500 border-t border-gray-100 mt-auto flex items-center gap-2 group"
           >
-              <X size={14} />
-              <span>Przywróć domyślny (Reset)</span>
+            <X size={14} />
+            <span>Przywróć domyślny (Reset)</span>
           </button>
         </div>
       )}

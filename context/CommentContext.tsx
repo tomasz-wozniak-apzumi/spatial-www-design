@@ -68,10 +68,8 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const handleGlobalClick = (e: MouseEvent) => {
             if ((e.ctrlKey || e.metaKey) && !activePlacement) {
                 e.preventDefault();
-                // Calculate percentages to keep position responsive
-                const x = (e.pageX / document.documentElement.scrollWidth) * 100;
-                const y = (e.pageY / document.documentElement.scrollHeight) * 100;
-                setActivePlacement({ x, y });
+                // Use pixels for immediate placement UI, we'll convert to % on save
+                setActivePlacement({ x: e.pageX, y: e.pageY });
                 setInputValue('');
             }
         };
@@ -80,8 +78,13 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         return () => window.removeEventListener('click', handleGlobalClick);
     }, [activePlacement]);
 
-    const addComment = (text: string, x: number, y: number) => {
+    const addComment = (text: string, xPx: number, yPx: number) => {
         if (!text.trim()) return;
+
+        // Convert to percentages relative to document to keep position responsive
+        const x = (xPx / document.documentElement.scrollWidth) * 100;
+        const y = (yPx / document.documentElement.scrollHeight) * 100;
+
         const newComment: DesignComment = {
             id: Math.random().toString(36).substr(2, 9),
             text,
@@ -112,8 +115,8 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
             {activePlacement && (
                 <div
                     ref={menuRef}
-                    style={{ left: `${activePlacement.x}%`, top: `${activePlacement.y}%` }}
-                    className="fixed z-[10000] -translate-x-1/2 -translate-y-1/2"
+                    style={{ left: `${activePlacement.x}px`, top: `${activePlacement.y}px` }}
+                    className="absolute z-[10000] -translate-x-1/2 -translate-y-1/2"
                 >
                     <div className="bg-white rounded-lg shadow-2xl border border-blue-100 p-3 min-w-[250px] animate-in zoom-in-95 duration-200">
                         <div className="flex items-center gap-2 mb-2 text-blue-600 font-bold text-xs uppercase tracking-wider">

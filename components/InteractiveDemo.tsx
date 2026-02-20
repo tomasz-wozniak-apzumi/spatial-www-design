@@ -141,6 +141,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     ref={videoRefA}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'A' ? 'video-active' : 'pointer-events-none'}`}
                     onEnded={activeBuffer === 'A' ? handleVideoEnd : undefined}
+                    loop={currentVideo === 2}
                     muted={false}
                     playsInline
                     controlsList="nodownload nofullscreen noremoteplayback"
@@ -151,6 +152,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     ref={videoRefB}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'B' ? 'video-active' : 'pointer-events-none'}`}
                     onEnded={activeBuffer === 'B' ? handleVideoEnd : undefined}
+                    loop={currentVideo === 2}
                     muted={false}
                     playsInline
                     controlsList="nodownload nofullscreen noremoteplayback"
@@ -159,7 +161,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                 />
 
                 {/* Interaction Overlay */}
-                {isVideoEnded && currentVideo < 10 && (
+                {(isVideoEnded || currentVideo === 2) && currentVideo < 10 && (
                     <div className="absolute inset-0 cursor-pointer bg-black/40 z-[10001]">
                         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white text-center animate-pulse pointer-events-none">
                             <p className="text-3xl font-black uppercase tracking-tighter drop-shadow-[0_0_20px_rgba(240,78,78,0.8)]">

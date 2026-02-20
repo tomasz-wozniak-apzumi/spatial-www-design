@@ -2,33 +2,34 @@ import { put, list } from '@vercel/blob';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
 const CONFIG_FILENAME = 'text-config.json';
+const COMMENTS_FILENAME = 'design-comments.json';
 
 export default async function handler(
     request: VercelRequest,
     response: VercelResponse
 ) {
     try {
+        const type = request.query.type as string;
+        const filename = type === 'comments' ? COMMENTS_FILENAME : CONFIG_FILENAME;
+
         if (request.method === 'GET') {
-            // Find the file in storage
             const { blobs } = await list();
-            const configBlob = blobs.find(b => b.pathname === CONFIG_FILENAME);
+            const configBlob = blobs.find(b => b.pathname === filename);
 
             if (!configBlob) {
-                return response.status(200).json({});
+                return response.status(200).json(type === 'comments' ? [] : {});
             }
 
-            // Fetch the actual content of the JSON file
             const data = await fetch(configBlob.url).then(r => r.json());
             return response.status(200).json(data);
         }
 
         if (request.method === 'POST') {
-            const newConfig = request.body;
+            const newData = request.body;
 
-            // Save/Overwrite the flat file in Blob storage
-            const blob = await put(CONFIG_FILENAME, JSON.stringify(newConfig), {
+            const blob = await put(filename, JSON.stringify(newData), {
                 access: 'public',
-                addRandomSuffix: false, // Important: stay with the same filename
+                addRandomSuffix: false,
             });
 
             return response.status(200).json({ success: true, url: blob.url });

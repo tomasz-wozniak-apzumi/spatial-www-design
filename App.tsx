@@ -15,7 +15,9 @@ import CaseStudiesPage from './components/CaseStudiesPage';
 import { TextProvider } from './context/TextContext';
 import { CommentProvider } from './context/CommentContext';
 
-export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies';
+import InteractiveDemo from './components/InteractiveDemo';
+
+export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'interactive_demo';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -24,7 +26,9 @@ const App: React.FC = () => {
     <TextProvider>
       <CommentProvider>
         <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden relative">
-          <Navbar currentView={currentView} onNavigate={setCurrentView} />
+          {currentView !== 'interactive_demo' && (
+            <Navbar currentView={currentView} onNavigate={setCurrentView} />
+          )}
 
           {currentView === 'home' ? (
             <>
@@ -37,24 +41,28 @@ const App: React.FC = () => {
               <Contact />
             </>
           ) : currentView === 'solutions' ? (
-            <SolutionsPage />
+            <SolutionsPage onNavigate={setCurrentView} />
           ) : currentView === 'services' ? (
             <ServicesPage onNavigate={setCurrentView} />
+          ) : currentView === 'interactive_demo' ? (
+            <InteractiveDemo onNavigate={setCurrentView} />
           ) : (
             <CaseStudiesPage />
           )}
 
-          <Footer />
+          {currentView !== 'interactive_demo' && <Footer />}
 
           {/* Design Mode Hint */}
-          <div className="fixed bottom-4 left-4 z-[9999] bg-white/80 backdrop-blur-sm border border-gray-200 px-3 py-1.5 rounded-full shadow-sm pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
-            <span className="text-[10px] text-gray-500 font-medium tracking-tight">
-              Design Mode: <kbd className="bg-gray-100 px-1.5 py-0.5 rounded border border-gray-300">Ctrl/Cmd + Click</kbd> to add comment
-            </span>
-          </div>
+          {currentView !== 'interactive_demo' && (
+            <div className="fixed bottom-4 left-4 z-[9999] bg-white/80 backdrop-blur-sm border border-gray-200 px-3 py-1.5 rounded-full shadow-sm pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
+              <span className="text-[10px] text-gray-500 font-medium tracking-tight">
+                Design Mode: <kbd className="bg-gray-100 px-1.5 py-0.5 rounded border border-gray-300">Ctrl/Cmd + Click</kbd> to add comment
+              </span>
+            </div>
+          )}
 
           {/* Floating Export Button */}
-          <ExportTools />
+          {currentView !== 'interactive_demo' && <ExportTools />}
         </div>
       </CommentProvider>
     </TextProvider>

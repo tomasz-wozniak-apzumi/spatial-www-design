@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ViewState } from '../App';
-import { X, AlertCircle } from 'lucide-react';
+import { X, AlertCircle, ArrowBigDown } from 'lucide-react';
 
 interface InteractiveDemoProps {
     onNavigate: (view: ViewState) => void;
@@ -23,7 +23,7 @@ const TARGET_ZONES: Record<number, TargetZone> = {
     7: { x: 60, y: 30, width: 20, height: 30 },
     8: { x: 20, y: 20, width: 40, height: 20 },
     9: { x: 50, y: 70, width: 40, height: 20 },
-    10: { x: 0, y: 0, width: 0, height: 0 }, // No interaction for the last video
+    10: { x: 0, y: 0, width: 0, height: 0 },
 };
 
 const FuturisticFrame: React.FC<{ zone: TargetZone }> = ({ zone }) => (
@@ -36,6 +36,9 @@ const FuturisticFrame: React.FC<{ zone: TargetZone }> = ({ zone }) => (
             height: `${zone.height}%`,
         }}
     >
+        <div className="arrow-indicator">
+            <ArrowBigDown size={48} fill="currentColor" />
+        </div>
         <div className="frame-corner corner-tl" />
         <div className="frame-corner corner-tr" />
         <div className="frame-corner corner-bl" />
@@ -47,7 +50,10 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const [currentVideo, setCurrentVideo] = useState<number>(1);
     const [isVideoEnded, setIsVideoEnded] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const [activeBuffer, setActiveBuffer] = useState<'A' | 'B'>('A');
+
+    const videoRefA = useRef<HTMLVideoElement>(null);
+    const videoRefB = useRef<HTMLVideoElement>(null);
 
     const handleVideoEnd = () => {
         setIsVideoEnded(true);
@@ -68,7 +74,17 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
             y <= zone.y + zone.height;
 
         if (isCorrectArea) {
-            setCurrentVideo(prev => prev + 1);
+            const nextVideo = currentVideo + 1;
+            const nextBuffer = activeBuffer === 'A' ? 'B' : 'A';
+
+            // Play the preloaded video
+            const nextRef = nextBuffer === 'A' ? videoRefA : videoRefB;
+            if (nextRef.current) {
+                nextRef.current.play().catch(err => console.log("Play failed:", err));
+            }
+
+            setCurrentVideo(nextVideo);
+            setActiveBuffer(nextBuffer);
             setIsVideoEnded(false);
             setShowFeedback(false);
         } else {
@@ -77,11 +93,34 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
         }
     };
 
+    // Initial play and preloading logic
     useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(err => console.log("Autoplay blocked:", err));
+        // Initial setup for first load
+        if (currentVideo === 1) {
+            if (videoRefA.current && !videoRefA.current.src.includes("/videos/video1.mp4")) {
+                videoRefA.current.src = "/videos/video1.mp4";
+                videoRefA.current.play().catch(err => console.log("Initial play failed:", err));
+            }
+            if (videoRefB.current && !videoRefB.current.src.includes("/videos/video2.mp4")) {
+                videoRefB.current.src = "/videos/video2.mp4";
+                videoRefB.current.load();
+            }
         }
-    }, [currentVideo]);
+
+        // Preload next video in the inactive buffer
+        const nextVideoIndex = currentVideo + 1;
+        if (nextVideoIndex <= 10) {
+            const inactiveBuffer = activeBuffer === 'A' ? 'B' : 'A';
+            const inactiveRef = inactiveBuffer === 'A' ? videoRefA : videoRefB;
+            if (inactiveRef.current) {
+                const nextSrc = `/videos/video${nextVideoIndex}.mp4`;
+                if (!inactiveRef.current.src.includes(nextSrc)) {
+                    inactiveRef.current.src = nextSrc;
+                    inactiveRef.current.load();
+                }
+            }
+        }
+    }, [currentVideo, activeBuffer]);
 
     return (
         <div className="fixed inset-0 bg-black z-[10000] flex items-center justify-center overflow-hidden">
@@ -97,13 +136,21 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                 className="relative w-full h-full flex items-center justify-center"
                 onClick={handleInteraction}
             >
+                {/* Dual Video Buffers */}
                 <video
-                    ref={videoRef}
-                    key={currentVideo}
-                    src={`/videos/video${currentVideo}.mp4`}
-                    className="max-w-full max-h-full w-full h-full object-contain"
-                    onEnded={handleVideoEnd}
-                    autoPlay
+                    ref={videoRefA}
+                    className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'A' ? 'video-active' : 'pointer-events-none'}`}
+                    onEnded={activeBuffer === 'A' ? handleVideoEnd : undefined}
+                    muted={false}
+                    playsInline
+                    controlsList="nodownload nofullscreen noremoteplayback"
+                    disablePictureInPicture
+                    onContextMenu={(e) => e.preventDefault()}
+                />
+                <video
+                    ref={videoRefB}
+                    className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'B' ? 'video-active' : 'pointer-events-none'}`}
+                    onEnded={activeBuffer === 'B' ? handleVideoEnd : undefined}
                     muted={false}
                     playsInline
                     controlsList="nodownload nofullscreen noremoteplayback"
@@ -111,12 +158,12 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     onContextMenu={(e) => e.preventDefault()}
                 />
 
-                {/* Interaction Overlay (only active when video ends and it's not the last one) */}
+                {/* Interaction Overlay */}
                 {isVideoEnded && currentVideo < 10 && (
-                    <div className="absolute inset-0 cursor-pointer bg-black/20">
+                    <div className="absolute inset-0 cursor-pointer bg-black/40 z-[10001]">
                         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white text-center animate-pulse pointer-events-none">
-                            <p className="text-xl font-bold uppercase tracking-widest drop-shadow-lg">
-                                Kliknij w interaktywny obszar, aby kontynuować
+                            <p className="text-3xl font-black uppercase tracking-tighter drop-shadow-[0_0_20px_rgba(240,78,78,0.8)]">
+                                Kliknij w podświetlony obszar
                             </p>
                         </div>
 
@@ -126,35 +173,28 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
 
                 {/* Feedback Message */}
                 {showFeedback && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600/90 text-white px-8 py-4 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 animate-in fade-in zoom-in duration-300 pointer-events-none">
-                        <AlertCircle size={24} />
-                        <span className="font-bold text-lg">To nie jest ten obszar! Spróbuj kliknąć wewnątrz ramki.</span>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white px-10 py-5 rounded-2xl shadow-[0_0_50px_rgba(240,78,78,0.5)] flex items-center gap-4 animate-in fade-in zoom-in duration-300 pointer-events-none z-[10010]">
+                        <AlertCircle size={40} />
+                        <span className="font-black text-2xl uppercase italic">Zły obszar! Kliknij w ramkę!</span>
                     </div>
                 )}
 
-                {/* Completion Screen for Video 10 */}
+                {/* Completion Screen */}
                 {isVideoEnded && currentVideo === 10 && (
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center text-white p-8">
-                        <h2 className="text-4xl font-bold mb-6">Gratulacje!</h2>
-                        <p className="text-xl mb-8 text-center max-w-md">Ukończyłeś interaktywne demo rozwiązań Apzumi Spatial.</p>
+                    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center text-white p-8 z-[10020]">
+                        <div className="w-32 h-32 bg-apzumi-red rounded-full flex items-center justify-center mb-10 shadow-[0_0_60px_rgba(240,78,78,0.8)] animate-bounce">
+                            <ArrowBigDown size={64} className="rotate-180" />
+                        </div>
+                        <h2 className="text-6xl font-black mb-6 tracking-tighter uppercase text-center">Scenariusz Gotowy</h2>
+                        <p className="text-2xl mb-12 text-center max-w-2xl text-gray-400 font-medium">Poznałeś wszystkie kroki cyfrowego workflow wspieranego przez Apzumi Spatial.</p>
                         <button
                             onClick={() => onNavigate('solutions')}
-                            className="bg-apzumi-red hover:bg-red-600 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105"
+                            className="bg-white text-apzumi-dark hover:bg-apzumi-red hover:text-white px-16 py-6 rounded-full font-black text-2xl uppercase tracking-tighter transition-all hover:scale-110 shadow-[0_0_40px_rgba(255,255,255,0.2)]"
                         >
-                            Powrót do rozwiązań
+                            Zakończ Demo
                         </button>
                     </div>
                 )}
-            </div>
-
-            {/* Progress Indicator */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-                {Array.from({ length: 10 }).map((_, i) => (
-                    <div
-                        key={i}
-                        className={`h-1.5 transition-all duration-300 rounded-full ${i + 1 === currentVideo ? 'w-8 bg-apzumi-red' : 'w-4 bg-white/30'}`}
-                    />
-                ))}
             </div>
         </div>
     );

@@ -26,9 +26,9 @@ const TARGET_ZONES: Record<number, TargetZone> = {
     10: { x: 0, y: 0, width: 0, height: 0 },
 };
 
-const FuturisticFrame: React.FC<{ zone: TargetZone }> = ({ zone }) => (
+const FuturisticFrame: React.FC<{ zone: TargetZone; pending?: boolean }> = ({ zone, pending }) => (
     <div
-        className="futuristic-frame"
+        className={`futuristic-frame ${pending ? 'frame-pending' : ''}`}
         style={{
             left: `${zone.x}%`,
             top: `${zone.y}%`,
@@ -51,16 +51,42 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const [isVideoEnded, setIsVideoEnded] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
     const [activeBuffer, setActiveBuffer] = useState<'A' | 'B'>('A');
+    const [pendingAdvance, setPendingAdvance] = useState(false);
 
     const videoRefA = useRef<HTMLVideoElement>(null);
     const videoRefB = useRef<HTMLVideoElement>(null);
 
+    const advanceToNext = () => {
+        const nextVideo = currentVideo + 1;
+        const nextBuffer = activeBuffer === 'A' ? 'B' : 'A';
+
+        // Play the preloaded video
+        const nextRef = nextBuffer === 'A' ? videoRefA : videoRefB;
+        if (nextRef.current) {
+            nextRef.current.play().catch(err => console.log("Play failed:", err));
+        }
+
+        setCurrentVideo(nextVideo);
+        setActiveBuffer(nextBuffer);
+        setIsVideoEnded(false);
+        setPendingAdvance(false);
+        setShowFeedback(false);
+    };
+
     const handleVideoEnd = () => {
-        setIsVideoEnded(true);
+        if (currentVideo === 2 && pendingAdvance) {
+            advanceToNext();
+        } else if (currentVideo !== 2) {
+            setIsVideoEnded(true);
+        }
     };
 
     const handleInteraction = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!isVideoEnded || currentVideo >= 10) return;
+        if (currentVideo >= 10) return;
+        // On video 2 we allow interaction anytime. On others, only when video ends.
+        if (currentVideo !== 2 && !isVideoEnded) return;
+        // If already pending advance on video 2, ignore further clicks
+        if (currentVideo === 2 && pendingAdvance) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -74,19 +100,11 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
             y <= zone.y + zone.height;
 
         if (isCorrectArea) {
-            const nextVideo = currentVideo + 1;
-            const nextBuffer = activeBuffer === 'A' ? 'B' : 'A';
-
-            // Play the preloaded video
-            const nextRef = nextBuffer === 'A' ? videoRefA : videoRefB;
-            if (nextRef.current) {
-                nextRef.current.play().catch(err => console.log("Play failed:", err));
+            if (currentVideo === 2) {
+                setPendingAdvance(true);
+            } else {
+                advanceToNext();
             }
-
-            setCurrentVideo(nextVideo);
-            setActiveBuffer(nextBuffer);
-            setIsVideoEnded(false);
-            setShowFeedback(false);
         } else {
             setShowFeedback(true);
             setTimeout(() => setShowFeedback(false), 3000);

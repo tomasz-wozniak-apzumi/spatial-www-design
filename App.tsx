@@ -12,13 +12,14 @@ import ExportTools from './components/ExportTools';
 import SolutionsPage from './components/SolutionsPage';
 import ServicesPage from './components/ServicesPage';
 import CaseStudiesPage from './components/CaseStudiesPage';
+import AboutPage from './components/AboutPage';
 import { TextProvider } from './context/TextContext';
 import { CommentProvider } from './context/CommentContext';
 
 import InteractiveDemo from './components/InteractiveDemo';
 import KnowledgeBaseDemo from './components/KnowledgeBaseDemo';
 
-export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'interactive_demo' | 'knowledge_base';
+export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'interactive_demo' | 'knowledge_base' | 'about';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -49,6 +50,8 @@ const App: React.FC = () => {
             <InteractiveDemo onNavigate={setCurrentView} />
           ) : currentView === 'knowledge_base' ? (
             <KnowledgeBaseDemo onNavigate={setCurrentView} />
+          ) : currentView === 'about' ? (
+            <AboutPage onNavigate={setCurrentView} />
           ) : (
             <CaseStudiesPage />
           )}

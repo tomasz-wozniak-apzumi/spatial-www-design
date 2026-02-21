@@ -46,16 +46,12 @@ const FuturisticFrame: React.FC<{ zone: TargetZone; pending?: boolean }> = ({ zo
         <div className="frame-corner corner-tr" />
         <div className="frame-corner corner-bl" />
         <div className="frame-corner corner-br" />
-        <div className="frame-text">
-            {pending ? 'TARGET ACQUIRED' : 'TARGET DETECTED'}
-        </div>
     </div>
 );
 
 const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const [currentVideo, setCurrentVideo] = useState<number>(1);
     const [isVideoEnded, setIsVideoEnded] = useState(false);
-    const [showFeedback, setShowFeedback] = useState(false);
     const [activeBuffer, setActiveBuffer] = useState<'A' | 'B'>('A');
     const [pendingAdvance, setPendingAdvance] = useState(false);
 
@@ -84,7 +80,6 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
         setActiveBuffer(nextBuffer);
         setIsVideoEnded(false);
         setPendingAdvance(false);
-        setShowFeedback(false);
 
         // Preload next-next video in the now-inactive buffer
         const preloadVideoIndex = nextVideo + 1;
@@ -150,8 +145,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
         if (isCorrectArea) {
             setPendingAdvance(true);
         } else {
-            setShowFeedback(true);
-            setTimeout(() => setShowFeedback(false), 3000);
+            const audio = new Audio('/audio/beep.wav');
+            audio.play().catch(e => console.error("Audio play failed:", e));
         }
     };
 
@@ -214,21 +209,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                 {/* Interaction Overlay */}
                 {INTERACTIVE_VIDEOS.includes(currentVideo) && (
                     <div className="absolute inset-0 cursor-pointer bg-black/40 z-[10001]">
-                        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white text-center animate-pulse pointer-events-none">
-                            <p className="text-3xl font-black uppercase tracking-tighter drop-shadow-[0_0_20px_rgba(240,78,78,0.8)]">
-                                {pendingAdvance ? 'Oczekiwanie na zakończenie video...' : 'Kliknij w podświetlony obszar'}
-                            </p>
-                        </div>
-
                         <FuturisticFrame zone={TARGET_ZONES[currentVideo]} pending={pendingAdvance} />
-                    </div>
-                )}
-
-                {/* Feedback Message */}
-                {showFeedback && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white px-10 py-5 rounded-2xl shadow-[0_0_50px_rgba(240,78,78,0.5)] flex items-center gap-4 animate-in fade-in zoom-in duration-300 pointer-events-none z-[10010]">
-                        <AlertCircle size={40} />
-                        <span className="font-black text-2xl uppercase italic">Zły obszar! Kliknij w ramkę!</span>
                     </div>
                 )}
 

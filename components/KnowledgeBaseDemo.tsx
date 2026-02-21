@@ -275,22 +275,6 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                             <BrainCircuit size={52} className={"text-white transition-opacity " + (isAiTyping ? 'animate-bounce text-apzumi-red' : 'text-blue-200')} />
                         </div>
                     </div>
-
-                    {/* Predefined Questions - Hidden if Custom Base exists */}
-                    {phase === 'ready' && !hasCustomBase && (
-                        <div className="flex flex-col gap-3 w-full max-w-md">
-                            {predefinedQuestions.map((q, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => handleAskQuestion(q)}
-                                    className="bg-white/5 hover:bg-white/20 border border-white/10 hover:border-blue-400/50 text-white p-5 rounded-2xl text-sm font-semibold text-left transition-all hover:scale-105 active:scale-95 flex items-center justify-between group shadow-md"
-                                >
-                                    {q}
-                                    <Send size={18} className="text-transparent group-hover:text-blue-400 transition-colors" />
-                                </button>
-                            ))}
-                        </div>
-                    )}
                 </div>
 
                 {/* Sticky Chat UI */}
@@ -302,57 +286,76 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                         <span className="text-xs font-bold text-gray-300 uppercase tracking-widest">{hasCustomBase ? 'Apzumi Custom Assistant' : 'Apzumi Spatial Assistant'}</span>
                     </div>
 
-                    {/* Chat History */}
-                    <div className="h-64 overflow-y-auto mb-6 flex flex-col gap-6 pr-4 custom-scrollbar mx-auto max-w-5xl">
-                        {messages.map((m, idx) => (
-                            <div key={idx} className={"flex flex-col max-w-[85%] " + (m.role === 'user' ? 'self-end items-end' : 'self-start items-start')}>
-                                <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 ml-2">
-                                    {m.role === 'user' ? 'Ty' : 'AI'}
-                                </div>
-                                <div className={"px-7 py-5 text-[15px] leading-relaxed font-medium shadow-xl " + (
-                                    m.role === 'user'
-                                        ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-[28px] rounded-br-[8px] border border-blue-500/30'
-                                        : 'bg-white/5 backdrop-blur-md border border-white/10 text-gray-200 rounded-[28px] rounded-bl-[8px] shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
-                                )}>
-                                    {m.content}
+                    <div className="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto w-full">
+                        {/* Main Chat Area (Left) */}
+                        <div className="flex-1 flex flex-col">
+                            {/* Chat History */}
+                            <div className="h-64 overflow-y-auto mb-6 flex flex-col gap-6 pr-4 custom-scrollbar w-full">
+                                {messages.map((m, idx) => (
+                                    <div key={idx} className={"flex flex-col max-w-[85%] " + (m.role === 'user' ? 'self-end items-end' : 'self-start items-start')}>
+                                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 ml-2">
+                                            {m.role === 'user' ? 'Ty' : 'AI'}
+                                        </div>
+                                        <div className={"px-7 py-5 text-[15px] leading-relaxed font-medium shadow-xl " + (
+                                            m.role === 'user'
+                                                ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-[28px] rounded-br-[8px] border border-blue-500/30'
+                                                : 'bg-white/5 backdrop-blur-md border border-white/10 text-gray-200 rounded-[28px] rounded-bl-[8px] shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
+                                        )}>
+                                            {m.content}
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {isAiTyping && (
+                                    <div className="self-start flex flex-col items-start max-w-[80%] opacity-80 w-full">
+                                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 ml-2">
+                                            AI
+                                        </div>
+                                        <div className="px-7 py-5 bg-white/5 backdrop-blur-md border border-white/10 rounded-[28px] rounded-bl-[8px] flex gap-2 items-center h-[64px] shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+                                            <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                                            <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                                            <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce"></div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Chat Input */}
+                            <div className="relative flex items-center gap-4 bg-black/40 p-2.5 rounded-full border border-white/10 shadow-inner w-full">
+                                <div className="relative flex-1">
+                                    <input
+                                        type="text"
+                                        value={inputQuery}
+                                        onChange={(e) => setInputQuery(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') handleAskQuestion(inputQuery);
+                                        }}
+                                        placeholder={phase === 'chatting' || hasCustomBase ? "Wpisz pytanie..." : "Wpisz pytanie..."}
+                                        disabled={phase !== 'chatting' && phase !== 'ready'}
+                                        className="w-full bg-transparent pl-6 pr-16 py-3.5 text-[16px] text-white focus:outline-none transition-colors placeholder-gray-500"
+                                    />
+                                    <button
+                                        onClick={() => handleAskQuestion(inputQuery)}
+                                        className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white p-3.5 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center"
+                                    >
+                                        <Send size={20} className="translate-x-[1px]" />
+                                    </button>
                                 </div>
                             </div>
-                        ))}
+                        </div>
 
-                        {isAiTyping && (
-                            <div className="self-start flex flex-col items-start max-w-[80%] opacity-80 mx-auto w-full">
-                                <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 ml-2">
-                                    AI
-                                </div>
-                                <div className="px-7 py-5 bg-white/5 backdrop-blur-md border border-white/10 rounded-[28px] rounded-bl-[8px] flex gap-2 items-center h-[64px] shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-                                    <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                                    <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                                    <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce"></div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Chat Input */}
-                    <div className="relative flex items-center gap-4 bg-black/40 p-2.5 rounded-full border border-white/10 shadow-inner mx-auto max-w-5xl">
-                        <div className="relative flex-1">
-                            <input
-                                type="text"
-                                value={inputQuery}
-                                onChange={(e) => setInputQuery(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') handleAskQuestion(inputQuery);
-                                }}
-                                placeholder={phase === 'chatting' || hasCustomBase ? "Wpisz pytanie..." : "Wpisz pytanie..."}
-                                disabled={phase !== 'chatting' && phase !== 'ready'}
-                                className="w-full bg-transparent pl-6 pr-16 py-3.5 text-[16px] text-white focus:outline-none transition-colors placeholder-gray-500"
-                            />
-                            <button
-                                onClick={() => handleAskQuestion(inputQuery)}
-                                className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white p-3.5 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center"
-                            >
-                                <Send size={20} className="translate-x-[1px]" />
-                            </button>
+                        {/* Predefined Questions Sidebar (Right) */}
+                        <div className="w-full md:w-1/3 flex flex-col gap-3 justify-end pb-3 hidden md:flex">
+                            {!hasCustomBase && predefinedQuestions.map((q, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => handleAskQuestion(q)}
+                                    className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-400/50 text-gray-300 hover:text-white p-4 rounded-2xl text-xs font-medium text-left transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-between group shadow-sm shrink-0"
+                                >
+                                    <span className="line-clamp-2 pr-2">{q}</span>
+                                    <Send size={14} className="text-white/20 group-hover:text-blue-400 transition-colors shrink-0" />
+                                </button>
+                            ))}
                         </div>
                     </div>
                 </div>

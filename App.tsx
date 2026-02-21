@@ -16,8 +16,9 @@ import { TextProvider } from './context/TextContext';
 import { CommentProvider } from './context/CommentContext';
 
 import InteractiveDemo from './components/InteractiveDemo';
+import KnowledgeBaseDemo from './components/KnowledgeBaseDemo';
 
-export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'interactive_demo';
+export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'interactive_demo' | 'knowledge_base';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -46,14 +47,16 @@ const App: React.FC = () => {
             <ServicesPage onNavigate={setCurrentView} />
           ) : currentView === 'interactive_demo' ? (
             <InteractiveDemo onNavigate={setCurrentView} />
+          ) : currentView === 'knowledge_base' ? (
+            <KnowledgeBaseDemo onNavigate={setCurrentView} />
           ) : (
             <CaseStudiesPage />
           )}
 
-          {currentView !== 'interactive_demo' && <Footer />}
+          {currentView !== 'interactive_demo' && currentView !== 'knowledge_base' && <Footer />}
 
           {/* Design Mode Hint */}
-          {currentView !== 'interactive_demo' && (
+          {currentView !== 'interactive_demo' && currentView !== 'knowledge_base' && (
             <div className="fixed bottom-4 left-4 z-[9999] bg-white/80 backdrop-blur-sm border border-gray-200 px-3 py-1.5 rounded-full shadow-sm pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
               <span className="text-[10px] text-gray-500 font-medium tracking-tight">
                 Design Mode: <kbd className="bg-gray-100 px-1.5 py-0.5 rounded border border-gray-300">Ctrl/Cmd + Click</kbd> to add comment
@@ -62,7 +65,7 @@ const App: React.FC = () => {
           )}
 
           {/* Floating Export Button */}
-          {currentView !== 'interactive_demo' && <ExportTools />}
+          {currentView !== 'interactive_demo' && currentView !== 'knowledge_base' && <ExportTools />}
         </div>
       </CommentProvider>
     </TextProvider>

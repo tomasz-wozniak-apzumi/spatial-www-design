@@ -348,7 +348,13 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate }) => {
               onClick={() => onNavigate?.('interactive_demo')}
               className="bg-apzumi-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(240,78,78,0.4)]"
             >
-              <TextBlock id="sol_page_hero_cta_demo">Umów demo</TextBlock>
+              <TextBlock id="sol_page_hero_cta_demo">Wideo Demo</TextBlock>
+            </button>
+            <button
+              onClick={() => onNavigate?.('knowledge_base')}
+              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(37,99,235,0.4)]"
+            >
+              <TextBlock id="sol_page_hero_cta_kb">Baza Wiedzy Demo</TextBlock>
             </button>
             <button className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg backdrop-blur-sm transition-all">
               <TextBlock id="sol_page_hero_cta_cases">Zobacz case studies</TextBlock>

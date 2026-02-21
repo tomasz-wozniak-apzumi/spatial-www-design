@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import Groq from 'groq-sdk';
 
-const KNOWLEDGE_BASE = `
+const DEFAULT_KNOWLEDGE_BASE = `
 KNOWLEDGE BASE DOCUMENTS:
 1. Document 1 (Printer Specifications):
    - Pełna nazwa drukarki: Apzumi Spatial PrintMaster Pro 3000
@@ -29,18 +29,22 @@ export default async function handler(
 
         const groq = new Groq({ apiKey });
 
-        const { query } = request.body;
+        const { query, customKnowledge } = request.body;
 
         if (!query) {
             return response.status(400).json({ error: 'Missing query parameter' });
         }
+
+        const effectiveKnowledgeBase = customKnowledge && customKnowledge.trim() !== ''
+            ? `KNOWLEDGE BASE DOCUMENTS (CUSTOM):\n${customKnowledge}`
+            : DEFAULT_KNOWLEDGE_BASE;
 
         const prompt = `You are a helpful AI Assistant for Apzumi Spatial.
 Your task is to answer the user's question based strictly on the provided knowledge base.
 If the information is not in the knowledge base, you must state that you do not have that information without guessing.
 Keep your answer very concise: maximum 2 to 4 short sentences. Answer in Polish.
 
-${KNOWLEDGE_BASE}
+${effectiveKnowledgeBase}
 
 User Question: ${query}
 `;

@@ -1,0 +1,8 @@
+file:///C:/Projects/Spatial/spatial-www-design/spatial-www-design/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:4
+import fsp, { constants as constants$3 } from 'node:fs/promises';
+              ^^^^^^^^^
+SyntaxError: The requested module 'node:fs/promises' does not provide an export named 'constants'
+    at ModuleJob._instantiate (node:internal/modules/esm/module_job:128:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:194:5)
+    at async Promise.all (index 0)
+    at async ESMLoader.import (node:internal/modules/esm/loader:385:24)

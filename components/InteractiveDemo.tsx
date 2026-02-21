@@ -32,6 +32,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const [isVideoEnded, setIsVideoEnded] = useState(false);
     const [activeBuffer, setActiveBuffer] = useState<'A' | 'B'>('A');
     const [pendingAdvance, setPendingAdvance] = useState(false);
+    const [showIntro, setShowIntro] = useState(true);
+    const [introFading, setIntroFading] = useState(false);
 
     // Maintain state for dynamic URLs
     const [videoAUrl, setVideoAUrl] = useState<string>('');
@@ -139,10 +141,26 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     }, []);
 
     useEffect(() => {
-        if (videoAUrl && currentVideo === 1 && videoRefA.current) {
+        // Handle initial intro timer
+        const timerOut = setTimeout(() => {
+            setIntroFading(true);
+        }, 2000); // 2 sekundowy intro display
+
+        const timerDone = setTimeout(() => {
+            setShowIntro(false);
+        }, 2500); // .5 sekundowy fadeout
+
+        return () => {
+            clearTimeout(timerOut);
+            clearTimeout(timerDone);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!showIntro && videoAUrl && currentVideo === 1 && videoRefA.current) {
             videoRefA.current.play().catch(err => console.log("Initial play failed:", err));
         }
-    }, [videoAUrl, currentVideo]);
+    }, [showIntro, videoAUrl, currentVideo]);
 
     return (
         <div className="fixed inset-0 bg-black z-[10000] flex items-center justify-center overflow-hidden">
@@ -191,18 +209,25 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
 
                 {/* Completion Screen */}
                 {isVideoEnded && currentVideo === TERMINAL_VIDEO && (
-                    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center text-white p-8 z-[10020]">
-                        <div className="w-32 h-32 bg-apzumi-red rounded-full flex items-center justify-center mb-10 shadow-[0_0_60px_rgba(240,78,78,0.8)] animate-bounce">
-                            <ArrowBigDown size={64} className="rotate-180" />
-                        </div>
-                        <h2 className="text-6xl font-black mb-6 tracking-tighter uppercase text-center">Scenariusz Gotowy</h2>
-                        <p className="text-2xl mb-12 text-center max-w-2xl text-gray-400 font-medium">Poznałeś wszystkie kroki cyfrowego workflow wspieranego przez Apzumi Spatial.</p>
+                    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center text-white p-8 z-[10020] animate-in fade-in duration-500">
+                        <h2 className="text-6xl font-black mb-12 tracking-tighter uppercase text-center">Dziękujemy!</h2>
                         <button
                             onClick={() => onNavigate('solutions')}
                             className="bg-white text-apzumi-dark hover:bg-apzumi-red hover:text-white px-16 py-6 rounded-full font-black text-2xl uppercase tracking-tighter transition-all hover:scale-110 shadow-[0_0_40px_rgba(255,255,255,0.2)]"
                         >
-                            Zakończ Demo
+                            Powrót
                         </button>
+                    </div>
+                )}
+
+                {/* Intro Screen with Logo */}
+                {showIntro && (
+                    <div className={`absolute inset-0 bg-black z-[10030] flex items-center justify-center transition-opacity duration-500 ${introFading ? 'opacity-0' : 'opacity-100'}`}>
+                        <img
+                            src="/images/logo.png"
+                            alt="Apzumi Spatial Logo"
+                            className="w-auto h-24 object-contain animate-pulse shadow-[0_0_50px_rgba(255,255,255,0.1)]"
+                        />
                     </div>
                 )}
             </div>

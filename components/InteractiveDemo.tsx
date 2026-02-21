@@ -15,9 +15,10 @@ interface TargetZone {
 
 const TARGET_ZONES: Record<number, TargetZone> = {
     1: { x: 0, y: 0, width: 0, height: 0 },
-    2: { x: 5, y: 20, width: 25, height: 60 },
+    // Prawe 2/3 ekranu, marginesy góra/dół ~16.6% (1/6)
+    2: { x: 33.33, y: 16.66, width: 66.66, height: 66.66 },
     3: { x: 0, y: 0, width: 0, height: 0 },
-    4: { x: 5, y: 20, width: 25, height: 60 },
+    4: { x: 33.33, y: 16.66, width: 66.66, height: 66.66 },
     5: { x: 0, y: 0, width: 0, height: 0 },
     6: { x: 0, y: 0, width: 0, height: 0 },
 };

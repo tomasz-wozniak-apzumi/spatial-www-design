@@ -57,6 +57,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const [showFeedback, setShowFeedback] = useState(false);
     const [activeBuffer, setActiveBuffer] = useState<'A' | 'B'>('A');
     const [pendingAdvance, setPendingAdvance] = useState(false);
+    const [videoAIndex, setVideoAIndex] = useState<number>(1);
+    const [videoBIndex, setVideoBIndex] = useState<number>(2);
 
     const videoRefA = useRef<HTMLVideoElement>(null);
     const videoRefB = useRef<HTMLVideoElement>(null);
@@ -76,6 +78,15 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
         setIsVideoEnded(false);
         setPendingAdvance(false);
         setShowFeedback(false);
+
+        const preloadVideoIndex = nextVideo + 1;
+        if (preloadVideoIndex <= TERMINAL_VIDEO) {
+            if (nextBuffer === 'A') {
+                setVideoBIndex(preloadVideoIndex);
+            } else {
+                setVideoAIndex(preloadVideoIndex);
+            }
+        }
     };
 
     const handleVideoEnd = () => {
@@ -112,34 +123,23 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
         }
     };
 
-    // Initial play and preloading logic
     useEffect(() => {
-        // Initial setup for first load
-        if (currentVideo === 1) {
-            if (videoRefA.current && !videoRefA.current.src.includes("/videos/video1.mp4")) {
-                videoRefA.current.src = "/videos/video1.mp4";
+        if (videoRefA.current) videoRefA.current.load();
+    }, [videoAIndex]);
+
+    useEffect(() => {
+        if (videoRefB.current) videoRefB.current.load();
+    }, [videoBIndex]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (videoRefA.current && currentVideo === 1) {
                 videoRefA.current.play().catch(err => console.log("Initial play failed:", err));
             }
-            if (videoRefB.current && !videoRefB.current.src.includes("/videos/video2.mp4")) {
-                videoRefB.current.src = "/videos/video2.mp4";
-                videoRefB.current.load();
-            }
-        }
-
-        // Preload next video in the inactive buffer
-        const nextVideoIndex = currentVideo + 1;
-        if (nextVideoIndex <= TERMINAL_VIDEO) {
-            const inactiveBuffer = activeBuffer === 'A' ? 'B' : 'A';
-            const inactiveRef = inactiveBuffer === 'A' ? videoRefA : videoRefB;
-            if (inactiveRef.current) {
-                const nextSrc = `/videos/video${nextVideoIndex}.mp4`;
-                if (!inactiveRef.current.src.includes(nextSrc)) {
-                    inactiveRef.current.src = nextSrc;
-                    inactiveRef.current.load();
-                }
-            }
-        }
-    }, [currentVideo, activeBuffer]);
+        }, 150);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="fixed inset-0 bg-black z-[10000] flex items-center justify-center overflow-hidden">
@@ -166,7 +166,11 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     controlsList="nodownload nofullscreen noremoteplayback"
                     disablePictureInPicture
                     onContextMenu={(e) => e.preventDefault()}
-                />
+                >
+                    {['mov', 'mp4', 'webm'].map(ext => (
+                        <source key={`${videoAIndex}-${ext}`} src={`/videos/video${videoAIndex}.${ext}`} type={`video/${ext === 'mov' ? 'quicktime' : ext}`} />
+                    ))}
+                </video>
                 <video
                     ref={videoRefB}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'B' ? 'video-active' : 'pointer-events-none'}`}
@@ -177,7 +181,11 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     controlsList="nodownload nofullscreen noremoteplayback"
                     disablePictureInPicture
                     onContextMenu={(e) => e.preventDefault()}
-                />
+                >
+                    {['mov', 'mp4', 'webm'].map(ext => (
+                        <source key={`${videoBIndex}-${ext}`} src={`/videos/video${videoBIndex}.${ext}`} type={`video/${ext === 'mov' ? 'quicktime' : ext}`} />
+                    ))}
+                </video>
 
                 {/* Interaction Overlay */}
                 {INTERACTIVE_VIDEOS.includes(currentVideo) && (

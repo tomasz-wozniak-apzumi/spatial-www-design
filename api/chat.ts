@@ -1,10 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import Groq from 'groq-sdk';
 
-// Initialize Groq client
-// It will automatically use process.env.GROQ_API_KEY
-const groq = new Groq();
-
 const KNOWLEDGE_BASE = `
 KNOWLEDGE BASE DOCUMENTS:
 1. Document 1 (Printer Specifications):
@@ -26,6 +22,13 @@ export default async function handler(
     }
 
     try {
+        const apiKey = process.env.GROQ_API_KEY;
+        if (!apiKey) {
+            return response.status(500).json({ error: 'Missing GROQ_API_KEY in environment variables. Please restart your dev server.' });
+        }
+
+        const groq = new Groq({ apiKey });
+
         const { query } = request.body;
 
         if (!query) {

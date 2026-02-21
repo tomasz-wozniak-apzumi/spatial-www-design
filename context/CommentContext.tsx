@@ -6,6 +6,7 @@ export interface DesignComment {
     text: string;
     x: number; // percentage
     y: number; // percentage
+    page?: string;
     author: string;
     createdAt: number;
 }
@@ -20,7 +21,7 @@ const CommentContext = createContext<CommentContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'apzumi_design_comments_v1';
 
-export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CommentProvider: React.FC<{ children: React.ReactNode, currentView: string }> = ({ children, currentView }) => {
     const [comments, setComments] = useState<DesignComment[]>([]);
     const [activePlacement, setActivePlacement] = useState<{ x: number, y: number } | null>(null);
     const [inputValue, setInputValue] = useState('');
@@ -90,6 +91,7 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
             text,
             x,
             y,
+            page: currentView,
             author: 'User',
             createdAt: Date.now()
         };
@@ -151,7 +153,7 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 )}
 
                 {/* Render all comments as sticky notes */}
-                {comments.map(comment => (
+                {comments.filter(c => !c.page || c.page === currentView).map(comment => (
                     <div
                         key={comment.id}
                         style={{ left: `${comment.x}%`, top: `${comment.y}%` }}

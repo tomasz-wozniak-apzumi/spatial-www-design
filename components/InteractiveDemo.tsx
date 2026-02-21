@@ -57,17 +57,23 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const [showFeedback, setShowFeedback] = useState(false);
     const [activeBuffer, setActiveBuffer] = useState<'A' | 'B'>('A');
     const [pendingAdvance, setPendingAdvance] = useState(false);
-    const [videoAIndex, setVideoAIndex] = useState<number>(1);
-    const [videoBIndex, setVideoBIndex] = useState<number>(2);
+
+    // Maintain state for dynamic URLs
+    const [videoAUrl, setVideoAUrl] = useState<string>('');
+    const [videoBUrl, setVideoBUrl] = useState<string>('');
 
     const videoRefA = useRef<HTMLVideoElement>(null);
     const videoRefB = useRef<HTMLVideoElement>(null);
 
-    const advanceToNext = () => {
+    // Cache map so we don't spam HEAD requests
+    const resolvedUrlsRef = useRef<Record<number, string>>({});
+
+    const advanceToNext = async () => {
         const nextVideo = currentVideo + 1;
         const nextBuffer = activeBuffer === 'A' ? 'B' : 'A';
 
-        // Play the preloaded video
+        // Play the newly active buffer immediately if it's ready.
+        // Pre-caching ensures its 'src' state is usually populated.
         const nextRef = nextBuffer === 'A' ? videoRefA : videoRefB;
         if (nextRef.current) {
             nextRef.current.play().catch(err => console.log("Play failed:", err));
@@ -79,14 +85,39 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
         setPendingAdvance(false);
         setShowFeedback(false);
 
+        // Preload next-next video in the now-inactive buffer
         const preloadVideoIndex = nextVideo + 1;
         if (preloadVideoIndex <= TERMINAL_VIDEO) {
+            const url = await resolveVideoUrl(preloadVideoIndex);
             if (nextBuffer === 'A') {
-                setVideoBIndex(preloadVideoIndex);
+                setVideoBUrl(url);
             } else {
-                setVideoAIndex(preloadVideoIndex);
+                setVideoAUrl(url);
             }
         }
+    };
+
+    const resolveVideoUrl = async (index: number): Promise<string> => {
+        if (resolvedUrlsRef.current[index]) {
+            return resolvedUrlsRef.current[index];
+        }
+
+        const extensions = ['mov', 'mp4', 'webm'];
+        for (const ext of extensions) {
+            const url = `/videos/video${index}.${ext}`;
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                if (response.ok) {
+                    resolvedUrlsRef.current[index] = url;
+                    return url;
+                }
+            } catch (error) {
+                console.log(`Failed HEAD request for ${url}`, error);
+            }
+        }
+
+        // Fallback default
+        return `/videos/video${index}.mp4`;
     };
 
     const handleVideoEnd = () => {
@@ -124,22 +155,20 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     };
 
     useEffect(() => {
-        if (videoRefA.current) videoRefA.current.load();
-    }, [videoAIndex]);
-
-    useEffect(() => {
-        if (videoRefB.current) videoRefB.current.load();
-    }, [videoBIndex]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (videoRefA.current && currentVideo === 1) {
-                videoRefA.current.play().catch(err => console.log("Initial play failed:", err));
-            }
-        }, 150);
-        return () => clearTimeout(timer);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const init = async () => {
+            const urlA = await resolveVideoUrl(1);
+            setVideoAUrl(urlA);
+            const urlB = await resolveVideoUrl(2);
+            setVideoBUrl(urlB);
+        };
+        init();
     }, []);
+
+    useEffect(() => {
+        if (videoAUrl && currentVideo === 1 && videoRefA.current) {
+            videoRefA.current.play().catch(err => console.log("Initial play failed:", err));
+        }
+    }, [videoAUrl, currentVideo]);
 
     return (
         <div className="fixed inset-0 bg-black z-[10000] flex items-center justify-center overflow-hidden">
@@ -166,11 +195,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     controlsList="nodownload nofullscreen noremoteplayback"
                     disablePictureInPicture
                     onContextMenu={(e) => e.preventDefault()}
-                >
-                    {['mov', 'mp4', 'webm'].map(ext => (
-                        <source key={`${videoAIndex}-${ext}`} src={`/videos/video${videoAIndex}.${ext}`} type={`video/${ext === 'mov' ? 'quicktime' : ext}`} />
-                    ))}
-                </video>
+                    src={videoAUrl}
+                />
                 <video
                     ref={videoRefB}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'B' ? 'video-active' : 'pointer-events-none'}`}
@@ -181,11 +207,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     controlsList="nodownload nofullscreen noremoteplayback"
                     disablePictureInPicture
                     onContextMenu={(e) => e.preventDefault()}
-                >
-                    {['mov', 'mp4', 'webm'].map(ext => (
-                        <source key={`${videoBIndex}-${ext}`} src={`/videos/video${videoBIndex}.${ext}`} type={`video/${ext === 'mov' ? 'quicktime' : ext}`} />
-                    ))}
-                </video>
+                    src={videoBUrl}
+                />
 
                 {/* Interaction Overlay */}
                 {INTERACTIVE_VIDEOS.includes(currentVideo) && (

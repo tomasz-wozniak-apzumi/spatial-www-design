@@ -78,7 +78,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
             return resolvedUrlsRef.current[index];
         }
 
-        const extensions = ['mov', 'mp4', 'webm'];
+        const extensions = ['mp4', 'mov', 'webm'];
         for (const ext of extensions) {
             const url = `/videos/video${index}.${ext}`;
             try {
@@ -224,7 +224,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                 {showIntro && (
                     <div className={`absolute inset-0 bg-black z-[10030] flex items-center justify-center transition-opacity duration-500 ${introFading ? 'opacity-0' : 'opacity-100'}`}>
                         <img
-                            src="/images/logo.png"
+                            src="/videos/logo.png"
                             alt="Apzumi Spatial Logo"
                             className="w-auto h-24 object-contain animate-pulse shadow-[0_0_50px_rgba(255,255,255,0.1)]"
                         />

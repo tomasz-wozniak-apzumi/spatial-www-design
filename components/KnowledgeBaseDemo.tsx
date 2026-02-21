@@ -7,9 +7,9 @@ interface KnowledgeBaseDemoProps {
 }
 
 const predefinedQuestions = [
-    "Jak jest pełna nazwa drukarki?",
-    "Jaki tusz obsługuje drukarka?",
-    "Ile waży drukarka?"
+    "Jak jest pełna nazwa maszyny CNC?",
+    "Jakiego zasilania wymaga maszyna?",
+    "Ile waży maszyna CNC?"
 ];
 
 type Phase = 'init' | 'ingesting' | 'ready' | 'chatting';
@@ -44,7 +44,7 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
 
     const startReadyPhase = () => {
         setPhase('ready');
-        const greeting = "Czego chciałbyś dowiedzieć się o drukarce?";
+        const greeting = "Czego chciałbyś dowiedzieć się o maszynie CNC?";
         setMessages([{ role: 'ai', content: greeting }]);
         playTts(greeting);
     };
@@ -243,14 +243,14 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                         {phase === 'ingesting' && ingestedCount < 1 && (
                             <div className="absolute top-0 right-[110%] w-48 p-4 bg-white/10 rounded-2xl border border-white/20 flex items-center gap-3 animate-[flyIn_1s_ease-out_forwards] shadow-lg">
                                 <FileText size={28} className="text-blue-400" />
-                                <span className="text-sm font-semibold text-gray-200">manual.pdf</span>
+                                <span className="text-sm font-semibold text-gray-200">dtr_maszyny.pdf</span>
                             </div>
                         )}
 
                         {phase === 'ingesting' && ingestedCount >= 1 && ingestedCount < 2 && (
                             <div className="absolute top-0 left-[110%] w-48 p-4 bg-white/10 rounded-2xl border border-white/20 flex items-center gap-3 animate-[flyIn_1s_ease-out_forwards] shadow-lg">
                                 <ImageIcon size={28} className="text-purple-400" />
-                                <span className="text-sm font-semibold text-gray-200">printer_v2.jpg</span>
+                                <span className="text-sm font-semibold text-gray-200">cnc_schemat.png</span>
                             </div>
                         )}
 
@@ -258,7 +258,7 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                             <div className="absolute bottom-[-10%] right-[90%] w-72 p-5 bg-yellow-900/30 rounded-2xl border border-yellow-500/50 flex items-start gap-4 animate-[flyIn_1s_ease-out_forwards] shadow-lg">
                                 <FileCode2 size={28} className="text-yellow-400 shrink-0 mt-0.5" />
                                 <span className="text-xs font-mono text-yellow-200 leading-tight">
-                                    "IMPORTANT! DO NOT EXPOSE PRINTER TO THE SUN! IT CAN OVERHEAT EASILY!"
+                                    "IMPORTANT! REGULARLY CHECK COOLANT LEVELS TO PREVENT OVERHEATING!"
                                 </span>
                             </div>
                         )}
@@ -266,7 +266,7 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                 </div>
 
                 {/* AI Assistant ORB & UI */}
-                <div className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[20%] w-full max-w-3xl flex flex-col items-center transition-all duration-1000 " + ((phase === 'ready' || phase === 'chatting') ? 'opacity-100 translate-y-0 visible pointer-events-auto' : 'opacity-0 translate-y-12 invisible pointer-events-none')}>
+                <div className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-full max-w-3xl flex flex-col items-center transition-all duration-1000 " + ((phase === 'ready' || phase === 'chatting') ? 'opacity-100 translate-y-0 visible pointer-events-auto' : 'opacity-0 translate-y-12 invisible pointer-events-none')}>
 
                     {/* Pulsing Orb */}
                     <div className="relative w-36 h-36 mb-10">
@@ -343,7 +343,7 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') handleAskQuestion(inputQuery);
                                 }}
-                                placeholder={phase === 'chatting' || hasCustomBase ? "Napisz wiadomość do asystenta..." : "Tylko z podanych wyżej pytań predefiniowanych..."}
+                                placeholder={phase === 'chatting' || hasCustomBase ? "Wpisz pytanie..." : "Wpisz pytanie..."}
                                 disabled={phase !== 'chatting' && phase !== 'ready'}
                                 className="w-full bg-transparent pl-6 pr-16 py-3.5 text-[16px] text-white focus:outline-none transition-colors placeholder-gray-500"
                             />

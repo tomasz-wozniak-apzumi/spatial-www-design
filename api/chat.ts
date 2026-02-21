@@ -3,14 +3,14 @@ import Groq from 'groq-sdk';
 
 const DEFAULT_KNOWLEDGE_BASE = `
 KNOWLEDGE BASE DOCUMENTS:
-1. Document 1 (Printer Specifications):
-   - Pełna nazwa drukarki: Apzumi Spatial PrintMaster Pro 3000
-   - Waga: Drukarka waży 12.5 kg.
-   - Obsługiwany tusz: Drukarka obsługuje wyłącznie oryginalne tusze z serii Spatial Ink X-Series (wkłady atramentowe o wysokiej wydajności).
+1. Document 1 (CNC Specifications):
+   - Pełna nazwa maszyny CNC: Apzumi Spatial Titan CNC 5-Axis
+   - Waga: Maszyna waży 4500 kg.
+   - Zasilanie: Maszyna wymaga zasilania trójfazowego 400V.
 
 2. Document 2 (Text Note / Warning):
-   - IMPORTANT! DO NOT EXPOSE PRINTER TO THE SUN! IT CAN OVERHEAT EASILY!
-   - Należy unikać bezpośredniego nasłonecznienia drukarki, aby zapobiec jej przegrzaniu.
+   - IMPORTANT! REGULARLY CHECK COOLANT LEVELS TO PREVENT OVERHEATING!
+   - Należy regularnie sprawdzać poziom chłodziwa (cieczy chłodzącej), aby zapobiec przegrzaniu wrzeciona i narzędzi.
 `;
 
 export default async function handler(

@@ -27,28 +27,6 @@ const INTERACTIVE_VIDEOS = [2, 4];
 const AUTO_ADVANCE_VIDEOS = [1, 3, 5];
 const TERMINAL_VIDEO = 6;
 
-const FuturisticFrame: React.FC<{ zone: TargetZone; pending?: boolean }> = ({ zone, pending }) => (
-    <div
-        className={`futuristic-frame ${pending ? 'frame-pending' : ''}`}
-        style={{
-            left: `${zone.x}%`,
-            top: `${zone.y}%`,
-            width: `${zone.width}%`,
-            height: `${zone.height}%`,
-        }}
-    >
-        <div className="frame-scanline" />
-        <div className="frame-crosshair" />
-        <div className="arrow-indicator">
-            <ArrowBigDown size={48} fill="currentColor" />
-        </div>
-        <div className="frame-corner corner-tl" />
-        <div className="frame-corner corner-tr" />
-        <div className="frame-corner corner-bl" />
-        <div className="frame-corner corner-br" />
-    </div>
-);
-
 const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const [currentVideo, setCurrentVideo] = useState<number>(1);
     const [isVideoEnded, setIsVideoEnded] = useState(false);
@@ -208,9 +186,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
 
                 {/* Interaction Overlay */}
                 {INTERACTIVE_VIDEOS.includes(currentVideo) && (
-                    <div className="absolute inset-0 cursor-pointer bg-black/40 z-[10001]">
-                        <FuturisticFrame zone={TARGET_ZONES[currentVideo]} pending={pendingAdvance} />
-                    </div>
+                    <div className="absolute inset-0 cursor-pointer bg-transparent z-[10001]" />
                 )}
 
                 {/* Completion Screen */}

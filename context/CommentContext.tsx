@@ -26,13 +26,22 @@ export const CommentProvider: React.FC<{ children: React.ReactNode, currentView:
     const [activePlacement, setActivePlacement] = useState<{ x: number, y: number } | null>(null);
     const [inputValue, setInputValue] = useState('');
     const [isSyncing, setIsSyncing] = useState(false);
+    const isSyncingRef = useRef(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
-    // Initial load
+    // Initial load & Polling
     useEffect(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) setComments(JSON.parse(saved));
         fetchGlobalComments();
+
+        const interval = setInterval(() => {
+            if (!isSyncingRef.current) {
+                fetchGlobalComments();
+            }
+        }, 5000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const fetchGlobalComments = async () => {
@@ -43,25 +52,36 @@ export const CommentProvider: React.FC<{ children: React.ReactNode, currentView:
                 if (Array.isArray(data)) {
                     setComments(data);
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    return data as DesignComment[];
                 }
             }
         } catch (e) {
             console.error("Failed to fetch comments", e);
         }
+        return null;
     };
 
-    const syncToGlobal = async (newComments: DesignComment[]) => {
+    const syncToGlobal = async (mutation: (current: DesignComment[]) => DesignComment[]) => {
         setIsSyncing(true);
+        isSyncingRef.current = true;
         try {
+            const fresh = await fetchGlobalComments();
+            const baseComments = fresh || comments;
+            const updated = mutation(baseComments);
+
+            setComments(updated);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
             await fetch('/api/config?type=comments', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newComments)
+                body: JSON.stringify(updated)
             });
         } catch (e) {
             console.error("Failed to sync comments", e);
         } finally {
             setIsSyncing(false);
+            isSyncingRef.current = false;
         }
     };
 
@@ -95,18 +115,15 @@ export const CommentProvider: React.FC<{ children: React.ReactNode, currentView:
             author: 'User',
             createdAt: Date.now()
         };
-        const updated = [...comments, newComment];
-        setComments(updated);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-        syncToGlobal(updated);
+
+        setComments(prev => [...prev, newComment]);
         setActivePlacement(null);
+        syncToGlobal((fresh) => [...fresh, newComment]);
     };
 
     const removeComment = (id: string) => {
-        const updated = comments.filter(c => c.id !== id);
-        setComments(updated);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-        syncToGlobal(updated);
+        setComments(prev => prev.filter(c => c.id !== id));
+        syncToGlobal((fresh) => fresh.filter(c => c.id !== id));
     };
 
     return (

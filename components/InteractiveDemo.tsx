@@ -206,6 +206,9 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     </div>
                 )}
             </div>
+
+            {/* Background Audio */}
+            <audio src="/audio/factory.wav" autoPlay loop className="hidden" />
         </div>
     );
 };

@@ -205,19 +205,25 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
             </div>
 
             {/* Sticky Chat UI */}
-            <div className={"absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl bg-apzumi-darker/90 backdrop-blur-2xl border-t border-white/10 p-6 transition-all duration-700 rounded-t-3xl shadow-[0_-20px_60px_rgba(0,0,0,0.5)] " + ((phase === 'ready' || phase === 'chatting') ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0')}>
+            <div className={"absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl bg-[#0a0f1d]/85 backdrop-blur-3xl border-t border-white/10 p-8 transition-all duration-700 rounded-t-[40px] shadow-[0_-30px_80px_rgba(0,0,0,0.6)] " + ((phase === 'ready' || phase === 'chatting') ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0')}>
+
+                {/* Chat Header Header */}
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5">
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.6)]"></div>
+                    <span className="text-xs font-bold text-gray-300 uppercase tracking-widest">Apzumi Spatial Assistant</span>
+                </div>
 
                 {/* Chat History */}
-                <div className="h-64 overflow-y-auto mb-4 flex flex-col gap-4 pr-4 custom-scrollbar">
+                <div className="h-64 overflow-y-auto mb-6 flex flex-col gap-6 pr-4 custom-scrollbar">
                     {messages.map((m, idx) => (
-                        <div key={idx} className={"flex flex-col max-w-[80%] " + (m.role === 'user' ? 'self-end items-end' : 'self-start items-start')}>
-                            <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-2">
-                                {m.role === 'user' ? 'Ty' : 'AI Assistant Spatial'}
+                        <div key={idx} className={"flex flex-col max-w-[85%] " + (m.role === 'user' ? 'self-end items-end' : 'self-start items-start')}>
+                            <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 ml-2">
+                                {m.role === 'user' ? 'Ty' : 'AI'}
                             </div>
-                            <div className={"px-6 py-4 rounded-3xl text-sm leading-relaxed " + (
+                            <div className={"px-6 py-4 text-[15px] leading-relaxed font-medium shadow-xl " + (
                                 m.role === 'user'
-                                    ? 'bg-blue-600 text-white rounded-tr-sm shadow-md'
-                                    : 'bg-white/10 border border-white/10 text-gray-200 rounded-tl-sm'
+                                    ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-[24px] rounded-tr-[4px] border border-blue-500/30'
+                                    : 'bg-white/5 backdrop-blur-md border border-white/10 text-gray-200 rounded-[24px] rounded-tl-[4px] shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
                             )}>
                                 {m.content}
                             </div>
@@ -225,11 +231,11 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                     ))}
 
                     {isAiTyping && (
-                        <div className="self-start flex flex-col items-start max-w-[80%]">
-                            <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 ml-2">
-                                AI Assistant Spatial
+                        <div className="self-start flex flex-col items-start max-w-[80%] opacity-80">
+                            <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 ml-2">
+                                AI
                             </div>
-                            <div className="px-6 py-4 rounded-3xl bg-white/5 border border-white/10 rounded-tl-sm flex gap-2 items-center h-[52px]">
+                            <div className="px-6 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-[24px] rounded-tl-[4px] flex gap-2 items-center h-[56px] shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
                                 <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                                 <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
                                 <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
@@ -239,7 +245,7 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                 </div>
 
                 {/* Chat Input */}
-                <div className="relative flex items-center gap-4">
+                <div className="relative flex items-center gap-4 bg-black/40 p-2 rounded-full border border-white/10 shadow-inner">
                     <div className="relative flex-1">
                         <input
                             type="text"
@@ -248,15 +254,15 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') handleAskQuestion(inputQuery);
                             }}
-                            placeholder={phase === 'chatting' ? "Zadaj własne pytanie do bazy uwzględniając kontekst..." : "Tylko z podanych wyżej pytań predefiniowanych..."}
+                            placeholder={phase === 'chatting' ? "Zadaj własne pytanie dotyczące drukarki..." : "Tylko z podanych wyżej pytań predefiniowanych..."}
                             disabled={phase !== 'chatting' && phase !== 'ready'}
-                            className="w-full bg-black/40 border border-white/10 rounded-full pl-6 pr-12 py-4 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors placeholder-gray-600"
+                            className="w-full bg-transparent pl-6 pr-16 py-3 text-[15px] text-white focus:outline-none transition-colors placeholder-gray-500"
                         />
                         <button
                             onClick={() => handleAskQuestion(inputQuery)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-500 text-white p-2.5 rounded-full transition-transform hover:scale-110 active:scale-95"
+                            className="absolute right-1 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white p-3 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center"
                         >
-                            <Send size={16} />
+                            <Send size={18} className="translate-x-[1px]" />
                         </button>
                     </div>
                 </div>

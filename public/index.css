@@ -4,11 +4,21 @@
 
 @keyframes scanline {
   0% {
-    transform: translateY(-100%);
+    top: 0%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
   }
 
   100% {
-    transform: translateY(100%);
+    top: 100%;
+    opacity: 0;
   }
 }
 
@@ -16,13 +26,27 @@
 
   0%,
   100% {
-    opacity: 0.6;
-    box-shadow: 0 0 30px rgba(240, 78, 78, 0.4);
+    box-shadow: 0 0 15px rgba(240, 78, 78, 0.3), inset 0 0 20px rgba(240, 78, 78, 0.2);
+    border-color: rgba(240, 78, 78, 0.4);
   }
 
   50% {
-    opacity: 1;
-    box-shadow: 0 0 60px rgba(240, 78, 78, 0.7);
+    box-shadow: 0 0 35px rgba(240, 78, 78, 0.7), inset 0 0 50px rgba(240, 78, 78, 0.4);
+    border-color: rgba(240, 78, 78, 0.9);
+  }
+}
+
+@keyframes pulse-glow-pending {
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(74, 222, 128, 0.3), inset 0 0 20px rgba(74, 222, 128, 0.2);
+    border-color: rgba(74, 222, 128, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 35px rgba(74, 222, 128, 0.7), inset 0 0 50px rgba(74, 222, 128, 0.4);
+    border-color: rgba(74, 222, 128, 0.9);
   }
 }
 
@@ -30,12 +54,50 @@
 
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0) translateX(-50%);
     opacity: 0.8;
   }
 
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-15px) translateX(-50%);
+    opacity: 1;
+  }
+}
+
+@keyframes bracket-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes target-rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes target-pulse {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
     opacity: 1;
   }
 }
@@ -43,67 +105,210 @@
 .futuristic-frame {
   position: absolute;
   pointer-events: none;
-  border: 4px solid rgba(240, 78, 78, 0.6);
-  background: rgba(240, 78, 78, 0.1);
+  border: 2px solid rgba(240, 78, 78, 0.4);
+  background: radial-gradient(circle, rgba(240, 78, 78, 0.15) 0%, transparent 70%);
   animation: pulse-glow 2s infinite ease-in-out;
-  overflow: visible;
   z-index: 10001;
+  border-radius: 4px;
+  backdrop-filter: blur(2px);
 }
 
-.futuristic-frame::before {
+.frame-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.frame-scanline::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 4px;
-  background: linear-gradient(to right, transparent, #f04e4e, transparent);
+  height: 3px;
+  background: #f04e4e;
+  box-shadow: 0 0 20px 5px #f04e4e;
   animation: scanline 2.5s infinite linear;
+}
+
+.frame-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(60px, 50%);
+  height: min(60px, 50%);
+  border: 2px dashed rgba(240, 78, 78, 0.5);
+  border-radius: 50%;
+  animation: target-rotate 8s infinite linear, target-pulse 3s infinite ease-in-out;
+}
+
+.frame-crosshair::before,
+.frame-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(240, 78, 78, 0.6);
+}
+
+.frame-crosshair::before {
+  top: 50%;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.frame-crosshair::after {
+  top: 10%;
+  left: 50%;
+  width: 2px;
+  height: 80%;
+  transform: translateX(-50%);
 }
 
 .arrow-indicator {
   position: absolute;
-  top: -60px;
+  top: -70px;
   left: 50%;
-  transform: translateX(-50%);
   color: #f04e4e;
-  animation: arrow-bounce 1.5s infinite ease-in-out;
-  filter: drop-shadow(0 0 10px rgba(240, 78, 78, 0.8));
+  animation: arrow-bounce 1s infinite cubic-bezier(0.28, 0.84, 0.42, 1);
+  filter: drop-shadow(0 0 20px rgba(240, 78, 78, 1));
+  z-index: 20;
 }
 
 .frame-corner {
   position: absolute;
-  width: 25px;
-  height: 25px;
-  border: 5px solid #f04e4e;
+  width: 30px;
+  height: 30px;
+  border: 4px solid #f04e4e;
+  animation: bracket-pulse 2s infinite ease-in-out;
+  box-shadow: 0 0 10px rgba(240, 78, 78, 0.6);
+  z-index: 10;
 }
 
 .corner-tl {
-  top: -6px;
-  left: -6px;
+  top: -2px;
+  left: -2px;
   border-right: none;
   border-bottom: none;
+  border-top-left-radius: 8px;
+  transform-origin: top left;
 }
 
 .corner-tr {
-  top: -6px;
-  right: -6px;
+  top: -2px;
+  right: -2px;
   border-left: none;
   border-bottom: none;
+  border-top-right-radius: 8px;
+  transform-origin: top right;
 }
 
 .corner-bl {
-  bottom: -6px;
-  left: -6px;
+  bottom: -2px;
+  left: -2px;
   border-right: none;
   border-top: none;
+  border-bottom-left-radius: 8px;
+  transform-origin: bottom left;
 }
 
 .corner-br {
-  bottom: -6px;
-  right: -6px;
+  bottom: -2px;
+  right: -2px;
   border-left: none;
   border-top: none;
+  border-bottom-right-radius: 8px;
+  transform-origin: bottom right;
+}
+
+.frame-corner::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #f04e4e;
+}
+
+.corner-tl::after {
+  top: 2px;
+  left: 2px;
+}
+
+.corner-tr::after {
+  top: 2px;
+  right: 2px;
+}
+
+.corner-bl::after {
+  bottom: 2px;
+  left: 2px;
+}
+
+.corner-br::after {
+  bottom: 2px;
+  right: 2px;
+}
+
+.frame-text {
+  position: absolute;
+  top: 100%;
+  margin-top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: monospace;
+  font-size: 14px;
+  color: #f04e4e;
+  font-weight: 900;
+  letter-spacing: 3px;
+  white-space: nowrap;
+  animation: pulse-glow 2s infinite ease-in-out;
+  text-shadow: 0 0 10px rgba(240, 78, 78, 1);
+}
+
+.frame-pending {
+  border-color: rgba(74, 222, 128, 0.5);
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.15) 0%, transparent 70%);
+  animation: pulse-glow-pending 2s infinite ease-in-out;
+}
+
+.frame-pending .frame-scanline::before {
+  background: #4ade80;
+  box-shadow: 0 0 20px 5px #4ade80;
+}
+
+.frame-pending .frame-crosshair {
+  border-color: rgba(74, 222, 128, 0.5);
+}
+
+.frame-pending .frame-crosshair::before,
+.frame-pending .frame-crosshair::after {
+  background: rgba(74, 222, 128, 0.6);
+}
+
+.frame-pending .frame-corner {
+  border-color: #4ade80;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+}
+
+.frame-pending .frame-corner::after {
+  box-shadow: 0 0 8px #4ade80;
+}
+
+.frame-pending .arrow-indicator {
+  color: #4ade80;
+  filter: drop-shadow(0 0 20px rgba(74, 222, 128, 1));
+}
+
+.frame-pending .frame-text {
+  color: #4ade80;
+  animation: pulse-glow-pending 2s infinite ease-in-out;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 1);
 }
 
 .video-container {

@@ -14,17 +14,17 @@ interface TargetZone {
 }
 
 const TARGET_ZONES: Record<number, TargetZone> = {
-    1: { x: 60, y: 60, width: 30, height: 30 },
-    2: { x: 10, y: 10, width: 30, height: 30 },
-    3: { x: 40, y: 40, width: 20, height: 20 },
-    4: { x: 70, y: 10, width: 25, height: 25 },
-    5: { x: 10, y: 70, width: 25, height: 25 },
-    6: { x: 30, y: 60, width: 30, height: 20 },
-    7: { x: 60, y: 30, width: 20, height: 30 },
-    8: { x: 20, y: 20, width: 40, height: 20 },
-    9: { x: 50, y: 70, width: 40, height: 20 },
-    10: { x: 0, y: 0, width: 0, height: 0 },
+    1: { x: 0, y: 0, width: 0, height: 0 },
+    2: { x: 5, y: 20, width: 25, height: 60 },
+    3: { x: 0, y: 0, width: 0, height: 0 },
+    4: { x: 5, y: 20, width: 25, height: 60 },
+    5: { x: 0, y: 0, width: 0, height: 0 },
+    6: { x: 0, y: 0, width: 0, height: 0 },
 };
+
+const INTERACTIVE_VIDEOS = [2, 4];
+const AUTO_ADVANCE_VIDEOS = [1, 3, 5];
+const TERMINAL_VIDEO = 6;
 
 const FuturisticFrame: React.FC<{ zone: TargetZone; pending?: boolean }> = ({ zone, pending }) => (
     <div
@@ -36,6 +36,8 @@ const FuturisticFrame: React.FC<{ zone: TargetZone; pending?: boolean }> = ({ zo
             height: `${zone.height}%`,
         }}
     >
+        <div className="frame-scanline" />
+        <div className="frame-crosshair" />
         <div className="arrow-indicator">
             <ArrowBigDown size={48} fill="currentColor" />
         </div>
@@ -43,6 +45,9 @@ const FuturisticFrame: React.FC<{ zone: TargetZone; pending?: boolean }> = ({ zo
         <div className="frame-corner corner-tr" />
         <div className="frame-corner corner-bl" />
         <div className="frame-corner corner-br" />
+        <div className="frame-text">
+            {pending ? 'TARGET ACQUIRED' : 'TARGET DETECTED'}
+        </div>
     </div>
 );
 
@@ -74,19 +79,19 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     };
 
     const handleVideoEnd = () => {
-        if (currentVideo === 2 && pendingAdvance) {
+        if (AUTO_ADVANCE_VIDEOS.includes(currentVideo)) {
             advanceToNext();
-        } else if (currentVideo !== 2) {
+        } else if (INTERACTIVE_VIDEOS.includes(currentVideo) && pendingAdvance) {
+            advanceToNext();
+        } else if (currentVideo === TERMINAL_VIDEO) {
             setIsVideoEnded(true);
         }
     };
 
     const handleInteraction = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (currentVideo >= 10) return;
-        // On video 2 we allow interaction anytime. On others, only when video ends.
-        if (currentVideo !== 2 && !isVideoEnded) return;
-        // If already pending advance on video 2, ignore further clicks
-        if (currentVideo === 2 && pendingAdvance) return;
+        if (currentVideo > TERMINAL_VIDEO) return;
+        if (!INTERACTIVE_VIDEOS.includes(currentVideo)) return;
+        if (pendingAdvance) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -100,11 +105,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
             y <= zone.y + zone.height;
 
         if (isCorrectArea) {
-            if (currentVideo === 2) {
-                setPendingAdvance(true);
-            } else {
-                advanceToNext();
-            }
+            setPendingAdvance(true);
         } else {
             setShowFeedback(true);
             setTimeout(() => setShowFeedback(false), 3000);
@@ -127,7 +128,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
 
         // Preload next video in the inactive buffer
         const nextVideoIndex = currentVideo + 1;
-        if (nextVideoIndex <= 10) {
+        if (nextVideoIndex <= TERMINAL_VIDEO) {
             const inactiveBuffer = activeBuffer === 'A' ? 'B' : 'A';
             const inactiveRef = inactiveBuffer === 'A' ? videoRefA : videoRefB;
             if (inactiveRef.current) {
@@ -159,7 +160,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     ref={videoRefA}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'A' ? 'video-active' : 'pointer-events-none'}`}
                     onEnded={activeBuffer === 'A' ? handleVideoEnd : undefined}
-                    loop={currentVideo === 2 && !pendingAdvance}
+                    loop={INTERACTIVE_VIDEOS.includes(currentVideo) && !pendingAdvance}
                     muted={false}
                     playsInline
                     controlsList="nodownload nofullscreen noremoteplayback"
@@ -170,7 +171,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     ref={videoRefB}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'B' ? 'video-active' : 'pointer-events-none'}`}
                     onEnded={activeBuffer === 'B' ? handleVideoEnd : undefined}
-                    loop={currentVideo === 2 && !pendingAdvance}
+                    loop={INTERACTIVE_VIDEOS.includes(currentVideo) && !pendingAdvance}
                     muted={false}
                     playsInline
                     controlsList="nodownload nofullscreen noremoteplayback"
@@ -179,7 +180,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                 />
 
                 {/* Interaction Overlay */}
-                {(isVideoEnded || currentVideo === 2) && currentVideo < 10 && (
+                {INTERACTIVE_VIDEOS.includes(currentVideo) && (
                     <div className="absolute inset-0 cursor-pointer bg-black/40 z-[10001]">
                         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white text-center animate-pulse pointer-events-none">
                             <p className="text-3xl font-black uppercase tracking-tighter drop-shadow-[0_0_20px_rgba(240,78,78,0.8)]">
@@ -200,7 +201,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                 )}
 
                 {/* Completion Screen */}
-                {isVideoEnded && currentVideo === 10 && (
+                {isVideoEnded && currentVideo === TERMINAL_VIDEO && (
                     <div className="absolute inset-0 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center text-white p-8 z-[10020]">
                         <div className="w-32 h-32 bg-apzumi-red rounded-full flex items-center justify-center mb-10 shadow-[0_0_60px_rgba(240,78,78,0.8)] animate-bounce">
                             <ArrowBigDown size={64} className="rotate-180" />

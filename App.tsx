@@ -53,7 +53,7 @@ const App: React.FC = () => {
           ) : currentView === 'about' ? (
             <AboutPage onNavigate={setCurrentView} />
           ) : (
-            <CaseStudiesPage />
+            <CaseStudiesPage onNavigate={setCurrentView} />
           )}
 
           {currentView !== 'interactive_demo' && currentView !== 'knowledge_base' && <Footer />}

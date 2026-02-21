@@ -222,12 +222,18 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
 
                 {/* Intro Screen with Logo */}
                 {showIntro && (
-                    <div className={`absolute inset-0 bg-black z-[10030] flex items-center justify-center transition-opacity duration-500 ${introFading ? 'opacity-0' : 'opacity-100'}`}>
-                        <img
-                            src="/videos/logo.png"
-                            alt="Apzumi Spatial Logo"
-                            className="w-auto h-24 object-contain animate-pulse shadow-[0_0_50px_rgba(255,255,255,0.1)]"
-                        />
+                    <div className={`absolute inset-0 bg-[#0a0f1d] z-[10030] flex flex-col items-center justify-center transition-opacity duration-500 ${introFading ? 'opacity-0' : 'opacity-100'}`}>
+                        <div className="relative flex flex-col items-center justify-center animate-pulse">
+                            <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full"></div>
+                            <img
+                                src="/videos/logo.png"
+                                alt="Apzumi Spatial Logo"
+                                className="w-auto h-32 md:h-48 object-contain relative z-10 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                            />
+                            <div className="mt-12 w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-blue-500 to-apzumi-red w-full animate-[progress_2s_ease-in-out_infinite]"></div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

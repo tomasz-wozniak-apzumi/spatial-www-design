@@ -196,7 +196,7 @@ const SolutionCard: React.FC<{
   );
 };
 
-const DetailSection: React.FC<{ data: SolutionData; id: string }> = ({ data, id }) => {
+const DetailSection: React.FC<{ data: SolutionData; id: string; onNavigate?: (view: ViewState) => void }> = ({ data, id, onNavigate }) => {
   const [activeTab, setActiveTab] = useState<'problem' | 'how' | 'what' | 'who'>('problem');
 
   return (
@@ -212,7 +212,10 @@ const DetailSection: React.FC<{ data: SolutionData; id: string }> = ({ data, id 
               <TextBlock id={`sol_item_${data.id}_val`}>{data.valueLine}</TextBlock>
             </p>
             <div className="hidden lg:block">
-              <button className="bg-apzumi-red hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full transition-colors w-full shadow-lg shadow-apzumi-red/20">
+              <button
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-apzumi-red hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full transition-colors w-full shadow-lg shadow-apzumi-red/20"
+              >
                 <TextBlock id={`sol_item_${data.id}_btn`}>
                   {data.id === 'proc' ? "Porozmawiajmy o procedurach w Twojej fabryce" :
                     data.id === 'remote' ? "Umów demo Remote Assist" :
@@ -275,7 +278,10 @@ const DetailSection: React.FC<{ data: SolutionData; id: string }> = ({ data, id 
             </div>
 
             <div className="lg:hidden mt-8">
-              <button className="bg-apzumi-red hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full transition-colors w-full">
+              <button
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-apzumi-red hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full transition-colors w-full"
+              >
                 <TextBlock id={`sol_item_${data.id}_btn`}>Zobacz więcej</TextBlock>
               </button>
             </div>
@@ -539,7 +545,11 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate }) => {
               { id: '2', default: "Utrzymanie ruchu: skrócenie czasu diagnozy awarii" },
               { id: '3', default: "Quality/GMP: automatyzacja kontroli czystości linii" }
             ].map((item, idx) => (
-              <div key={idx} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group cursor-pointer">
+              <div
+                key={idx}
+                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group cursor-pointer"
+                onClick={() => onNavigate && onNavigate('casestudies')}
+              >
                 <div className="h-48 bg-gray-200 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-apzumi-dark opacity-80 group-hover:scale-105 transition-transform duration-700"></div>
                   <div className="absolute top-4 left-4 bg-white text-apzumi-dark text-[10px] font-bold px-2 py-1 rounded uppercase">
@@ -561,7 +571,7 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 8. FINAL CTA FORM */}
-      <section className="py-24 bg-apzumi-dark px-6 border-t border-white/10">
+      <section id="contact" className="py-24 bg-apzumi-dark px-6 border-t border-white/10">
         <div className="max-w-4xl mx-auto bg-white/5 border border-white/10 rounded-3xl p-8 md:p-16 backdrop-blur-sm">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

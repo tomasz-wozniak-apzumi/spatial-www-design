@@ -109,84 +109,86 @@ export const CommentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     return (
         <CommentContext.Provider value={{ addComment, removeComment, comments }}>
-            {children}
+            <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
+                {children}
 
-            {/* Placement UI */}
-            {activePlacement && (
-                <div
-                    ref={menuRef}
-                    style={{ left: `${activePlacement.x}px`, top: `${activePlacement.y}px` }}
-                    className="absolute z-[10000] -translate-x-1/2 -translate-y-1/2"
-                >
-                    <div className="bg-white rounded-lg shadow-2xl border border-blue-100 p-3 min-w-[250px] animate-in zoom-in-95 duration-200">
-                        <div className="flex items-center gap-2 mb-2 text-blue-600 font-bold text-xs uppercase tracking-wider">
-                            <MessageSquare size={14} />
-                            <span>Dodaj uwagę</span>
-                        </div>
-                        <textarea
-                            autoFocus
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            placeholder="Napisz co zmienić..."
-                            className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2 min-h-[80px] resize-none"
-                        />
-                        <div className="flex justify-end gap-2">
-                            <button
-                                onClick={() => setActivePlacement(null)}
-                                className="px-3 py-1 text-xs text-gray-500 hover:text-gray-700"
-                            >
-                                Anuluj
-                            </button>
-                            <button
-                                onClick={() => addComment(inputValue, activePlacement.x, activePlacement.y)}
-                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 flex items-center gap-1"
-                            >
-                                <Send size={12} />
-                                <span>Zapisz</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Render all comments as sticky notes */}
-            {comments.map(comment => (
-                <div
-                    key={comment.id}
-                    style={{ left: `${comment.x}%`, top: `${comment.y}%` }}
-                    className="absolute z-[9998] group"
-                >
-                    <div className="relative">
-                        {/* Pin / Trigger */}
-                        <div className="w-8 h-8 bg-yellow-400 rounded-full border-2 border-white shadow-lg flex items-center justify-center cursor-pointer group-hover:scale-110 transition-transform -translate-x-1/2 -translate-y-1/2">
-                            <MessageSquare size={16} className="text-yellow-900" />
-                        </div>
-
-                        {/* Sticky Note Content */}
-                        <div className="absolute top-4 left-4 min-w-[200px] max-w-[250px] bg-yellow-100 p-4 rounded shadow-xl border-l-4 border-yellow-400 opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all origin-top-left z-[10001]">
-                            <button
-                                onClick={() => removeComment(comment.id)}
-                                className="absolute top-1 right-1 p-1 text-yellow-600 hover:text-red-600 transition-colors"
-                            >
-                                <X size={14} />
-                            </button>
-                            <p className="text-sm text-yellow-900 leading-relaxed font-medium">
-                                {comment.text}
-                            </p>
-                            <div className="mt-3 pt-2 border-t border-yellow-200 text-[10px] text-yellow-600 italic">
-                                Dodano: {new Date(comment.createdAt).toLocaleString()}
+                {/* Placement UI */}
+                {activePlacement && (
+                    <div
+                        ref={menuRef}
+                        style={{ left: `${activePlacement.x}px`, top: `${activePlacement.y}px` }}
+                        className="absolute z-[10000] -translate-x-1/2 -translate-y-1/2"
+                    >
+                        <div className="bg-white rounded-lg shadow-2xl border border-blue-100 p-3 min-w-[250px] animate-in zoom-in-95 duration-200">
+                            <div className="flex items-center gap-2 mb-2 text-blue-600 font-bold text-xs uppercase tracking-wider">
+                                <MessageSquare size={14} />
+                                <span>Dodaj uwagę</span>
+                            </div>
+                            <textarea
+                                autoFocus
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                placeholder="Napisz co zmienić..."
+                                className="w-full border border-gray-200 rounded p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2 min-h-[80px] resize-none"
+                            />
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    onClick={() => setActivePlacement(null)}
+                                    className="px-3 py-1 text-xs text-gray-500 hover:text-gray-700"
+                                >
+                                    Anuluj
+                                </button>
+                                <button
+                                    onClick={() => addComment(inputValue, activePlacement.x, activePlacement.y)}
+                                    className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 flex items-center gap-1"
+                                >
+                                    <Send size={12} />
+                                    <span>Zapisz</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                )}
 
-            {/* Global Syncing Indicator for comments */}
-            {isSyncing && (
-                <div className="fixed bottom-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-lg z-[10005] animate-pulse">
-                    Synchronizacja uwag...
-                </div>
-            )}
+                {/* Render all comments as sticky notes */}
+                {comments.map(comment => (
+                    <div
+                        key={comment.id}
+                        style={{ left: `${comment.x}%`, top: `${comment.y}%` }}
+                        className="absolute z-[9998] group"
+                    >
+                        <div className="relative">
+                            {/* Pin / Trigger */}
+                            <div className="w-8 h-8 bg-yellow-400 rounded-full border-2 border-white shadow-lg flex items-center justify-center cursor-pointer group-hover:scale-110 transition-transform -translate-x-1/2 -translate-y-1/2">
+                                <MessageSquare size={16} className="text-yellow-900" />
+                            </div>
+
+                            {/* Sticky Note Content */}
+                            <div className="absolute top-4 left-4 min-w-[200px] max-w-[250px] bg-yellow-100 p-4 rounded shadow-xl border-l-4 border-yellow-400 opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all origin-top-left z-[10001]">
+                                <button
+                                    onClick={() => removeComment(comment.id)}
+                                    className="absolute top-1 right-1 p-1 text-yellow-600 hover:text-red-600 transition-colors"
+                                >
+                                    <X size={14} />
+                                </button>
+                                <p className="text-sm text-yellow-900 leading-relaxed font-medium">
+                                    {comment.text}
+                                </p>
+                                <div className="mt-3 pt-2 border-t border-yellow-200 text-[10px] text-yellow-600 italic">
+                                    Dodano: {new Date(comment.createdAt).toLocaleString()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+
+                {/* Global Syncing Indicator for comments */}
+                {isSyncing && (
+                    <div className="fixed bottom-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-lg z-[10005] animate-pulse">
+                        Synchronizacja uwag...
+                    </div>
+                )}
+            </div>
         </CommentContext.Provider>
     );
 };

@@ -102,8 +102,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                             <h3 className="text-[#2a3c7b] text-3xl font-extrabold mb-4 leading-tight"><TextBlock id="about_who_title">Digital Health<br />Software House</TextBlock></h3>
                             <p className="text-gray-700 text-sm font-semibold pr-4"><TextBlock id="about_who_desc">Software experts shaping digital solutions in the fields of Healthcare, Fitness & Wellness and Digital Insurance</TextBlock></p>
                         </div>
-                        <div className="md:w-1/2 h-64 md:h-auto bg-gray-200">
-                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop" className="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply" alt="Apzumi Team" />
+                        <div className="md:w-1/2 h-64 md:h-auto overflow-hidden">
+                            <img src="/images/about/about3.png" className="w-full h-full object-cover" alt="Apzumi Team" />
                         </div>
                     </div>
 
@@ -128,47 +128,43 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                 <h2 className="text-xl md:text-2xl font-bold mb-8 text-black">Added <span className="font-extrabold">Value</span></h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     {/* Card 1 */}
-                    <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-center items-center shadow-sm hover:shadow-md transition-shadow">
-                        <h3 className="text-3xl font-extrabold text-[#2a3c7b] mb-1">12 <span className="text-sm">years</span></h3>
-                        <p className="text-xs text-gray-500 mb-3">on the market</p>
-                        <p className="text-sm font-bold text-black border-t border-gray-200 pt-3 w-full">Stable Partner</p>
+                    <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-between items-center shadow-sm hover:shadow-md transition-shadow min-h-[160px]">
+                        <div className="flex-1 flex items-center justify-center mb-4 min-h-[64px] w-full">
+                            <img src="/images/about/about4.png" className="h-20 w-auto object-contain" alt="12 years" />
+                        </div>
+                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Stable Partner</p>
                     </div>
                     {/* Card 2 */}
-                    <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-center items-center shadow-sm hover:shadow-md transition-shadow">
-                        <div className="flex gap-2 mb-4 h-12 items-center">
-                            {/* EU flag simulation */}
-                            <div className="w-10 h-7 bg-blue-700 flex items-center justify-center rounded-sm"><span className="text-[8px] text-yellow-400">★ ★</span></div>
-                            <div className="w-10 h-7 bg-red-600 rounded-sm"></div>
+                    <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-between items-center shadow-sm hover:shadow-md transition-shadow min-h-[160px]">
+                        <div className="flex-1 flex items-center justify-center mb-4 min-h-[64px] w-full">
+                            <img src="/images/about/about5.png" className="h-[52px] w-auto object-contain" alt="Cost Effectiveness" />
                         </div>
-                        <p className="text-sm font-bold text-black border-t border-gray-200 pt-3 w-full">Cost-Effectiveness</p>
+                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Cost-Effectiveness</p>
                     </div>
                     {/* Card 3 */}
-                    <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-center items-center shadow-sm hover:shadow-md transition-shadow">
-                        <h3 className="text-lg font-bold text-black mb-1">Clutch</h3>
-                        <div className="text-apzumi-red text-xs mb-3">★★★★★</div>
-                        <p className="text-sm font-bold text-black border-t border-gray-200 pt-3 w-full">Market Recognition</p>
+                    <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-between items-center shadow-sm hover:shadow-md transition-shadow min-h-[160px]">
+                        <div className="flex-1 flex items-center justify-center mb-4 min-h-[64px] w-full">
+                            <img src="/images/about/about6.png" className="h-16 w-auto object-contain" alt="Market Recognition" />
+                        </div>
+                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Market Recognition</p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Card 4 */}
                     <div className="border border-[#2a3c7b] rounded-xl p-6 flex items-start text-left shadow-sm hover:shadow-md transition-shadow">
-                        <div className="w-12 h-12 flex-shrink-0 bg-blue-50 flex items-center justify-center rounded-lg mr-4">
-                            <span className="text-2xl text-apzumi-red text-center mx-auto block w-full text-center">💻</span>
-                        </div>
+                        <img src="/images/about/about7.png" className="w-14 h-14 object-contain mr-4 flex-shrink-0" alt="Digital Health Specialization" />
                         <div>
                             <p className="text-sm font-bold text-black mb-1">Digital Health Specialization</p>
-                            <p className="text-xs text-black font-semibold">Go beyond standard software house; choose partner with deep understanding of healthcare software requirements.</p>
+                            <p className="text-[13px] leading-relaxed text-black font-semibold">Go beyond standard software house; choose partner with deep understanding of healthcare software requirements.</p>
                         </div>
                     </div>
                     {/* Card 5 */}
                     <div className="border border-[#2a3c7b] rounded-xl p-6 flex items-start text-left shadow-sm hover:shadow-md transition-shadow">
-                        <div className="w-12 h-12 flex-shrink-0 bg-blue-50 flex items-center justify-center rounded-lg mr-4 pb-2">
-                            <span className="text-2xl mx-auto block w-full text-center">🧠</span>
-                        </div>
+                        <img src="/images/about/about8.png" className="w-14 h-14 object-contain mr-4 flex-shrink-0" alt="Problem Solving" />
                         <div>
                             <p className="text-sm font-bold text-black mb-1">Problem Solving</p>
-                            <p className="text-xs text-black font-semibold">We focus on your business needs - we analyze challenges, and seek solutions that solve real problems and deliver value.</p>
+                            <p className="text-[13px] leading-relaxed text-black font-semibold">We focus on your business needs - we analyze challenges, and seek solutions that solve real problems and deliver value.</p>
                         </div>
                     </div>
                 </div>

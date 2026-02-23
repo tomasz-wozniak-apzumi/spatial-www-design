@@ -227,11 +227,11 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
   if (version === 'v2') {
     return (
       <section className="py-24 bg-white px-4 md:px-8">
-        <div className="max-w-7xl mx-auto bg-[#527ee5] rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-16 relative overflow-hidden text-white shadow-xl">
+        <div className="max-w-7xl mx-auto bg-[#4a7de8] rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-16 relative overflow-hidden text-white shadow-xl">
 
           <div className="text-center mb-12 relative z-10">
-            <h2 className="text-3xl md:text-4xl font-medium">
-              <TextBlock id="v2_solutions_heading">Our <strong>Offer</strong></TextBlock>
+            <h2 className="text-3xl md:text-4xl font-semibold">
+              <TextBlock id="v2_solutions_heading">Our Offer</TextBlock>
             </h2>
           </div>
 
@@ -241,7 +241,7 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
             </h3>
             <button
               onClick={handleServicesNav}
-              className="bg-[#f23548] hover:bg-red-600 transition-colors text-white text-sm font-medium py-2 px-6 rounded-full flex items-center gap-2"
+              className="bg-[#f23c4a] hover:bg-red-500 transition-colors text-white text-sm font-medium py-2 px-6 rounded-full flex items-center gap-2"
             >
               <TextBlock id="v2_solutions_viewAll">View All</TextBlock>
               <ArrowRight size={16} />
@@ -252,40 +252,40 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
 
             {/* Card 1: Bullet List */}
-            <div className="bg-white text-gray-900 rounded-3xl p-8 shadow-sm flex flex-col h-full transform transition-transform hover:-translate-y-1 hover:shadow-md">
-              <h4 className="text-2xl font-bold mb-6 leading-tight">
+            <div className="bg-white text-gray-900 rounded-3xl p-8 lg:p-10 shadow-sm flex flex-col h-full transform transition-transform hover:-translate-y-1 hover:shadow-md">
+              <h4 className="text-2xl lg:text-3xl font-bold mb-8 leading-tight">
                 <TextBlock id="v2_sol_card1_title">Software<br />Development</TextBlock>
               </h4>
-              <ul className="space-y-4 text-sm text-gray-600 font-medium">
-                <li className="flex items-start gap-3">
-                  <span className="p-1.5 bg-gray-50 rounded-md text-gray-400 mt-0.5"><Code size={16} /></span>
-                  <span className="mt-1"><TextBlock id="v2_sol_c1_i1">Product Design</TextBlock></span>
+              <ul className="space-y-5 text-sm lg:text-base text-gray-600 font-medium">
+                <li className="flex items-center gap-4">
+                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Code size={18} /></span>
+                  <span><TextBlock id="v2_sol_c1_i1">Product Design</TextBlock></span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="p-1.5 bg-gray-50 rounded-md text-gray-400 mt-0.5"><Box size={16} /></span>
-                  <span className="mt-1"><TextBlock id="v2_sol_c1_i2">Mobile App Development</TextBlock></span>
+                <li className="flex items-center gap-4">
+                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Box size={18} /></span>
+                  <span><TextBlock id="v2_sol_c1_i2">Mobile App Development</TextBlock></span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="p-1.5 bg-gray-50 rounded-md text-gray-400 mt-0.5"><Code size={16} /></span>
-                  <span className="mt-1"><TextBlock id="v2_sol_c1_i3">Web App Development</TextBlock></span>
+                <li className="flex items-center gap-4">
+                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Code size={18} /></span>
+                  <span><TextBlock id="v2_sol_c1_i3">Web App Development</TextBlock></span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="p-1.5 bg-gray-50 rounded-md text-gray-400 mt-0.5"><Glasses size={16} /></span>
-                  <span className="mt-1"><TextBlock id="v2_sol_c1_i4">AR/VR App Development</TextBlock></span>
+                <li className="flex items-center gap-4">
+                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Glasses size={18} /></span>
+                  <span><TextBlock id="v2_sol_c1_i4">AR/VR App Development</TextBlock></span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="p-1.5 bg-gray-50 rounded-md text-gray-400 mt-0.5"><FileText size={16} /></span>
-                  <span className="mt-1"><TextBlock id="v2_sol_c1_i5">Maintenance & Support</TextBlock></span>
+                <li className="flex items-center gap-4">
+                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><FileText size={18} /></span>
+                  <span><TextBlock id="v2_sol_c1_i5">Maintenance & Support</TextBlock></span>
                 </li>
               </ul>
             </div>
 
             {/* Card 2: Image Card */}
             <div className="bg-white rounded-3xl overflow-hidden shadow-sm flex flex-col h-full transform transition-transform hover:-translate-y-1 hover:shadow-md cursor-pointer" onClick={handleServicesNav}>
-              <div className="h-64 overflow-hidden relative">
-                <img src="/images/HeroScreen4.png" alt="AI Development" className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div className="flex-grow min-h-[220px] overflow-hidden relative">
+                <img src="/images/HeroScreen4.png" alt="AI Development" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
               </div>
-              <div className="p-8 grow flex items-end">
+              <div className="p-8 lg:p-10 bg-white z-10">
                 <h4 className="text-2xl font-bold text-gray-900 leading-tight">
                   <TextBlock id="v2_sol_card2_title">AI-powered<br />Development</TextBlock>
                 </h4>
@@ -294,10 +294,10 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
 
             {/* Card 3: Image Card */}
             <div className="bg-white rounded-3xl overflow-hidden shadow-sm flex flex-col h-full transform transition-transform hover:-translate-y-1 hover:shadow-md cursor-pointer" onClick={handleServicesNav}>
-              <div className="h-64 overflow-hidden relative">
-                <img src="/images/HeroScreen3.png" alt="Consulting" className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div className="flex-grow min-h-[220px] overflow-hidden relative">
+                <img src="/images/HeroScreen3.png" alt="Consulting" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
               </div>
-              <div className="p-8 grow flex items-end">
+              <div className="p-8 lg:p-10 bg-white z-10">
                 <h4 className="text-2xl font-bold text-gray-900 leading-tight">
                   <TextBlock id="v2_sol_card3_title">Consulting<br />& Advisory</TextBlock>
                 </h4>

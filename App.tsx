@@ -21,6 +21,7 @@ import InteractiveDemo from './components/InteractiveDemo';
 import KnowledgeBaseDemo from './components/KnowledgeBaseDemo';
 
 export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'interactive_demo' | 'knowledge_base' | 'about';
+export type HomeVersion = 'v1' | 'v2' | 'v3';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -46,7 +47,7 @@ const App: React.FC = () => {
               <Hero version={globalVersion} />
               <Awards version={globalVersion} />
               <ClientLogos />
-              <Solutions onNavigate={setCurrentView} />
+              <Solutions onNavigate={setCurrentView} version={globalVersion} />
               <Process />
               <News />
               <Testimonial />

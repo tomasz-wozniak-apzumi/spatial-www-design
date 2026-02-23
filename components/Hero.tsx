@@ -24,7 +24,7 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
     if (version !== 'v2') return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000); // Change image every 5 seconds (from 4s)
+    }, 3000); // Change image every 3 seconds
     return () => clearInterval(interval);
   }, [version]);
 
@@ -55,24 +55,24 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
   if (version === 'v2') {
     return (
       <section className="bg-white min-h-screen pt-24 pb-0 flex flex-col lg:flex-row relative overflow-hidden">
-        {/* Left Content Area (Wider Now) */}
-        <div className="w-full lg:w-3/5 px-6 lg:pl-16 xl:pl-32 xl:pr-12 pt-16 lg:pt-32 flex flex-col justify-center items-start lg:items-start z-10 transition-transform duration-1000 ease-out" style={{ transform: `translateY(${textTranslate}px)` }}>
+        {/* Left Content Area (Pushed towards center and enlarged) */}
+        <div className="w-full lg:w-[60%] px-6 lg:pl-32 xl:pl-56 xl:pr-12 pt-16 lg:pt-0 flex flex-col justify-center items-start lg:items-start z-10 transition-transform duration-1000 ease-out h-[50vh] lg:h-[80vh]" style={{ transform: `translateY(${textTranslate}px)` }}>
 
           {/* Logo */}
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-6 mb-4">
             {/* Red abstract logo parts (Larger for Hero) */}
-            <div className="flex flex-col gap-1 w-12 xl:w-14 justify-center">
-              <div className="h-1 w-6 xl:w-7 bg-[#e11d48] rounded-full self-end"></div>
-              <div className="h-1 w-full bg-[#e11d48] rounded-full"></div>
-              <div className="h-1 w-8 xl:w-9 bg-[#e11d48] rounded-full"></div>
-              <div className="h-1 w-10 xl:w-11 bg-[#e11d48] rounded-full self-center"></div>
-              <div className="h-1 w-full bg-[#e11d48] rounded-full"></div>
+            <div className="flex flex-col gap-[3px] w-14 xl:w-16 justify-center">
+              <div className="h-1.5 w-7 xl:w-8 bg-[#e11d48] rounded-full self-end"></div>
+              <div className="h-1.5 w-full bg-[#e11d48] rounded-full"></div>
+              <div className="h-1.5 w-9 xl:w-10 bg-[#e11d48] rounded-full"></div>
+              <div className="h-1.5 w-11 xl:w-12 bg-[#e11d48] rounded-full self-center"></div>
+              <div className="h-1.5 w-full bg-[#e11d48] rounded-full"></div>
             </div>
-            <span className="font-extrabold text-4xl xl:text-5xl tracking-wide text-[#1e285a]">Apzumi Spatial</span>
+            <span className="font-extrabold text-5xl xl:text-6xl tracking-wide text-[#1e285a]">Apzumi Spatial</span>
           </div>
 
           {/* Tagline */}
-          <h1 className="text-2xl xl:text-3xl text-[#4a5568] mb-10 pl-2 leading-relaxed">
+          <h1 className="text-3xl xl:text-4xl text-[#4a5568] mb-12 pl-2 leading-snug font-medium">
             <TextBlock id="hero_tagline_v2" as="span">
               Apzumi Spatial <br /> Twój partner w procesach przemysłowych
             </TextBlock>
@@ -94,10 +94,10 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
           </div>
         </div>
 
-        {/* Right Image Area (Narrower Now) */}
-        <div className="w-full lg:w-2/5 h-[60vh] lg:h-auto min-h-[500px] mt-12 lg:mt-0 relative overflow-visible">
+        {/* Right Image Area (Reduced width/height, vertically centered) */}
+        <div className="w-full lg:w-[40%] h-[50vh] lg:h-[75vh] min-h-[400px] mt-12 lg:mt-0 self-center relative overflow-visible">
           <div
-            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-50px] overflow-hidden rounded-l-[100px] lg:rounded-l-[400px] bg-gray-200 transition-transform duration-1000 ease-out z-0"
+            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-100px] overflow-hidden rounded-l-[100px] lg:rounded-l-[400px] bg-gray-200 transition-transform duration-1000 ease-out z-0"
             style={{
               transform: `scale(${graphicScale}) translate(${scrollY * 0.05}px, ${scrollY * 0.05}px)`
             }}

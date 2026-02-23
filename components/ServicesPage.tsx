@@ -233,66 +233,59 @@ const ServiceCardV3: React.FC<{
     <div
       onMouseEnter={onHover}
       onClick={onHover}
-      className={`group relative transition-all duration-700 overflow-hidden flex flex-col cursor-pointer min-h-[400px] md:min-h-[500px]
+      className={`group relative transition-all duration-500 overflow-hidden flex flex-col cursor-pointer min-h-[400px] bg-white/5 border backdrop-blur-sm
         ${isActive
-          ? 'bg-fuchsia-950/20 border-t-2 border-b-2 border-fuchsia-500 shadow-[0_0_50px_rgba(217,70,239,0.2)] md:col-span-2'
-          : 'bg-[#0a0014]/60 border-t border-b border-fuchsia-900/50 hover:border-fuchsia-500/50 hover:bg-fuchsia-900/20 md:col-span-1'
+          ? 'border-white/20 shadow-xl -translate-y-2'
+          : 'border-white/10 hover:border-white/15'
         }`}
     >
-      {/* Background Cyber Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(217,70,239,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(217,70,239,0.05)_1px,transparent_1px)] bg-[size:30px_30px] opacity-40 pointer-events-none"></div>
-
-      {/* Animated Scanline Effect */}
-      <div className={`absolute top-0 left-0 w-full h-[1px] bg-fuchsia-400 shadow-[0_0_15px_#d946ef] pointer-events-none transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
-      <div className={`absolute bottom-0 right-0 w-full h-[1px] bg-fuchsia-400 shadow-[0_0_15px_#d946ef] pointer-events-none transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
-
-      {/* Corner Data points */}
-      <div className="absolute top-4 right-4 flex gap-1 z-10">
-        <div className={`w-1.5 h-1.5 rounded-sm ${isActive ? 'bg-fuchsia-400 animate-pulse' : 'bg-fuchsia-900/50'}`}></div>
-        <div className={`w-1.5 h-1.5 rounded-sm ${isActive ? 'bg-fuchsia-400 animate-[pulse_1.5s_ease-in-out_infinite]' : 'bg-fuchsia-900/50'}`}></div>
-        <div className={`w-1.5 h-1.5 rounded-sm ${isActive ? 'bg-fuchsia-400 animate-[pulse_2s_ease-in-out_infinite]' : 'bg-fuchsia-900/50'}`}></div>
-      </div>
-
-      <div className="p-8 relative z-10 flex flex-col h-full border-l border-r border-fuchsia-500/10 mx-2 my-0">
+      {/* Base structured padding */}
+      <div className="p-8 md:p-10 flex flex-col h-full z-10 relative">
         <div className="mb-auto">
-          {/* Tech ID */}
-          <div className="text-fuchsia-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
-            <span className="shrink-0 animate-pulse">SYS_ID:</span>
-            <span className="w-12 h-[1px] bg-fuchsia-500/50"></span>
-            <span className="text-fuchsia-300">{data.id}</span>
+          {/* Top Tag */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            <span className="text-gray-400 font-semibold text-[10px] tracking-[0.1em] uppercase border border-gray-600/50 px-3 py-1 bg-black/20">
+              {data.chips[0]}
+            </span>
           </div>
 
-          <h3 className={`font-bold text-white mb-4 leading-tight transition-all duration-500 font-mono uppercase tracking-tight
-            ${isActive ? 'text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white to-fuchsia-300' : 'text-xl'}`}>
+          {/* Clean Sans-serif Title */}
+          <h3 className={`font-bold text-white leading-tight transition-all duration-300 mb-4 
+            ${isActive ? 'text-3xl lg:text-4xl' : 'text-2xl'}`}>
             <TextBlock id={data.titleKey}>{textConfig[data.titleKey]?.[0] || ''}</TextBlock>
           </h3>
 
-          <p className={`text-fuchsia-200 font-mono text-xs md:text-sm leading-relaxed transition-all duration-500 
-            ${isActive ? 'opacity-100' : 'opacity-60'}`}>
+          <p className="text-gray-300 text-sm md:text-base leading-relaxed tracking-wide font-light">
             <TextBlock id={data.valKey}>{textConfig[data.valKey]?.[0] || ''}</TextBlock>
           </p>
         </div>
 
-        {/* Revealed Content */}
-        <div className={`transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] flex flex-col justify-end overflow-hidden
-          ${isActive ? 'max-h-[600px] opacity-100 mt-8' : 'max-h-0 opacity-0 mt-0'}
+        {/* Revealed Clean Content */}
+        <div className={`transition-all duration-500 ease-in-out flex flex-col justify-end overflow-hidden
+          ${isActive ? 'max-h-[500px] opacity-100 mt-8' : 'max-h-0 opacity-0 mt-0'}
         `}>
-          <div className="space-y-4 mb-8 border-l-2 border-fuchsia-500/30 pl-5 py-2">
+          <div className="space-y-4 mb-8">
             {data.bullets.map((bullet, idx) => (
               <div key={idx} className="flex items-start gap-4">
-                <span className="text-fuchsia-500 font-mono text-[10px] mt-1 shrink-0">{'//'}</span>
-                <span className="text-gray-300 font-mono text-sm leading-relaxed">{bullet}</span>
+                <span className="text-apzumi-red font-bold text-lg leading-none mt-1 shrink-0">-</span>
+                <span className="text-gray-300 font-medium text-sm leading-relaxed tracking-wide">{bullet}</span>
               </div>
             ))}
           </div>
 
           <button
             onClick={(e) => { e.stopPropagation(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
-            className="w-full py-5 border border-fuchsia-500/50 bg-fuchsia-500/5 text-fuchsia-400 font-mono text-xs md:text-sm uppercase tracking-[0.2em] hover:bg-fuchsia-500 hover:text-white transition-all duration-300 flex items-center justify-center gap-3 shadow-[inset_0_0_20px_rgba(217,70,239,0)] hover:shadow-[inset_0_0_20px_rgba(217,70,239,0.5)]"
+            className="self-start text-white font-bold text-sm hover:text-apzumi-red transition-colors duration-300 flex items-center gap-2 group/btn"
           >
-            <TextBlock id="serv_card_btn_v3">Inicjuj Projekt</TextBlock> <Cpu size={16} className="animate-pulse" />
+            <TextBlock id="serv_card_btn_v3">Dowiedz się więcej</TextBlock>
+            <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
           </button>
         </div>
+      </div>
+
+      {/* Subtle Red Highlight at the bottom indicating active state */}
+      <div className={`absolute bottom-0 left-0 w-full h-[4px] bg-apzumi-red transition-all duration-500 origin-left 
+         ${isActive ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-30'}`}>
       </div>
     </div>
   );
@@ -346,69 +339,69 @@ const ServiceSectionV3: React.FC<{
       <div className={`space-y-6 mb-16 transition-all duration-700 ease-out delay-200
         ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         {data.bullets.map((bullet, idx) => (
-           <div key={idx} className="flex items-center gap-6 border-b border-white/10 pb-6">
-              <span className="text-apzumi-red font-mono text-sm opacity-50">0{idx + 1}</span>
-              <span className="text-gray-300 text-lg md:text-2xl">{bullet}</span>
-           </div>
+          <div key={idx} className="flex items-center gap-6 border-b border-white/10 pb-6">
+            <span className="text-apzumi-red font-mono text-sm opacity-50">0{idx + 1}</span>
+            <span className="text-gray-300 text-lg md:text-2xl">{bullet}</span>
+          </div>
         ))}
       </div>
 
       {/* Modern Button */}
       <div className={`transition-all duration-700 ease-out delay-300 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <button
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group flex items-center gap-6 text-white text-lg md:text-2xl font-light hover:text-gray-300 transition-colors"
-          >
-            <span className="relative">
-               <TextBlock id="serv_card_btn_v3">Rozpocznij projekt</TextBlock>
-               <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-current transition-all duration-500 group-hover:w-full"></span>
-            </span>
-            <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-500">
-               <ArrowRight size={24} className="-rotate-45 group-hover:rotate-0 transition-transform duration-500" />
-            </div>
-          </button>
+        <button
+          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          className="group flex items-center gap-6 text-white text-lg md:text-2xl font-light hover:text-gray-300 transition-colors"
+        >
+          <span className="relative">
+            <TextBlock id="serv_card_btn_v3">Rozpocznij projekt</TextBlock>
+            <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-current transition-all duration-500 group-hover:w-full"></span>
+          </span>
+          <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-500">
+            <ArrowRight size={24} className="-rotate-45 group-hover:rotate-0 transition-transform duration-500" />
+          </div>
+        </button>
       </div>
     </div>
   );
 };
 
 const V3StickyVisual: React.FC<{ activeSituation: SituationId }> = ({ activeSituation }) => {
-   const getColor = () => {
-      switch (activeSituation) {
-         case 'start': return 'from-fuchsia-600 to-purple-800';
-         case 'valid': return 'from-blue-600 to-indigo-800';
-         case 'build': return 'from-rose-500 to-orange-700';
-         default: return 'from-fuchsia-600 to-purple-800';
-      }
-   };
+  const getColor = () => {
+    switch (activeSituation) {
+      case 'start': return 'from-fuchsia-600 to-purple-800';
+      case 'valid': return 'from-blue-600 to-indigo-800';
+      case 'build': return 'from-rose-500 to-orange-700';
+      default: return 'from-fuchsia-600 to-purple-800';
+    }
+  };
 
-   const getShape = () => {
-      switch (activeSituation) {
-         case 'start': return 'rounded-[100px] rotate-0 scale-100';
-         case 'valid': return 'rounded-[300px] rotate-45 scale-110';
-         case 'build': return 'rounded-[50px] rotate-90 scale-95';
-         default: return 'rounded-[100px] rotate-0 scale-100';
-      }
-   };
+  const getShape = () => {
+    switch (activeSituation) {
+      case 'start': return 'rounded-[100px] rotate-0 scale-100';
+      case 'valid': return 'rounded-[300px] rotate-45 scale-110';
+      case 'build': return 'rounded-[50px] rotate-90 scale-95';
+      default: return 'rounded-[100px] rotate-0 scale-100';
+    }
+  };
 
-   return (
-      <div className="h-screen sticky top-0 flex items-center justify-center overflow-hidden">
-         {/* Abstract Shape */}
-         <div className={`absolute w-[80%] aspect-square bg-gradient-to-br ${getColor()} ${getShape()} blur-[80px] md:blur-[120px] opacity-60 mix-blend-screen transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]`}></div>
-         
-         <div className={`absolute w-[40%] aspect-square bg-white ${getShape()} blur-[80px] opacity-20 mix-blend-overlay transition-all duration-1500 delay-150 ease-[cubic-bezier(0.25,1,0.5,1)]`}></div>
+  return (
+    <div className="h-screen sticky top-0 flex items-center justify-center overflow-hidden">
+      {/* Abstract Shape */}
+      <div className={`absolute w-[80%] aspect-square bg-gradient-to-br ${getColor()} ${getShape()} blur-[80px] md:blur-[120px] opacity-60 mix-blend-screen transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]`}></div>
 
-         {/* Floating Glass Box Overlay */}
-         <div className="absolute w-[80%] bottom-32 border border-white/10 bg-white/5 backdrop-blur-3xl rounded-3xl p-8 flex flex-col justify-end transition-all duration-700 shadow-2xl">
-            <div className="text-white/50 font-mono text-xs uppercase tracking-[0.3em] mb-4">Aktywna Faza</div>
-            <div className="text-white text-2xl md:text-4xl font-light tracking-tight">
-               {activeSituation === 'start' && "Strategia & Odkrycia"}
-               {activeSituation === 'valid' && "Szybkie Prototypowanie"}
-               {activeSituation === 'build' && "Architektura Docelowa"}
-            </div>
-         </div>
+      <div className={`absolute w-[40%] aspect-square bg-white ${getShape()} blur-[80px] opacity-20 mix-blend-overlay transition-all duration-1500 delay-150 ease-[cubic-bezier(0.25,1,0.5,1)]`}></div>
+
+      {/* Floating Glass Box Overlay */}
+      <div className="absolute w-[80%] bottom-32 border border-white/10 bg-white/5 backdrop-blur-3xl rounded-3xl p-8 flex flex-col justify-end transition-all duration-700 shadow-2xl">
+        <div className="text-white/50 font-mono text-xs uppercase tracking-[0.3em] mb-4">Aktywna Faza</div>
+        <div className="text-white text-2xl md:text-4xl font-light tracking-tight">
+          {activeSituation === 'start' && "Strategia & Odkrycia"}
+          {activeSituation === 'valid' && "Szybkie Prototypowanie"}
+          {activeSituation === 'build' && "Architektura Docelowa"}
+        </div>
       </div>
-   );
+    </div>
+  );
 };
 
 const ServiceDetail: React.FC<{ data: ServiceData }> = ({ data }) => {
@@ -574,8 +567,8 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
   const getBgClass = () => {
     switch (version) {
       case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
-      case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
       case 'v1':
+      case 'v3':
       default: return 'bg-apzumi-dark';
     }
   };
@@ -646,66 +639,55 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
 
       {/* 2. STICKY FILTER - HIDDEN IN V3 */}
       {version !== 'v3' && (
-      <div className="sticky top-[72px] z-40 bg-apzumi-dark/90 backdrop-blur-xl border-y border-white/10 py-6">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-lg font-bold mb-4">
-            <TextBlock id="serv_filter_title">{textConfig['serv_filter_title'][0]}</TextBlock>
-          </h2>
-          <div className="inline-flex bg-white/5 rounded-full p-1 border border-white/10">
-            {[
-              { id: 'start', labelKey: 'serv_filter_start' },
-              { id: 'valid', labelKey: 'serv_filter_valid' },
-              { id: 'build', labelKey: 'serv_filter_build' }
-            ].map((opt) => (
-              <button
-                key={opt.id}
-                onClick={() => handleFilter(opt.id as SituationId)}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all
+        <div className="sticky top-[72px] z-40 bg-apzumi-dark/90 backdrop-blur-xl border-y border-white/10 py-6">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <h2 className="text-lg font-bold mb-4">
+              <TextBlock id="serv_filter_title">{textConfig['serv_filter_title'][0]}</TextBlock>
+            </h2>
+            <div className="inline-flex bg-white/5 rounded-full p-1 border border-white/10">
+              {[
+                { id: 'start', labelKey: 'serv_filter_start' },
+                { id: 'valid', labelKey: 'serv_filter_valid' },
+                { id: 'build', labelKey: 'serv_filter_build' }
+              ].map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() => handleFilter(opt.id as SituationId)}
+                  className={`px-6 py-2 rounded-full text-sm font-bold transition-all
                     ${activeSituation === opt.id
-                    ? 'bg-white text-apzumi-dark shadow-md'
-                    : 'text-gray-400 hover:text-white'}`}
-              >
-                <TextBlock id={opt.labelKey}>{textConfig[opt.labelKey]?.[0] || ''}</TextBlock>
-              </button>
-            ))}
-          </div>
+                      ? 'bg-white text-apzumi-dark shadow-md'
+                      : 'text-gray-400 hover:text-white'}`}
+                >
+                  <TextBlock id={opt.labelKey}>{textConfig[opt.labelKey]?.[0] || ''}</TextBlock>
+                </button>
+              ))}
+            </div>
 
-          <div className="mt-4 text-xs text-gray-500 flex items-center justify-center gap-2">
-            <span className="bg-apzumi-red/20 text-apzumi-red px-2 py-0.5 rounded uppercase font-bold tracking-wider">
-              <TextBlock id="serv_rec_label">{textConfig['serv_rec_label'][0]}</TextBlock>
-            </span>
-            <TextBlock id="serv_filter_desc">{textConfig['serv_filter_desc'][0]}</TextBlock>
+            <div className="mt-4 text-xs text-gray-500 flex items-center justify-center gap-2">
+              <span className="bg-apzumi-red/20 text-apzumi-red px-2 py-0.5 rounded uppercase font-bold tracking-wider">
+                <TextBlock id="serv_rec_label">{textConfig['serv_rec_label'][0]}</TextBlock>
+              </span>
+              <TextBlock id="serv_filter_desc">{textConfig['serv_filter_desc'][0]}</TextBlock>
+            </div>
           </div>
         </div>
-      </div>
       )}
 
-      {/* 3. MAIN CONTENT */}
-      {version === 'v3' ? (
-         <section id="services-content" className="relative">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row relative">
-               {/* Left Column (Scrollable Narrative) */}
-               <div className="w-full md:w-1/2 pt-10 pb-40 border-l border-white/5 pl-6 md:pl-16">
-                  {servicesData.map((service) => (
-                     <ServiceSectionV3
-                        key={service.id}
-                        data={service}
-                        isActive={activeSituation === service.situation}
-                        onVisible={() => handleSectionVisible(service.situation)}
-                     />
-                  ))}
-               </div>
-               
-               {/* Right Column (Sticky Visual) */}
-               <div className="hidden md:block w-1/2 relative">
-                  <V3StickyVisual activeSituation={activeSituation} />
-               </div>
-            </div>
-         </section>
-      ) : (
+      {/* 3. BENTO GRID */}
       <section id="services-grid" className="py-20 px-6 relative">
         <div className="max-w-7xl mx-auto relative z-10">
-          {version === 'v2' ? (
+          {version === 'v3' ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 min-h-[500px]">
+              {servicesData.map((service, index) => (
+                <ServiceCardV3
+                  key={service.id}
+                  data={service}
+                  isActive={activeSituation === service.situation || (activeSituation === 'start' && index === 0 && !servicesData.some(s => s.situation === activeSituation))} // Default to first if none match
+                  onHover={() => setActiveSituation(service.situation)}
+                />
+              ))}
+            </div>
+          ) : version === 'v2' ? (
             <div className="grid grid-cols-1 gap-6 lg:gap-8">
               {servicesData.map((service) => (
                 <div key={service.id} className={`transition-all duration-500
@@ -736,7 +718,6 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
           </p>
         </div>
       </section>
-      )}
 
       {/* 4. DETAILS - HIDDEN IN V2 AND V3 */}
       {version !== 'v2' && version !== 'v3' && servicesData.map((service) => (

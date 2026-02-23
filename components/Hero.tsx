@@ -9,11 +9,11 @@ interface HeroProps {
 }
 
 const slides = [
-  '/image/HeroScreen1.png',
-  '/image/HeroScreen2.png',
-  '/image/HeroScreen3.png',
-  '/image/HeroScreen4.png',
-  '/image/HeroScreen5.png',
+  '/images/HeroScreen1.png',
+  '/images/HeroScreen2.png',
+  '/images/HeroScreen3.png',
+  '/images/HeroScreen4.png',
+  '/images/HeroScreen5.png',
 ];
 
 const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {

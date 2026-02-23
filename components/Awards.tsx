@@ -12,7 +12,7 @@ const Awards: React.FC<AwardsProps> = ({ version = 'v1' }) => {
         <div className="bg-white py-8 border-b border-gray-100 flex justify-center items-center overflow-hidden">
             <div className="w-full max-w-7xl mx-auto px-6 flex justify-center items-center">
                 <img
-                    src="/image/awards.png"
+                    src="/images/awards.png"
                     alt="Our Awards"
                     className="h-16 md:h-20 lg:h-24 object-contain"
                 />

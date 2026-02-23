@@ -8,8 +8,8 @@ const ClientLogos: React.FC = () => {
       <div className="w-full flex">
         {/* CSS Animation defined in index.css */}
         <div className="flex animate-scroll whitespace-nowrap opacity-60 hover:opacity-100 transition-opacity duration-300">
-          <img src="/image/customers.png" alt="Our Clients" className="h-12 md:h-16 object-contain mr-12" />
-          <img src="/image/customers.png" alt="Our Clients" className="h-12 md:h-16 object-contain mr-12" />
+          <img src="/images/customers.png" alt="Our Clients" className="h-12 md:h-16 object-contain mr-12" />
+          <img src="/images/customers.png" alt="Our Clients" className="h-12 md:h-16 object-contain mr-12" />
         </div>
       </div>
     </div>

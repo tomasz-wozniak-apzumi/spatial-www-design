@@ -99,8 +99,6 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
     const handleVideoEnd = () => {
         if (AUTO_ADVANCE_VIDEOS.includes(currentVideo)) {
             advanceToNext();
-        } else if (INTERACTIVE_VIDEOS.includes(currentVideo) && pendingAdvance) {
-            advanceToNext();
         } else if (currentVideo === TERMINAL_VIDEO) {
             setIsVideoEnded(true);
         }
@@ -139,6 +137,15 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
         };
         init();
     }, []);
+
+    useEffect(() => {
+        if (pendingAdvance) {
+            const timer = setTimeout(() => {
+                advanceToNext();
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [pendingAdvance]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         // Handle initial intro timer
@@ -181,7 +188,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     ref={videoRefA}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'A' ? 'video-active' : 'pointer-events-none'}`}
                     onEnded={activeBuffer === 'A' ? handleVideoEnd : undefined}
-                    loop={INTERACTIVE_VIDEOS.includes(currentVideo) && !pendingAdvance}
+                    loop={INTERACTIVE_VIDEOS.includes(currentVideo)}
                     muted={false}
                     playsInline
                     controlsList="nodownload nofullscreen noremoteplayback"
@@ -193,7 +200,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ onNavigate }) => {
                     ref={videoRefB}
                     className={`absolute inset-0 w-full h-full object-contain video-container ${activeBuffer === 'B' ? 'video-active' : 'pointer-events-none'}`}
                     onEnded={activeBuffer === 'B' ? handleVideoEnd : undefined}
-                    loop={INTERACTIVE_VIDEOS.includes(currentVideo) && !pendingAdvance}
+                    loop={INTERACTIVE_VIDEOS.includes(currentVideo)}
                     muted={false}
                     playsInline
                     controlsList="nodownload nofullscreen noremoteplayback"

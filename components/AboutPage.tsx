@@ -4,13 +4,23 @@ import { ViewState } from '../App';
 
 interface AboutPageProps {
     onNavigate: (view: ViewState) => void;
+    version?: 'v1' | 'v2' | 'v3';
 }
 
-const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
+const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => {
+    const getHeroBg = () => {
+        switch (version) {
+            case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
+            case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
+            case 'v1':
+            default: return 'bg-apzumi-dark';
+        }
+    };
+
     return (
         <div className="pt-24 min-h-screen bg-white">
             {/* Hero Section */}
-            <section className="bg-apzumi-dark text-white py-24 px-6 relative overflow-hidden">
+            <section className={`${getHeroBg()} text-white py-24 px-6 relative overflow-hidden transition-colors duration-500`}>
                 <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-apzumi-red/20 to-transparent pointer-events-none"></div>
                 <div className="max-w-7xl mx-auto relative z-10">
                     <div className="max-w-3xl">

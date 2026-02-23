@@ -23,14 +23,17 @@ export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'int
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
-  const [homeVersion, setHomeVersion] = useState<'v1' | 'v2' | 'v3'>('v1');
+  const [globalVersion, setGlobalVersion] = useState<'v1' | 'v2' | 'v3'>('v1');
+
+  const isDemoPage = currentView === 'interactive_demo' || currentView === 'knowledge_base';
+  const scopeId = isDemoPage ? currentView : `${currentView}_${globalVersion}`;
 
   return (
     <TextProvider
-      viewScope={currentView === 'home' ? `home_${homeVersion}` : undefined}
+      viewScope={scopeId}
     >
       <CommentProvider
-        currentView={currentView === 'home' ? `home_${homeVersion}` : currentView}
+        currentView={scopeId}
       >
         <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden relative">
           {currentView !== 'interactive_demo' && (
@@ -39,7 +42,7 @@ const App: React.FC = () => {
 
           {currentView === 'home' ? (
             <>
-              <Hero version={homeVersion} />
+              <Hero version={globalVersion} />
               <ClientLogos />
               <Solutions onNavigate={setCurrentView} />
               <Process />
@@ -48,29 +51,29 @@ const App: React.FC = () => {
               <Contact />
             </>
           ) : currentView === 'solutions' ? (
-            <SolutionsPage onNavigate={setCurrentView} />
+            <SolutionsPage onNavigate={setCurrentView} version={globalVersion} />
           ) : currentView === 'services' ? (
-            <ServicesPage onNavigate={setCurrentView} />
+            <ServicesPage onNavigate={setCurrentView} version={globalVersion} />
           ) : currentView === 'interactive_demo' ? (
             <InteractiveDemo onNavigate={setCurrentView} />
           ) : currentView === 'knowledge_base' ? (
             <KnowledgeBaseDemo onNavigate={setCurrentView} />
           ) : currentView === 'about' ? (
-            <AboutPage onNavigate={setCurrentView} />
+            <AboutPage onNavigate={setCurrentView} version={globalVersion} />
           ) : (
-            <CaseStudiesPage onNavigate={setCurrentView} />
+            <CaseStudiesPage onNavigate={setCurrentView} version={globalVersion} />
           )}
 
           {currentView !== 'interactive_demo' && currentView !== 'knowledge_base' && <Footer />}
 
-          {/* Version Selector for Homepage */}
-          {currentView === 'home' && (
+          {/* Version Selector for ALL standard pages */}
+          {!isDemoPage && (
             <div className="fixed top-24 right-4 z-[9000] bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg shadow-lg p-3 flex items-center gap-3">
-              <label htmlFor="home-version" className="text-sm font-bold text-gray-700">Wersja strony:</label>
+              <label htmlFor="global-version" className="text-sm font-bold text-gray-700">Wersja strony:</label>
               <select
-                id="home-version"
-                value={homeVersion}
-                onChange={(e) => setHomeVersion(e.target.value as 'v1' | 'v2' | 'v3')}
+                id="global-version"
+                value={globalVersion}
+                onChange={(e) => setGlobalVersion(e.target.value as 'v1' | 'v2' | 'v3')}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 outline-none cursor-pointer"
               >
                 <option value="v1">Wersja 1 (Domyślna)</option>

@@ -9,6 +9,7 @@ import { ViewState } from '../App';
 
 interface SolutionsPageProps {
   onNavigate?: (view: ViewState) => void;
+  version?: 'v1' | 'v2' | 'v3';
 }
 
 // --- DATA STRUCTURES ---
@@ -294,9 +295,18 @@ const DetailSection: React.FC<{ data: SolutionData; id: string; onNavigate?: (vi
 
 // --- MAIN PAGE COMPONENT ---
 
-const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate }) => {
+const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1' }) => {
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all');
   const { getText } = useTextContext();
+
+  const getBgClass = () => {
+    switch (version) {
+      case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
+      case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
+      case 'v1':
+      default: return 'bg-apzumi-dark';
+    }
+  };
 
   const scrollToGrid = () => {
     const el = document.getElementById('solutions-grid');
@@ -323,7 +333,7 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="bg-apzumi-dark min-h-screen text-white font-sans selection:bg-apzumi-red selection:text-white">
+    <div className={`${getBgClass()} min-h-screen text-white font-sans selection:bg-apzumi-red selection:text-white transition-colors duration-500`}>
 
       {/* 1. HERO SECTION */}
       <section className="relative pt-40 pb-20 px-6 overflow-hidden min-h-[70vh] flex items-center">

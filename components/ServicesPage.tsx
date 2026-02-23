@@ -13,6 +13,7 @@ type SituationId = 'start' | 'valid' | 'build';
 
 interface ServicesPageProps {
   onNavigate: (view: ViewState) => void;
+  version?: 'v1' | 'v2' | 'v3';
 }
 
 interface ServiceData {
@@ -326,9 +327,18 @@ const ServiceDetail: React.FC<{ data: ServiceData }> = ({ data }) => {
 
 // --- MAIN PAGE COMPONENT ---
 
-const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
+const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' }) => {
   const [activeSituation, setActiveSituation] = useState<SituationId>('start');
   const { getText } = useTextContext();
+
+  const getBgClass = () => {
+    switch (version) {
+      case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
+      case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
+      case 'v1':
+      default: return 'bg-apzumi-dark';
+    }
+  };
 
   const handleFilter = (sit: SituationId) => {
     setActiveSituation(sit);
@@ -348,7 +358,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="bg-apzumi-dark min-h-screen text-white font-sans selection:bg-apzumi-red selection:text-white">
+    <div className={`${getBgClass()} min-h-screen text-white font-sans selection:bg-apzumi-red selection:text-white transition-colors duration-500`}>
 
       {/* 1. HERO */}
       <section className="relative pt-40 pb-20 px-6 overflow-hidden min-h-[70vh] flex items-center">

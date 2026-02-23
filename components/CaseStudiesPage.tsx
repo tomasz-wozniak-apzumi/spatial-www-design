@@ -298,12 +298,21 @@ const CaseStudyCard: React.FC<{ data: RichCaseStudy; index: number }> = ({ data,
 
 import { ViewState } from '../App';
 
-const CaseStudiesPage: React.FC<{ onNavigate?: (view: ViewState) => void }> = ({ onNavigate }) => {
+const CaseStudiesPage: React.FC<{ onNavigate?: (view: ViewState) => void, version?: 'v1' | 'v2' | 'v3' }> = ({ onNavigate, version = 'v1' }) => {
+   const getHeroBg = () => {
+      switch (version) {
+         case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
+         case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
+         case 'v1':
+         default: return 'bg-gradient-to-br from-apzumi-dark to-[#0a0f29]';
+      }
+   };
+
    return (
       <div className="bg-gray-50 min-h-screen font-sans">
 
          {/* 1. HERO */}
-         <section className="bg-gradient-to-br from-apzumi-dark to-[#0a0f29] text-white pt-40 pb-20 px-6 relative overflow-hidden">
+         <section className={`${getHeroBg()} text-white pt-40 pb-20 px-6 relative overflow-hidden transition-colors duration-500`}>
             {/* Background Effects */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-apzumi-red/10 blur-[100px] rounded-full pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 blur-[80px] rounded-full pointer-events-none"></div>

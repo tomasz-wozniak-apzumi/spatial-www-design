@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import TextBlock from './TextBlock';
 
-const Hero: React.FC = () => {
+export type HomeVersion = 'v1' | 'v2' | 'v3';
+
+interface HeroProps {
+  version?: HomeVersion;
+}
+
+const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -21,8 +27,17 @@ const Hero: React.FC = () => {
   const graphicScale = 1 + (scrollY * 0.0005); // Zooms in
   const graphicRotate = scrollY * 0.02; // Slight rotation
 
+  const getBgClass = () => {
+    switch (version) {
+      case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
+      case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
+      case 'v1':
+      default: return 'bg-gradient-to-br from-apzumi-dark to-[#1a2350]';
+    }
+  };
+
   return (
-    <section className="bg-gradient-to-br from-apzumi-dark to-[#1a2350] text-white pt-32 pb-16 px-6 relative overflow-hidden min-h-[60vh] flex items-center">
+    <section className={`transition-colors duration-1000 ${getBgClass()} text-white pt-32 pb-16 px-6 relative overflow-hidden min-h-[60vh] flex items-center`}>
       {/* Background Elements - Parallax Layer */}
       <div
         className="absolute top-0 right-0 w-1/2 h-full bg-blue-900/10 blur-3xl rounded-full translate-x-1/2 pointer-events-none will-change-transform"

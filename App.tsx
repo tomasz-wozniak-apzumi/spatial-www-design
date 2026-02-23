@@ -23,10 +23,11 @@ export type ViewState = 'home' | 'solutions' | 'services' | 'casestudies' | 'int
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
+  const [homeVersion, setHomeVersion] = useState<'v1' | 'v2' | 'v3'>('v1');
 
   return (
     <TextProvider>
-      <CommentProvider currentView={currentView}>
+      <CommentProvider currentView={currentView === 'home' ? `home_${homeVersion}` : currentView}>
         <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden relative">
           {currentView !== 'interactive_demo' && (
             <Navbar currentView={currentView} onNavigate={setCurrentView} />
@@ -34,7 +35,7 @@ const App: React.FC = () => {
 
           {currentView === 'home' ? (
             <>
-              <Hero />
+              <Hero version={homeVersion} />
               <ClientLogos />
               <Solutions onNavigate={setCurrentView} />
               <Process />
@@ -57,6 +58,23 @@ const App: React.FC = () => {
           )}
 
           {currentView !== 'interactive_demo' && currentView !== 'knowledge_base' && <Footer />}
+
+          {/* Version Selector for Homepage */}
+          {currentView === 'home' && (
+            <div className="fixed top-24 right-4 z-[9000] bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg shadow-lg p-3 flex items-center gap-3">
+              <label htmlFor="home-version" className="text-sm font-bold text-gray-700">Wersja strony:</label>
+              <select
+                id="home-version"
+                value={homeVersion}
+                onChange={(e) => setHomeVersion(e.target.value as 'v1' | 'v2' | 'v3')}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 outline-none cursor-pointer"
+              >
+                <option value="v1">Wersja 1 (Domyślna)</option>
+                <option value="v2">Wersja 2 (Zielona)</option>
+                <option value="v3">Wersja 3 (Purpurowa)</option>
+              </select>
+            </div>
+          )}
 
           {/* Design Mode Hint */}
           {currentView !== 'interactive_demo' && currentView !== 'knowledge_base' && (

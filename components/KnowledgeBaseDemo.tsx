@@ -1,6 +1,5 @@
+import { X, FileText, Image as ImageIcon, FileCode2, Send, BrainCircuit, Plus, Wand2, Sparkles, Layers, Loader2, Volume2, VolumeX } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
-import { ViewState } from '../App';
-import { X, FileText, Image as ImageIcon, FileCode2, Send, BrainCircuit, Plus, Wand2, Sparkles, Layers, Loader2 } from 'lucide-react';
 
 interface KnowledgeBaseDemoProps {
     onNavigate: (view: ViewState) => void;
@@ -25,6 +24,40 @@ interface CustomSource {
     content: string;
 }
 
+const DEMO_FILES = [
+    { id: 1, name: 'dtr_maszyny.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 2, name: 'cnc_schemat.png', type: 'image', icon: ImageIcon, color: 'text-purple-400' },
+    { id: 3, name: 'procedura_testowa.txt', type: 'text', icon: FileCode2, color: 'text-yellow-400' },
+    { id: 4, name: 'instrukcja_obslugi_v2.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 5, name: 'parametry_skrawania.xlsx', type: 'text', icon: FileText, color: 'text-green-400' },
+    { id: 6, name: 'certyfikat_ce.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 7, name: 'wymiary_gabarytowe.png', type: 'image', icon: ImageIcon, color: 'text-purple-400' },
+    { id: 8, name: 'dziennik_konserwacji.txt', type: 'text', icon: FileCode2, color: 'text-yellow-400' },
+    { id: 9, name: 'schemat_elektryczny.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 10, name: 'lista_czesci_zamiennych.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 11, name: 'foto_silnika.jpg', type: 'image', icon: ImageIcon, color: 'text-purple-400' },
+    { id: 12, name: 'ustawienia_fabryczne.txt', type: 'text', icon: FileCode2, color: 'text-yellow-400' },
+    { id: 13, name: 'katalog_narzedzi.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 14, name: 'schemat_chlodzenia.png', type: 'image', icon: ImageIcon, color: 'text-purple-400' },
+    { id: 15, name: 'logi_bledow_01.txt', type: 'text', icon: FileCode2, color: 'text-yellow-400' },
+    { id: 16, name: 'logi_bledow_02.txt', type: 'text', icon: FileCode2, color: 'text-yellow-400' },
+    { id: 17, name: 'instrukcja_bhp.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 18, name: 'panel_sterowania.png', type: 'image', icon: ImageIcon, color: 'text-purple-400' },
+    { id: 19, name: 'warunki_gwarancji.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' },
+    { id: 20, name: 'schemat_pneumatyki.pdf', type: 'pdf', icon: FileText, color: 'text-blue-400' }
+];
+
+const getFlyInPos = (index: number) => {
+    const pos = [
+        { top: '-10%', left: '0%' },
+        { top: '20%', right: '-15%' },
+        { bottom: '0%', left: '10%' },
+        { top: '50%', left: '-20%' },
+        { bottom: '30%', right: '-10%' },
+    ];
+    return pos[index % 5];
+};
+
 const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => {
     const [phase, setPhase] = useState<Phase>('init');
     const [ingestedCount, setIngestedCount] = useState(0);
@@ -39,7 +72,8 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
     const [sourceContent, setSourceContent] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
 
-    // Audio references
+    // Audio / Mute refs
+    const [isMuted, setIsMuted] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const startReadyPhase = () => {
@@ -54,18 +88,16 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
         const startTimer = setTimeout(() => {
             setPhase('ingesting');
 
-            // Simulate Document 1: PDF
-            setTimeout(() => setIngestedCount(1), 1000);
+            let count = 0;
+            const interval = setInterval(() => {
+                count++;
+                setIngestedCount(count);
 
-            // Simulate Document 2: Image
-            setTimeout(() => setIngestedCount(2), 2000);
-
-            // Simulate Document 3: Text Note
-            setTimeout(() => {
-                setIngestedCount(3);
-                // Move to Ready phase
-                setTimeout(startReadyPhase, 1500);
-            }, 3000);
+                if (count >= DEMO_FILES.length) {
+                    clearInterval(interval);
+                    setTimeout(startReadyPhase, 1500);
+                }
+            }, 100);
 
         }, 1000);
 
@@ -73,7 +105,14 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if (isMuted && audioRef.current) {
+            audioRef.current.pause();
+        }
+    }, [isMuted]);
+
     const playTts = async (text: string) => {
+        if (isMuted) return;
         try {
             const res = await fetch('/api/tts', {
                 method: 'POST',
@@ -208,13 +247,23 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                 {/* Tablet Top Camera Notch / Bezel Simulator */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-6 bg-black rounded-b-3xl opacity-80 z-[10003] hidden sm:block"></div>
 
-                {/* Close Button Inside Frame */}
-                <button
-                    onClick={() => onNavigate('solutions')}
-                    className="absolute top-6 right-6 z-[10002] p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
-                >
-                    <X size={24} />
-                </button>
+                {/* Controls - Top Right */}
+                <div className="absolute top-6 right-6 z-[10002] flex items-center gap-3">
+                    <button
+                        onClick={() => setIsMuted(!isMuted)}
+                        className="p-2.5 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+                        title={isMuted ? "Włącz dźwięk" : "Wycisz dźwięk"}
+                    >
+                        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                    </button>
+                    <button
+                        onClick={() => onNavigate('solutions')}
+                        className="p-2.5 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+                        title="Zamknij"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
 
                 {/* Creator Button */}
                 <div className="absolute top-6 left-6 z-[10002]">
@@ -240,28 +289,18 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                         </div>
 
                         {/* Flying items */}
-                        {phase === 'ingesting' && ingestedCount < 1 && (
-                            <div className="absolute top-0 right-[110%] w-48 p-4 bg-white/10 rounded-2xl border border-white/20 flex items-center gap-3 animate-[flyIn_1s_ease-out_forwards] shadow-lg">
-                                <FileText size={28} className="text-blue-400" />
-                                <span className="text-sm font-semibold text-gray-200">dtr_maszyny.pdf</span>
-                            </div>
-                        )}
-
-                        {phase === 'ingesting' && ingestedCount >= 1 && ingestedCount < 2 && (
-                            <div className="absolute top-0 left-[110%] w-48 p-4 bg-white/10 rounded-2xl border border-white/20 flex items-center gap-3 animate-[flyIn_1s_ease-out_forwards] shadow-lg">
-                                <ImageIcon size={28} className="text-purple-400" />
-                                <span className="text-sm font-semibold text-gray-200">cnc_schemat.png</span>
-                            </div>
-                        )}
-
-                        {phase === 'ingesting' && ingestedCount >= 2 && ingestedCount < 3 && (
-                            <div className="absolute bottom-[-10%] right-[90%] w-72 p-5 bg-yellow-900/30 rounded-2xl border border-yellow-500/50 flex items-start gap-4 animate-[flyIn_1s_ease-out_forwards] shadow-lg">
-                                <FileCode2 size={28} className="text-yellow-400 shrink-0 mt-0.5" />
-                                <span className="text-xs font-mono text-yellow-200 leading-tight">
-                                    "IMPORTANT! REGULARLY CHECK COOLANT LEVELS TO PREVENT OVERHEATING!"
-                                </span>
-                            </div>
-                        )}
+                        {phase === 'ingesting' && DEMO_FILES.slice(Math.max(0, ingestedCount - 6), ingestedCount).map((file) => {
+                            const pos = getFlyInPos(file.id);
+                            return (
+                                <div key={file.id}
+                                    className="absolute p-3 bg-white/10 rounded-2xl border border-white/20 flex items-center gap-3 animate-[flyIn_1s_ease-out_forwards] shadow-lg backdrop-blur-md"
+                                    style={{ ...pos }}
+                                >
+                                    {React.createElement(file.icon, { size: 24, className: file.color })}
+                                    <span className="text-xs font-semibold text-gray-200 line-clamp-1 max-w-[120px]">{file.name}</span>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -344,18 +383,39 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                             </div>
                         </div>
 
-                        {/* Predefined Questions Sidebar (Right) */}
-                        <div className="w-full md:w-1/3 flex flex-col gap-3 justify-end pb-3 hidden md:flex">
-                            {!hasCustomBase && predefinedQuestions.map((q, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => handleAskQuestion(q)}
-                                    className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-400/50 text-gray-300 hover:text-white p-4 rounded-2xl text-xs font-medium text-left transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-between group shadow-sm shrink-0"
-                                >
-                                    <span className="line-clamp-2 pr-2">{q}</span>
-                                    <Send size={14} className="text-white/20 group-hover:text-blue-400 transition-colors shrink-0" />
-                                </button>
-                            ))}
+                        {/* Predefined Questions & File List Sidebar (Right) */}
+                        <div className="w-full md:w-1/3 flex flex-col gap-4 max-h-64 md:max-h-full pb-3 hidden md:flex">
+                            {!hasCustomBase && (
+                                <div className="flex flex-col gap-3">
+                                    <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Przykładowe pytania</h4>
+                                    <div className="flex flex-col gap-2">
+                                        {predefinedQuestions.map((q, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleAskQuestion(q)}
+                                                className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-400/50 text-gray-300 hover:text-white p-3 rounded-xl text-xs font-medium text-left transition-all flex items-center justify-between group shadow-sm shrink-0"
+                                            >
+                                                <span className="line-clamp-2 pr-2">{q}</span>
+                                                <Send size={12} className="text-white/20 group-hover:text-blue-400 transition-colors shrink-0" />
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* File List */}
+                            <div className="flex flex-col gap-3 flex-1 overflow-hidden">
+                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1 mt-1">Dostępne dokumenty ({DEMO_FILES.length})</h4>
+                                <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2 pb-2">
+                                    {DEMO_FILES.map(file => (
+                                        <div key={file.id} className="bg-white/5 border border-white/10 p-2.5 rounded-xl flex items-center gap-3 shrink-0 relative overflow-hidden group hover:bg-white/10 transition-colors">
+                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500/0 via-blue-500/50 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                            {React.createElement(file.icon, { size: 16, className: file.color })}
+                                            <span className="text-xs text-gray-300 truncate font-medium">{file.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -486,9 +546,11 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
 
             <style>{`
                 @keyframes flyIn {
-                    0% { transform: translate(0, 50px) scale(0.8); opacity: 0; }
-                    50% { transform: translate(50%, 0) scale(1.1); opacity: 1; }
-                    100% { transform: translate(100%, 0) scale(1); opacity: 0; }
+                    0% { transform: translate(60px, -30px) scale(0.6); opacity: 0; }
+                    20% { opacity: 1; }
+                    50% { transform: translate(0, 0) scale(1.1); opacity: 1; filter: drop-shadow(0 0 20px rgba(59,130,246,0.5)); }
+                    80% { opacity: 1; }
+                    100% { transform: translate(-60px, 30px) scale(0.6); opacity: 0; }
                 }
                 .custom-scrollbar::-webkit-scrollbar {
                     width: 6px;

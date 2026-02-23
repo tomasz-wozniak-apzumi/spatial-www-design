@@ -300,12 +300,8 @@ import { ViewState } from '../App';
 
 const CaseStudiesPage: React.FC<{ onNavigate?: (view: ViewState) => void, version?: 'v1' | 'v2' | 'v3' }> = ({ onNavigate, version = 'v1' }) => {
    const getHeroBg = () => {
-      switch (version) {
-         case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
-         case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
-         case 'v1':
-         default: return 'bg-gradient-to-br from-apzumi-dark to-[#0a0f29]';
-      }
+      // Regardless of version, enforce the requested navy blue background
+      return 'bg-gradient-to-br from-[#121c43] to-[#0a0f29]';
    };
 
    return (

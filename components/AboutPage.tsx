@@ -23,68 +23,70 @@ const MaskPill = ({ src, top, left, width, height, containerW, containerH }: { s
 
 const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => {
     return (
-        <div className="pt-28 pb-20 min-h-screen bg-white font-sans text-apzumi-dark selection:bg-apzumi-red selection:text-white">
+        <div className="bg-white font-sans text-apzumi-dark selection:bg-apzumi-red selection:text-white">
 
             {/* HEADER - ABOUT */}
-            <section className="text-center px-4 mb-20 relative max-w-[1400px] mx-auto overflow-hidden sm:overflow-visible flex flex-col justify-center min-h-[360px]">
-                {/* LEFT MASKED IMAGE */}
-                <div className="absolute left-[-40px] lg:left-8 top-[36px] hidden sm:block w-[360px] h-[240px]">
-                    <div className="relative w-full h-full origin-left scale-75 md:scale-90 lg:scale-100">
-                        {/* Row 1 */}
-                        <MaskPill src="/images/about/about1.png" top={0} left={30} width={40} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about1.png" top={0} left={80} width={130} height={36} containerW={360} containerH={240} />
-                        {/* Row 2 */}
-                        <MaskPill src="/images/about/about1.png" top={46} left={0} width={50} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about1.png" top={46} left={60} width={260} height={36} containerW={360} containerH={240} />
-                        {/* Row 3 */}
-                        <MaskPill src="/images/about/about1.png" top={92} left={0} width={340} height={36} containerW={360} containerH={240} />
-                        {/* Row 4 */}
-                        <MaskPill src="/images/about/about1.png" top={138} left={0} width={40} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about1.png" top={138} left={50} width={210} height={36} containerW={360} containerH={240} />
-                        {/* Row 5 */}
-                        <MaskPill src="/images/about/about1.png" top={184} left={0} width={160} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about1.png" top={184} left={170} width={50} height={36} containerW={360} containerH={240} />
+            <section className="text-center w-full bg-gradient-to-br from-[#121c43] to-[#0a0f29] pt-40 pb-20 relative overflow-hidden transition-colors duration-500 mb-20">
+                <div className="max-w-[1400px] mx-auto px-4 relative flex flex-col justify-center min-h-[360px]">
+                    {/* LEFT MASKED IMAGE */}
+                    <div className="absolute left-[-40px] lg:left-8 top-[36px] hidden sm:block w-[360px] h-[240px] opacity-80 pointer-events-none">
+                        <div className="relative w-full h-full origin-left scale-75 md:scale-90 lg:scale-100">
+                            {/* Row 1 */}
+                            <MaskPill src="/images/about/about1.png" top={0} left={30} width={40} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about1.png" top={0} left={80} width={130} height={36} containerW={360} containerH={240} />
+                            {/* Row 2 */}
+                            <MaskPill src="/images/about/about1.png" top={46} left={0} width={50} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about1.png" top={46} left={60} width={260} height={36} containerW={360} containerH={240} />
+                            {/* Row 3 */}
+                            <MaskPill src="/images/about/about1.png" top={92} left={0} width={340} height={36} containerW={360} containerH={240} />
+                            {/* Row 4 */}
+                            <MaskPill src="/images/about/about1.png" top={138} left={0} width={40} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about1.png" top={138} left={50} width={210} height={36} containerW={360} containerH={240} />
+                            {/* Row 5 */}
+                            <MaskPill src="/images/about/about1.png" top={184} left={0} width={160} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about1.png" top={184} left={170} width={50} height={36} containerW={360} containerH={240} />
+                        </div>
                     </div>
-                </div>
 
-                {/* RIGHT MASKED IMAGE */}
-                <div className="absolute right-[-40px] lg:right-8 top-[36px] hidden sm:block w-[360px] h-[240px]">
-                    <div className="relative w-full h-full origin-right scale-75 md:scale-90 lg:scale-100">
-                        {/* Row 1 */}
-                        <MaskPill src="/images/about/about2.png" top={0} left={130} width={50} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about2.png" top={0} left={190} width={170} height={36} containerW={360} containerH={240} />
-                        {/* Row 2 */}
-                        <MaskPill src="/images/about/about2.png" top={46} left={0} width={150} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about2.png" top={46} left={160} width={200} height={36} containerW={360} containerH={240} />
-                        {/* Row 3 */}
-                        <MaskPill src="/images/about/about2.png" top={92} left={70} width={290} height={36} containerW={360} containerH={240} />
-                        {/* Row 4 */}
-                        <MaskPill src="/images/about/about2.png" top={138} left={120} width={130} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about2.png" top={138} left={260} width={100} height={36} containerW={360} containerH={240} />
-                        {/* Row 5 */}
-                        <MaskPill src="/images/about/about2.png" top={184} left={80} width={140} height={36} containerW={360} containerH={240} />
-                        <MaskPill src="/images/about/about2.png" top={184} left={230} width={130} height={36} containerW={360} containerH={240} />
+                    {/* RIGHT MASKED IMAGE */}
+                    <div className="absolute right-[-40px] lg:right-8 top-[36px] hidden sm:block w-[360px] h-[240px] opacity-80 pointer-events-none">
+                        <div className="relative w-full h-full origin-right scale-75 md:scale-90 lg:scale-100">
+                            {/* Row 1 */}
+                            <MaskPill src="/images/about/about2.png" top={0} left={130} width={50} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about2.png" top={0} left={190} width={170} height={36} containerW={360} containerH={240} />
+                            {/* Row 2 */}
+                            <MaskPill src="/images/about/about2.png" top={46} left={0} width={150} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about2.png" top={46} left={160} width={200} height={36} containerW={360} containerH={240} />
+                            {/* Row 3 */}
+                            <MaskPill src="/images/about/about2.png" top={92} left={70} width={290} height={36} containerW={360} containerH={240} />
+                            {/* Row 4 */}
+                            <MaskPill src="/images/about/about2.png" top={138} left={120} width={130} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about2.png" top={138} left={260} width={100} height={36} containerW={360} containerH={240} />
+                            {/* Row 5 */}
+                            <MaskPill src="/images/about/about2.png" top={184} left={80} width={140} height={36} containerW={360} containerH={240} />
+                            <MaskPill src="/images/about/about2.png" top={184} left={230} width={130} height={36} containerW={360} containerH={240} />
+                        </div>
                     </div>
-                </div>
 
-                <div className="max-w-[600px] mx-auto py-12 relative z-10 bg-white/60 sm:bg-transparent rounded-3xl mt-4 sm:mt-0">
-                    <h1 className="text-5xl md:text-[64px] font-extrabold mb-4 text-[#333] tracking-tight">
-                        <TextBlock id="about_main_title">About</TextBlock>
-                    </h1>
-                    <p className="text-sm md:text-[15px] leading-relaxed text-gray-700 mx-auto mb-8 max-w-[480px]">
-                        <TextBlock id="about_main_subtitle">Get to know the people, purpose, and principles behind our operations in the digital health industry</TextBlock>
-                    </p>
-                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <button className="border border-[#2a3c7b] text-[#2a3c7b] bg-white hover:bg-gray-50 shadow-sm rounded-[24px] px-8 py-3 text-sm font-semibold transition-colors flex items-center justify-between min-w-[200px]">
-                            <TextBlock id="about_btn_mission">Mission and Values</TextBlock>
-                            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        <button
-                            className="bg-[#2a3c7b] text-white shadow-md rounded-[24px] px-8 py-3 text-sm font-semibold hover:bg-[#1f2d5c] transition-colors flex items-center justify-between min-w-[200px]"
-                        >
-                            <TextBlock id="about_btn_contact">Our Team</TextBlock>
-                            <svg className="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
+                    <div className="max-w-[600px] mx-auto py-12 relative z-10 px-4 sm:px-0">
+                        <h1 className="text-5xl md:text-[64px] font-extrabold mb-4 text-white tracking-tight">
+                            <TextBlock id="about_main_title">About</TextBlock>
+                        </h1>
+                        <p className="text-sm md:text-[15px] leading-relaxed text-gray-300 mx-auto mb-8 max-w-[480px]">
+                            <TextBlock id="about_main_subtitle">Get to know the people, purpose, and principles behind our operations in the digital health industry</TextBlock>
+                        </p>
+                        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                            <button className="border border-white/20 text-white bg-transparent hover:bg-white/10 shadow-sm rounded-[24px] px-8 py-3 text-sm font-semibold transition-colors flex items-center justify-between min-w-[200px]">
+                                <TextBlock id="about_btn_mission">Mission and Values</TextBlock>
+                                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                            <button
+                                className="bg-apzumi-red hover:bg-red-600 text-white shadow-md rounded-[24px] px-8 py-3 text-sm font-semibold transition-colors flex items-center justify-between min-w-[200px]"
+                            >
+                                <TextBlock id="about_btn_contact">Our Team</TextBlock>
+                                <svg className="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Awards from './components/Awards';
 import ClientLogos from './components/ClientLogos';
+import DemoVideo from './components/DemoVideo';
 import Solutions from './components/Solutions';
 import Process from './components/Process';
 import News from './components/News';
@@ -47,6 +48,7 @@ const App: React.FC = () => {
               <Hero version={globalVersion} />
               <Awards version={globalVersion} />
               <ClientLogos />
+              <DemoVideo version={globalVersion} />
               <Solutions onNavigate={setCurrentView} version={globalVersion} />
               <Process />
               <News />

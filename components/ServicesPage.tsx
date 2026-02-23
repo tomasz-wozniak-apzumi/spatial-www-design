@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   ArrowRight, CheckCircle2, Target, ShieldCheck, FileText, Settings,
   HelpCircle, Lightbulb, TrendingUp, Cpu, Layers, Users
@@ -298,6 +298,119 @@ const ServiceCardV3: React.FC<{
   );
 };
 
+const ServiceSectionV3: React.FC<{
+  data: ServiceData;
+  isActive: boolean;
+  onVisible: () => void;
+}> = ({ data, isActive, onVisible }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          onVisible();
+        }
+      },
+      { threshold: 0.5, rootMargin: "-10% 0px -10% 0px" }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [onVisible]);
+
+  return (
+    <div ref={ref} id={`v3-section-${data.id}`} className="min-h-[80vh] flex flex-col justify-center py-20 pr-0 md:pr-16 relative">
+      {/* Category Chips */}
+      <div className="flex flex-wrap gap-3 mb-8">
+        {data.chips.map((chip, idx) => (
+          <span key={idx} className="bg-transparent border border-white/20 text-gray-300 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest">
+            {chip}
+          </span>
+        ))}
+      </div>
+
+      {/* Massive Typography Title */}
+      <h3 className={`font-bold text-white mb-8 leading-[1.05] transition-all duration-700 ease-out tracking-tight
+        ${isActive ? 'text-5xl md:text-7xl lg:text-8xl opacity-100 translate-y-0' : 'text-4xl md:text-5xl lg:text-6xl opacity-30 translate-y-8'}`}>
+        <TextBlock id={data.titleKey}>{textConfig[data.titleKey]?.[0] || ''}</TextBlock>
+      </h3>
+
+      {/* Value Prop */}
+      <p className={`text-xl md:text-3xl font-light leading-relaxed max-w-2xl mb-12 transition-all duration-700 ease-out delay-100
+        ${isActive ? 'text-gray-200 opacity-100 translate-y-0' : 'text-gray-500 opacity-0 translate-y-8'}`}>
+        <TextBlock id={data.valKey}>{textConfig[data.valKey]?.[0] || ''}</TextBlock>
+      </p>
+
+      {/* Simple Bullets */}
+      <div className={`space-y-6 mb-16 transition-all duration-700 ease-out delay-200
+        ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        {data.bullets.map((bullet, idx) => (
+           <div key={idx} className="flex items-center gap-6 border-b border-white/10 pb-6">
+              <span className="text-apzumi-red font-mono text-sm opacity-50">0{idx + 1}</span>
+              <span className="text-gray-300 text-lg md:text-2xl">{bullet}</span>
+           </div>
+        ))}
+      </div>
+
+      {/* Modern Button */}
+      <div className={`transition-all duration-700 ease-out delay-300 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <button
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group flex items-center gap-6 text-white text-lg md:text-2xl font-light hover:text-gray-300 transition-colors"
+          >
+            <span className="relative">
+               <TextBlock id="serv_card_btn_v3">Rozpocznij projekt</TextBlock>
+               <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-current transition-all duration-500 group-hover:w-full"></span>
+            </span>
+            <div className="w-14 h-14 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-500">
+               <ArrowRight size={24} className="-rotate-45 group-hover:rotate-0 transition-transform duration-500" />
+            </div>
+          </button>
+      </div>
+    </div>
+  );
+};
+
+const V3StickyVisual: React.FC<{ activeSituation: SituationId }> = ({ activeSituation }) => {
+   const getColor = () => {
+      switch (activeSituation) {
+         case 'start': return 'from-fuchsia-600 to-purple-800';
+         case 'valid': return 'from-blue-600 to-indigo-800';
+         case 'build': return 'from-rose-500 to-orange-700';
+         default: return 'from-fuchsia-600 to-purple-800';
+      }
+   };
+
+   const getShape = () => {
+      switch (activeSituation) {
+         case 'start': return 'rounded-[100px] rotate-0 scale-100';
+         case 'valid': return 'rounded-[300px] rotate-45 scale-110';
+         case 'build': return 'rounded-[50px] rotate-90 scale-95';
+         default: return 'rounded-[100px] rotate-0 scale-100';
+      }
+   };
+
+   return (
+      <div className="h-screen sticky top-0 flex items-center justify-center overflow-hidden">
+         {/* Abstract Shape */}
+         <div className={`absolute w-[80%] aspect-square bg-gradient-to-br ${getColor()} ${getShape()} blur-[80px] md:blur-[120px] opacity-60 mix-blend-screen transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]`}></div>
+         
+         <div className={`absolute w-[40%] aspect-square bg-white ${getShape()} blur-[80px] opacity-20 mix-blend-overlay transition-all duration-1500 delay-150 ease-[cubic-bezier(0.25,1,0.5,1)]`}></div>
+
+         {/* Floating Glass Box Overlay */}
+         <div className="absolute w-[80%] bottom-32 border border-white/10 bg-white/5 backdrop-blur-3xl rounded-3xl p-8 flex flex-col justify-end transition-all duration-700 shadow-2xl">
+            <div className="text-white/50 font-mono text-xs uppercase tracking-[0.3em] mb-4">Aktywna Faza</div>
+            <div className="text-white text-2xl md:text-4xl font-light tracking-tight">
+               {activeSituation === 'start' && "Strategia & Odkrycia"}
+               {activeSituation === 'valid' && "Szybkie Prototypowanie"}
+               {activeSituation === 'build' && "Architektura Docelowa"}
+            </div>
+         </div>
+      </div>
+   );
+};
+
 const ServiceDetail: React.FC<{ data: ServiceData }> = ({ data }) => {
   // Tabs now include the 4 items that were previously in the grid + the 2 original bottom tabs
   const [activeTab, setActiveTab] = useState<'who' | 'when' | 'what' | 'effect' | 'process' | 'arts'>('who');
@@ -467,9 +580,14 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
     }
   };
 
+  const handleSectionVisible = useCallback((sit: SituationId) => {
+    setActiveSituation(sit);
+  }, []);
+
   const handleFilter = (sit: SituationId) => {
     setActiveSituation(sit);
-    const el = document.getElementById('services-grid');
+    const gridId = 'services-grid';
+    const el = document.getElementById(gridId);
     if (el) {
       const y = el.getBoundingClientRect().top + window.pageYOffset - 140;
       window.scrollTo({ top: y, behavior: 'smooth' });
@@ -526,7 +644,8 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
         </div>
       </section>
 
-      {/* 2. STICKY FILTER */}
+      {/* 2. STICKY FILTER - HIDDEN IN V3 */}
+      {version !== 'v3' && (
       <div className="sticky top-[72px] z-40 bg-apzumi-dark/90 backdrop-blur-xl border-y border-white/10 py-6">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-lg font-bold mb-4">
@@ -559,22 +678,34 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
           </div>
         </div>
       </div>
+      )}
 
-      {/* 3. BENTO GRID */}
+      {/* 3. MAIN CONTENT */}
+      {version === 'v3' ? (
+         <section id="services-content" className="relative">
+            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row relative">
+               {/* Left Column (Scrollable Narrative) */}
+               <div className="w-full md:w-1/2 pt-10 pb-40 border-l border-white/5 pl-6 md:pl-16">
+                  {servicesData.map((service) => (
+                     <ServiceSectionV3
+                        key={service.id}
+                        data={service}
+                        isActive={activeSituation === service.situation}
+                        onVisible={() => handleSectionVisible(service.situation)}
+                     />
+                  ))}
+               </div>
+               
+               {/* Right Column (Sticky Visual) */}
+               <div className="hidden md:block w-1/2 relative">
+                  <V3StickyVisual activeSituation={activeSituation} />
+               </div>
+            </div>
+         </section>
+      ) : (
       <section id="services-grid" className="py-20 px-6 relative">
         <div className="max-w-7xl mx-auto relative z-10">
-          {version === 'v3' ? (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 lg:gap-8 min-h-[500px]">
-              {servicesData.map((service, index) => (
-                <ServiceCardV3
-                  key={service.id}
-                  data={service}
-                  isActive={activeSituation === service.situation || (activeSituation === 'start' && index === 0 && !servicesData.some(s => s.situation === activeSituation))} // Default to first if none match
-                  onHover={() => setActiveSituation(service.situation)}
-                />
-              ))}
-            </div>
-          ) : version === 'v2' ? (
+          {version === 'v2' ? (
             <div className="grid grid-cols-1 gap-6 lg:gap-8">
               {servicesData.map((service) => (
                 <div key={service.id} className={`transition-all duration-500
@@ -605,6 +736,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
           </p>
         </div>
       </section>
+      )}
 
       {/* 4. DETAILS - HIDDEN IN V2 AND V3 */}
       {version !== 'v2' && version !== 'v3' && servicesData.map((service) => (

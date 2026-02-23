@@ -8,8 +8,25 @@ interface HeroProps {
   version?: HomeVersion;
 }
 
+const slides = [
+  '/image/HeroScreen1.png',
+  '/image/HeroScreen2.png',
+  '/image/HeroScreen3.png',
+  '/image/HeroScreen4.png',
+  '/image/HeroScreen5.png',
+];
+
 const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
   const [scrollY, setScrollY] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (version !== 'v2') return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4000); // Change image every 4 seconds
+    return () => clearInterval(interval);
+  }, [version]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,12 +68,14 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
               <div className="h-1 w-10 xl:w-11 bg-[#e11d48] rounded-full self-center"></div>
               <div className="h-1 w-full bg-[#e11d48] rounded-full"></div>
             </div>
-            <span className="font-extrabold text-5xl xl:text-6xl tracking-wide text-[#1e285a]">apzumi</span>
+            <span className="font-extrabold text-4xl xl:text-5xl tracking-wide text-[#1e285a]">Apzumi Spatial</span>
           </div>
 
           {/* Tagline */}
-          <h1 className="text-2xl xl:text-3xl text-[#4a5568] mb-10 pl-2">
-            <TextBlock id="hero_tagline_v2" as="span">AI-first Software Partner</TextBlock>
+          <h1 className="text-2xl xl:text-3xl text-[#4a5568] mb-10 pl-2 leading-relaxed">
+            <TextBlock id="hero_tagline_v2" as="span">
+              Apzumi Spatial <br /> Twój partner w procesach przemysłowych
+            </TextBlock>
           </h1>
 
           {/* Buttons */}
@@ -84,14 +103,18 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
             }}
           >
             {/* Overlay to give a slightly bluish tint as seen in screenshot */}
-            <div className="absolute inset-0 bg-[#293b7b]/20 mix-blend-multiply z-10 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[#293b7b]/20 mix-blend-multiply z-20 pointer-events-none"></div>
 
-            {/* The Image */}
-            <img
-              src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2670&auto=format&fit=crop"
-              alt="Man using phone in modern home"
-              className="w-full h-full object-cover"
-            />
+            {/* The Image Slider */}
+            {slides.map((src, index) => (
+              <img
+                key={src}
+                src={src}
+                alt={`Hero Slide ${index + 1}`}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-10 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+                  }`}
+              />
+            ))}
           </div>
         </div>
       </section>

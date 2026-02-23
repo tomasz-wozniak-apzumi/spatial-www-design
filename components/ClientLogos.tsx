@@ -6,15 +6,19 @@ const ClientLogos: React.FC = () => {
   return (
     <div className="py-12 px-6 overflow-hidden relative w-full">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-[#293b7b] rounded-3xl py-4 md:py-5 overflow-hidden shadow-lg border border-[#1e285a]/20">
-          <div className="w-full flex bg-white py-6 md:py-8">
+        <div className="bg-[#293b7b] rounded-3xl py-12 md:py-16 overflow-hidden shadow-lg border border-[#1e285a]/20">
+          <div className="w-full flex">
             {/* CSS Animation defined in index.css */}
             <div className="flex animate-scroll whitespace-nowrap items-center">
               {logos.map((src, idx) => (
-                <img key={`g1-${idx}`} src={src} alt="Client Logo" className="h-10 md:h-14 object-contain mx-6 md:mx-10" />
+                <div key={`g1-${idx}`} className="bg-white rounded-[50px] px-8 py-5 mx-4 md:mx-6 flex items-center justify-center shadow-md min-w-[200px] h-[90px]">
+                  <img src={src} alt="Client Logo" className="max-h-12 md:max-h-14 object-contain" />
+                </div>
               ))}
               {logos.map((src, idx) => (
-                <img key={`g2-${idx}`} src={src} alt="Client Logo" className="h-10 md:h-14 object-contain mx-6 md:mx-10" />
+                <div key={`g2-${idx}`} className="bg-white rounded-[50px] px-8 py-5 mx-4 md:mx-6 flex items-center justify-center shadow-md min-w-[200px] h-[90px]">
+                  <img src={src} alt="Client Logo" className="max-h-12 md:max-h-14 object-contain" />
+                </div>
               ))}
             </div>
           </div>

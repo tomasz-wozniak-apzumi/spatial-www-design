@@ -224,6 +224,74 @@ const ServiceCardV2: React.FC<{
   );
 };
 
+const ServiceCardV3: React.FC<{
+  data: ServiceData;
+  isActive: boolean;
+  onHover: () => void;
+}> = ({ data, isActive, onHover }) => {
+  return (
+    <div
+      onMouseEnter={onHover}
+      onClick={onHover}
+      className={`group relative rounded-[2rem] transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] overflow-hidden flex flex-col border backdrop-blur-md cursor-pointer h-full min-h-[400px] md:min-h-[500px]
+        ${isActive
+          ? 'md:col-span-2 bg-[#35123d]/40 border-fuchsia-500/50 shadow-[0_0_50px_rgba(217,70,239,0.15)] md:flex-row'
+          : 'md:col-span-1 bg-white/5 border-white/10 hover:border-fuchsia-500/30 hover:bg-[#35123d]/20'
+        }`}
+    >
+      {/* Decorative gradient orb */}
+      <div className={`absolute top-0 right-0 w-64 h-64 bg-fuchsia-600/20 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`}></div>
+
+      <div className={`p-8 md:p-10 flex flex-col ${isActive ? 'md:w-1/2 justify-center' : 'w-full h-full justify-between'}`}>
+        <div>
+          {/* Chips */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {data.chips.map((chip, idx) => (
+              <span key={idx} className="bg-white/10 text-gray-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-white/5">
+                {chip}
+              </span>
+            ))}
+          </div>
+
+          <h3 className={`font-bold text-white mb-4 leading-tight transition-all duration-500 ${isActive ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>
+            <TextBlock id={data.titleKey}>{textConfig[data.titleKey]?.[0] || ''}</TextBlock>
+          </h3>
+        </div>
+
+        <p className={`text-fuchsia-200 text-sm leading-relaxed transition-all duration-500 ${isActive ? 'opacity-100 mt-2' : 'opacity-70 mt-auto'}`}>
+          <TextBlock id={data.valKey}>{textConfig[data.valKey]?.[0] || ''}</TextBlock>
+        </p>
+      </div>
+
+      {/* Expanded Content */}
+      <div className={`flex flex-col justify-center p-8 md:p-10 border-t md:border-t-0 md:border-l border-white/10 transition-all duration-700 overflow-hidden
+        ${isActive ? 'opacity-100 max-h-[1000px] md:w-1/2 bg-black/20' : 'opacity-0 max-h-0 md:w-0 md:opacity-0 p-0 md:p-0 md:border-l-0 border-t-0'}`}
+      >
+        <div className="space-y-4 mb-8">
+          {data.bullets.map((bullet, idx) => (
+            <div key={idx} className="flex items-start gap-3">
+              <div className="mt-1 w-5 h-5 rounded-full bg-fuchsia-500/20 flex items-center justify-center shrink-0 border border-fuchsia-500/30">
+                <CheckCircle2 size={12} className="text-fuchsia-400" />
+              </div>
+              <span className="text-gray-200 text-sm">{bullet}</span>
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={(e) => { e.stopPropagation(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
+          className="w-full py-4 rounded-2xl border-2 border-transparent text-white font-bold text-sm bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 transition-all flex items-center justify-center shadow-lg shadow-fuchsia-900/40 relative overflow-hidden group"
+        >
+          <span className="relative z-10 flex items-center gap-2">
+            <TextBlock id="serv_card_btn_v3">Rozpocznij projekt</TextBlock> <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </span>
+          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const ServiceDetail: React.FC<{ data: ServiceData }> = ({ data }) => {
   // Tabs now include the 4 items that were previously in the grid + the 2 original bottom tabs
   const [activeTab, setActiveTab] = useState<'who' | 'when' | 'what' | 'effect' | 'process' | 'arts'>('who');
@@ -489,7 +557,18 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
       {/* 3. BENTO GRID */}
       <section id="services-grid" className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          {version === 'v2' ? (
+          {version === 'v3' ? (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 lg:gap-6">
+              {servicesData.map((service, index) => (
+                <ServiceCardV3
+                  key={service.id}
+                  data={service}
+                  isActive={activeSituation === service.situation || (activeSituation === 'start' && index === 0 && !servicesData.some(s => s.situation === activeSituation))} // Default to first if none match
+                  onHover={() => setActiveSituation(service.situation)}
+                />
+              ))}
+            </div>
+          ) : version === 'v2' ? (
             <div className="grid grid-cols-1 gap-6 lg:gap-8">
               {servicesData.map((service) => (
                 <div key={service.id} className={`transition-all duration-500
@@ -515,19 +594,19 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
               ))}
             </div>
           )}
-          <p className="text-center text-gray-500 text-xs mt-8">
+          <p className="text-center text-gray-500 text-xs mt-12 mb-4">
             <TextBlock id="serv_grid_note">{textConfig['serv_grid_note'][0]}</TextBlock>
           </p>
         </div>
       </section>
 
-      {/* 4. DETAILS - HIDDEN IN V2 */}
-      {version !== 'v2' && servicesData.map((service) => (
+      {/* 4. DETAILS - HIDDEN IN V2 AND V3 */}
+      {version !== 'v2' && version !== 'v3' && servicesData.map((service) => (
         <ServiceDetail key={service.id} data={service} />
       ))}
 
-      {/* 5. PROCESS (3 STEPS) - HIDDEN IN V2 */}
-      {version !== 'v2' && (
+      {/* 5. PROCESS (3 STEPS) - HIDDEN IN V2 AND V3 */}
+      {version !== 'v2' && version !== 'v3' && (
         <section className="py-24 bg-white text-apzumi-dark px-6">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-16">

@@ -239,68 +239,98 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
             <h3 className="text-2xl font-semibold">
               <TextBlock id="v2_solutions_subheading">Services</TextBlock>
             </h3>
-            <button
-              onClick={handleServicesNav}
-              className="bg-[#f23c4a] hover:bg-red-500 transition-colors text-white text-sm font-medium py-2 px-6 rounded-full flex items-center gap-2"
-            >
-              <TextBlock id="v2_solutions_viewAll">View All</TextBlock>
-              <ArrowRight size={16} />
-            </button>
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10 max-w-5xl mx-auto">
 
-            {/* Card 1: Bullet List */}
-            <div className="bg-white text-gray-900 rounded-3xl p-8 lg:p-10 shadow-sm flex flex-col h-full transform transition-transform hover:-translate-y-1 hover:shadow-md">
-              <h4 className="text-2xl lg:text-3xl font-bold mb-8 leading-tight">
-                <TextBlock id="v2_sol_card1_title">Software<br />Development</TextBlock>
-              </h4>
-              <ul className="space-y-5 text-sm lg:text-base text-gray-600 font-medium">
-                <li className="flex items-center gap-4">
-                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Code size={18} /></span>
-                  <span><TextBlock id="v2_sol_c1_i1">Product Design</TextBlock></span>
-                </li>
-                <li className="flex items-center gap-4">
-                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Box size={18} /></span>
-                  <span><TextBlock id="v2_sol_c1_i2">Mobile App Development</TextBlock></span>
-                </li>
-                <li className="flex items-center gap-4">
-                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Code size={18} /></span>
-                  <span><TextBlock id="v2_sol_c1_i3">Web App Development</TextBlock></span>
-                </li>
-                <li className="flex items-center gap-4">
-                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><Glasses size={18} /></span>
-                  <span><TextBlock id="v2_sol_c1_i4">AR/VR App Development</TextBlock></span>
-                </li>
-                <li className="flex items-center gap-4">
-                  <span className="p-2 bg-gray-50 rounded text-gray-400 border border-gray-100"><FileText size={18} /></span>
-                  <span><TextBlock id="v2_sol_c1_i5">Maintenance & Support</TextBlock></span>
-                </li>
-              </ul>
+            {/* Card 1: Rozwiązania (Image Card with Left-to-Right Hover Panel) */}
+            <div
+              className="bg-white rounded-3xl overflow-hidden shadow-sm flex flex-col h-[400px] transform transition-transform hover:-translate-y-1 hover:shadow-lg cursor-pointer group relative"
+              onClick={() => {
+                if (onNavigate) {
+                  onNavigate('solutions');
+                  window.scrollTo(0, 0);
+                }
+              }}
+            >
+              <div className="absolute inset-0 z-0">
+                <img src="/images/HeroScreen4.png" alt="Rozwiązania" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0"></div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-10 bg-white z-10 flex items-center justify-between">
+                <h4 className="text-2xl font-bold text-gray-900 leading-tight">
+                  <TextBlock id="v2_sol_card_roz">Rozwiązania</TextBlock>
+                </h4>
+                <ArrowRight size={20} className="text-[#e11d48] group-hover:translate-x-1 transition-transform" />
+              </div>
+
+              {/* Sliding Panel: Left to Right */}
+              <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-20 p-8 lg:p-12 flex flex-col justify-center transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out">
+                <h4 className="text-2xl font-bold text-[#1e285a] mb-8">
+                  <TextBlock id="v2_sol_panel_roz_h">Rozwiązania</TextBlock>
+                </h4>
+                <ul className="space-y-4 text-gray-700 font-medium text-lg">
+                  <li className="flex items-start gap-4">
+                    <span className="text-[#e11d48] mt-1"><ArrowRight size={16} /></span>
+                    <span><TextBlock id="v2_sol_pz_1">Zdigitalizowane procedury dla produkcji</TextBlock></span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="text-[#e11d48] mt-1"><ArrowRight size={16} /></span>
+                    <span><TextBlock id="v2_sol_pz_2">Audio-wizualne wsparcie pracowników</TextBlock></span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="text-[#e11d48] mt-1"><ArrowRight size={16} /></span>
+                    <span><TextBlock id="v2_sol_pz_3">Matryca kompetencji oparta o zadania</TextBlock></span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="text-[#e11d48] mt-1"><ArrowRight size={16} /></span>
+                    <span><TextBlock id="v2_sol_pz_4">Automatyzacja kontroli jakości</TextBlock></span>
+                  </li>
+                </ul>
+              </div>
             </div>
 
-            {/* Card 2: Image Card */}
-            <div className="bg-white rounded-3xl overflow-hidden shadow-sm flex flex-col h-full transform transition-transform hover:-translate-y-1 hover:shadow-md cursor-pointer" onClick={handleServicesNav}>
-              <div className="flex-grow min-h-[220px] overflow-hidden relative">
-                <img src="/images/HeroScreen4.png" alt="AI Development" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+            {/* Card 2: Usługi (Image Card with Right-to-Left Hover Panel) */}
+            <div
+              className="bg-white rounded-3xl overflow-hidden shadow-sm flex flex-col h-[400px] transform transition-transform hover:-translate-y-1 hover:shadow-lg cursor-pointer group relative"
+              onClick={() => {
+                if (onNavigate) {
+                  onNavigate('services');
+                  window.scrollTo(0, 0);
+                }
+              }}
+            >
+              <div className="absolute inset-0 z-0">
+                <img src="/images/HeroScreen3.png" alt="Usługi" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0"></div>
               </div>
-              <div className="p-8 lg:p-10 bg-white z-10">
+              <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-10 bg-white z-10 flex items-center justify-between">
                 <h4 className="text-2xl font-bold text-gray-900 leading-tight">
-                  <TextBlock id="v2_sol_card2_title">AI-powered<br />Development</TextBlock>
+                  <TextBlock id="v2_sol_card_uslugi">Usługi</TextBlock>
                 </h4>
+                <ArrowRight size={20} className="text-[#e11d48] group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
 
-            {/* Card 3: Image Card */}
-            <div className="bg-white rounded-3xl overflow-hidden shadow-sm flex flex-col h-full transform transition-transform hover:-translate-y-1 hover:shadow-md cursor-pointer" onClick={handleServicesNav}>
-              <div className="flex-grow min-h-[220px] overflow-hidden relative">
-                <img src="/images/HeroScreen3.png" alt="Consulting" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
-              </div>
-              <div className="p-8 lg:p-10 bg-white z-10">
-                <h4 className="text-2xl font-bold text-gray-900 leading-tight">
-                  <TextBlock id="v2_sol_card3_title">Consulting<br />& Advisory</TextBlock>
+              {/* Sliding Panel: Right to Left */}
+              <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-20 p-8 lg:p-12 flex flex-col justify-center transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out">
+                <h4 className="text-2xl font-bold text-[#1e285a] mb-8">
+                  <TextBlock id="v2_sol_panel_usl_h">Usługi</TextBlock>
                 </h4>
+                <ul className="space-y-4 text-gray-700 font-medium text-lg">
+                  <li className="flex items-start gap-4">
+                    <span className="text-[#e11d48] mt-1"><ArrowRight size={16} /></span>
+                    <span><TextBlock id="v2_sol_pu_1">AI Workshop</TextBlock></span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="text-[#e11d48] mt-1"><ArrowRight size={16} /></span>
+                    <span><TextBlock id="v2_sol_pu_2">AI Prototyping & Product Discovery</TextBlock></span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="text-[#e11d48] mt-1"><ArrowRight size={16} /></span>
+                    <span><TextBlock id="v2_sol_pu_3">Digitalizacja i Custom Development</TextBlock></span>
+                  </li>
+                </ul>
               </div>
             </div>
 

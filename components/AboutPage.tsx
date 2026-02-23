@@ -237,6 +237,41 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                 </div>
             </section>
 
+            {/* QUALITY STANDARDIZATION */}
+            <section className="max-w-[1000px] mx-auto px-6 mb-24">
+                <div className="bg-[#1e285a] rounded-3xl py-14 px-8 shadow-xl text-center text-white">
+                    <h2 className="text-2xl md:text-3xl font-medium mb-10">
+                        Quality <span className="font-bold">Standardization</span>
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
+                        {/* Card 1 */}
+                        <div className="bg-white rounded-xl overflow-hidden flex flex-col text-left shadow-lg">
+                            <div className="bg-[#a3bce2] p-8 flex justify-center items-center h-48">
+                                <img src="/images/about/about13.png" alt="ISO 27001" className="h-full object-contain mix-blend-multiply" />
+                            </div>
+                            <div className="p-8">
+                                <h3 className="text-black font-extrabold text-lg mb-3">ISO 27001</h3>
+                                <p className="text-gray-600 text-[11px] leading-relaxed font-semibold">
+                                    Apzumi's <span className="font-extrabold text-black">Information Security Management System</span> is <span className="font-extrabold text-black">ISO 27001</span> certified, ensuring the highest standards of data protection and risk management.
+                                </p>
+                            </div>
+                        </div>
+                        {/* Card 2 */}
+                        <div className="bg-white rounded-xl overflow-hidden flex flex-col text-left shadow-lg">
+                            <div className="bg-[#a3bce2] p-8 flex justify-center items-center h-48">
+                                <img src="/images/about/about14.png" alt="ISO 13485" className="h-full object-contain mix-blend-multiply" />
+                            </div>
+                            <div className="p-8">
+                                <h3 className="text-black font-extrabold text-lg mb-3">ISO 13485</h3>
+                                <p className="text-gray-600 text-[11px] leading-relaxed font-semibold">
+                                    Systems developed by Apzumi are fully compliant with the <span className="font-extrabold text-black">ISO 13485</span> standard, ensuring the highest quality in the <span className="font-extrabold text-black">Design and Manufacture of Medical Devices</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
     );
 };

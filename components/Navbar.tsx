@@ -43,6 +43,13 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, version = 'v1'
           <div className="hidden md:flex items-center space-x-6 text-[13px] font-medium text-gray-600">
             <a
               href="#"
+              onClick={(e) => handleNavClick(e, 'solutions')}
+              className={`transition-colors py-2 ${currentView === 'solutions' ? 'text-[#1e285a] font-bold' : 'hover:text-[#1e285a]'}`}
+            >
+              <TextBlock id="nav_solutions_v2">Rozwiązania</TextBlock>
+            </a>
+            <a
+              href="#"
               onClick={(e) => handleNavClick(e, 'services')}
               className={`transition-colors py-2 ${currentView === 'services' ? 'text-[#1e285a] font-bold' : 'hover:text-[#1e285a]'}`}
             >
@@ -57,9 +64,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, version = 'v1'
             </a>
             <a href="#" className="transition-colors py-2 hover:text-[#1e285a]">
               <TextBlock id="nav_career_v2">Career</TextBlock>
-            </a>
-            <a href="#" className="transition-colors py-2 hover:text-[#1e285a]">
-              <TextBlock id="nav_insights_v2">Insights</TextBlock>
             </a>
             <a
               href="#"

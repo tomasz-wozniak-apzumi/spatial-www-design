@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import Awards from './components/Awards';
 import ClientLogos from './components/ClientLogos';
 import Solutions from './components/Solutions';
 import Process from './components/Process';
@@ -43,6 +44,7 @@ const App: React.FC = () => {
           {currentView === 'home' ? (
             <>
               <Hero version={globalVersion} />
+              <Awards version={globalVersion} />
               <ClientLogos />
               <Solutions onNavigate={setCurrentView} />
               <Process />

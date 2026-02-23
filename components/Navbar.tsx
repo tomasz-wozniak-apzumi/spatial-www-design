@@ -62,9 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, version = 'v1'
             >
               <TextBlock id="nav_cases_v2">Case Studies</TextBlock>
             </a>
-            <a href="#" className="transition-colors py-2 hover:text-[#1e285a]">
-              <TextBlock id="nav_career_v2">Kariera</TextBlock>
-            </a>
+
             <a
               href="#"
               onClick={(e) => handleNavClick(e, 'about')}

@@ -75,18 +75,6 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                         <p className="text-sm md:text-[15px] leading-relaxed text-gray-300 mx-auto mb-8 max-w-[480px]">
                             <TextBlock id="about_main_subtitle">Get to know the people, purpose, and principles behind our operations in the digital health industry</TextBlock>
                         </p>
-                        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                            <button className="border border-white/20 text-white bg-transparent hover:bg-white/10 shadow-sm rounded-[24px] px-8 py-3 text-sm font-semibold transition-colors flex items-center justify-between min-w-[200px]">
-                                <TextBlock id="about_btn_mission">Mission and Values</TextBlock>
-                                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                            </button>
-                            <button
-                                className="bg-apzumi-red hover:bg-red-600 text-white shadow-md rounded-[24px] px-8 py-3 text-sm font-semibold transition-colors flex items-center justify-between min-w-[200px]"
-                            >
-                                <TextBlock id="about_btn_contact">Our Team</TextBlock>
-                                <svg className="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </section>

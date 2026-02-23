@@ -7,6 +7,7 @@ import TextBlock from './TextBlock';
 import { useTextContext } from '../context/TextContext';
 import { CaseStudyItem } from '../types';
 import { textConfig } from '../textConfig';
+import ClientLogos from './ClientLogos';
 
 // Extended interface for the rich content from the articles
 interface RichCaseStudy extends CaseStudyItem {
@@ -337,15 +338,8 @@ const CaseStudiesPage: React.FC<{ onNavigate?: (view: ViewState) => void, versio
                </div>
 
                {/* Proof Strip */}
-               <div className="border-t border-white/10 pt-8 flex flex-col items-center">
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">
-                     <TextBlock id="cs_proof_label">{textConfig['cs_proof_label'][0]}</TextBlock>
-                  </p>
-                  <div className="flex gap-8 md:gap-12 opacity-40 grayscale items-center justify-center flex-wrap">
-                     <span className="text-xl font-bold font-serif">KAN</span>
-                     <span className="text-xl font-bold flex items-center gap-1"><Zap size={20} /> TAURON</span>
-                     <span className="text-xl font-bold">Volkswagen</span>
-                  </div>
+               <div className="pt-8">
+                  <ClientLogos />
                </div>
             </div>
          </section>

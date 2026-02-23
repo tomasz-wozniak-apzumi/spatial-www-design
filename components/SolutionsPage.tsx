@@ -367,18 +367,22 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
           </p>
 
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
-            <button
-              onClick={() => onNavigate?.('interactive_demo')}
-              className="bg-apzumi-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(240,78,78,0.4)]"
-            >
-              <TextBlock id="sol_page_hero_cta_demo">Wideo Demo</TextBlock>
-            </button>
-            <button
-              onClick={() => onNavigate?.('knowledge_base')}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(37,99,235,0.4)]"
-            >
-              <TextBlock id="sol_page_hero_cta_kb">Baza Wiedzy Demo</TextBlock>
-            </button>
+            {version !== 'v2' && (
+              <>
+                <button
+                  onClick={() => onNavigate?.('interactive_demo')}
+                  className="bg-apzumi-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(240,78,78,0.4)]"
+                >
+                  <TextBlock id="sol_page_hero_cta_demo">Wideo Demo</TextBlock>
+                </button>
+                <button
+                  onClick={() => onNavigate?.('knowledge_base')}
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(37,99,235,0.4)]"
+                >
+                  <TextBlock id="sol_page_hero_cta_kb">Baza Wiedzy Demo</TextBlock>
+                </button>
+              </>
+            )}
             <button className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg backdrop-blur-sm transition-all">
               <TextBlock id="sol_page_hero_cta_cases">Zobacz case studies</TextBlock>
             </button>
@@ -559,41 +563,43 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
       </section>
 
       {/* 7. CASE STUDIES PREVIEW */}
-      <section className="py-24 bg-gray-50 text-apzumi-dark px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12">
-            <TextBlock id="sol_cases_heading">Sprawdzone w środowisku produkcyjnym</TextBlock>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { id: '1', default: "Automotive: optymalizacja pracy na linii" },
-              { id: '2', default: "Utrzymanie ruchu: skrócenie czasu diagnozy awarii" },
-              { id: '3', default: "Quality/GMP: automatyzacja kontroli czystości linii" }
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group cursor-pointer"
-                onClick={() => onNavigate && onNavigate('casestudies')}
-              >
-                <div className="h-48 bg-gray-200 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-apzumi-dark opacity-80 group-hover:scale-105 transition-transform duration-700"></div>
-                  <div className="absolute top-4 left-4 bg-white text-apzumi-dark text-[10px] font-bold px-2 py-1 rounded uppercase">
-                    <TextBlock id="sol_case_label">Case Study</TextBlock>
+      {version !== 'v2' && (
+        <section className="py-24 bg-gray-50 text-apzumi-dark px-6">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-3xl font-bold mb-12">
+              <TextBlock id="sol_cases_heading">Sprawdzone w środowisku produkcyjnym</TextBlock>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { id: '1', default: "Automotive: optymalizacja pracy na linii" },
+                { id: '2', default: "Utrzymanie ruchu: skrócenie czasu diagnozy awarii" },
+                { id: '3', default: "Quality/GMP: automatyzacja kontroli czystości linii" }
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group cursor-pointer"
+                  onClick={() => onNavigate && onNavigate('casestudies')}
+                >
+                  <div className="h-48 bg-gray-200 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-apzumi-dark opacity-80 group-hover:scale-105 transition-transform duration-700"></div>
+                    <div className="absolute top-4 left-4 bg-white text-apzumi-dark text-[10px] font-bold px-2 py-1 rounded uppercase">
+                      <TextBlock id="sol_case_label">Case Study</TextBlock>
+                    </div>
+                  </div>
+                  <div className="p-8">
+                    <h3 className="font-bold text-lg mb-4">
+                      <TextBlock id={`sol_case_${item.id}`}>{item.default}</TextBlock>
+                    </h3>
+                    <span className="text-apzumi-red font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
+                      <TextBlock id="sol_case_link">Czytaj więcej</TextBlock> <ArrowRight size={16} />
+                    </span>
                   </div>
                 </div>
-                <div className="p-8">
-                  <h3 className="font-bold text-lg mb-4">
-                    <TextBlock id={`sol_case_${item.id}`}>{item.default}</TextBlock>
-                  </h3>
-                  <span className="text-apzumi-red font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                    <TextBlock id="sol_case_link">Czytaj więcej</TextBlock> <ArrowRight size={16} />
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 8. FINAL CTA FORM */}
       <section id="contact" className="py-24 bg-apzumi-dark px-6 border-t border-white/10">

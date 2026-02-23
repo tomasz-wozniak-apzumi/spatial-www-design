@@ -249,7 +249,7 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
               }}
             >
               <div className="absolute inset-0 z-0">
-                <img src="/images/HeroScreen4.png" alt="Rozwiązania" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src="/images/SolutionsPanel.png" alt="Rozwiązania" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0"></div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-10 bg-white z-10 flex items-center justify-between">
@@ -296,7 +296,7 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
               }}
             >
               <div className="absolute inset-0 z-0">
-                <img src="/images/HeroScreen3.png" alt="Usługi" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src="/images/ServicesPanel.png" alt="Usługi" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0"></div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-10 bg-white z-10 flex items-center justify-between">

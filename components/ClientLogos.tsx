@@ -7,11 +7,6 @@ const ClientLogos: React.FC = () => {
     <div className="bg-white py-12 px-6 overflow-hidden relative">
       <div className="max-w-7xl mx-auto">
         <div className="bg-[#293b7b] rounded-3xl py-8 md:py-10 overflow-hidden shadow-lg border border-[#1e285a]/20">
-          <div className="text-center mb-8">
-            <TextBlock id="client_logos_title" as="h3" className="text-white text-xl md:text-2xl font-semibold">
-              Trusted by Digital Health
-            </TextBlock>
-          </div>
           <div className="w-full flex">
             {/* CSS Animation defined in index.css */}
             <div className="flex animate-scroll whitespace-nowrap transition-opacity duration-300">

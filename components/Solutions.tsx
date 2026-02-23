@@ -227,18 +227,12 @@ const Solutions: React.FC<SolutionsProps> = ({ onNavigate, version = 'v1' }) => 
   if (version === 'v2') {
     return (
       <section className="py-24 bg-white px-4 md:px-8">
-        <div className="max-w-7xl mx-auto bg-[#4a7de8] rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-16 relative overflow-hidden text-white shadow-xl">
+        <div className="max-w-7xl mx-auto bg-[#293b7b] rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-16 relative overflow-hidden text-white shadow-xl">
 
           <div className="text-center mb-12 relative z-10">
             <h2 className="text-3xl md:text-4xl font-semibold">
-              <TextBlock id="v2_solutions_heading">Our Offer</TextBlock>
+              <TextBlock id="v2_solutions_heading">Nasza Oferta</TextBlock>
             </h2>
-          </div>
-
-          <div className="flex justify-between items-end mb-6 relative z-10">
-            <h3 className="text-2xl font-semibold">
-              <TextBlock id="v2_solutions_subheading">Services</TextBlock>
-            </h3>
           </div>
 
           {/* Cards Grid */}

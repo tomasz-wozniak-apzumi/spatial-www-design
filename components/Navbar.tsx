@@ -53,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, version = 'v1'
               onClick={(e) => handleNavClick(e, 'services')}
               className={`transition-colors py-2 ${currentView === 'services' ? 'text-[#1e285a] font-bold' : 'hover:text-[#1e285a]'}`}
             >
-              <TextBlock id="nav_services_v2">Services</TextBlock>
+              <TextBlock id="nav_services_v2">Usługi</TextBlock>
             </a>
             <a
               href="#"
@@ -63,7 +63,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, version = 'v1'
               <TextBlock id="nav_cases_v2">Case Studies</TextBlock>
             </a>
             <a href="#" className="transition-colors py-2 hover:text-[#1e285a]">
-              <TextBlock id="nav_career_v2">Career</TextBlock>
+              <TextBlock id="nav_career_v2">Kariera</TextBlock>
             </a>
             <a
               href="#"
@@ -89,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, version = 'v1'
             }}
             className="bg-[#293b7b] hover:bg-[#1e285a] transition-colors text-white text-[13px] font-medium px-5 py-2 rounded-full cursor-pointer shadow-sm"
           >
-            <TextBlock id="nav_contact_v2">Contact Us</TextBlock>
+            <TextBlock id="nav_contact_v2">Skontaktuj się z nami</TextBlock>
           </button>
 
           {/* Mobile Menu Icon (still needed for responsiveness) */}

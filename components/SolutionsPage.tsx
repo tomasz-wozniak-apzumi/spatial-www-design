@@ -388,12 +388,13 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
             </button>
           </div>
 
-          {/* Animated Client Logos */}
-          <div className="mt-8 -mx-6 md:mx-0">
-            <ClientLogos />
-          </div>
         </div>
       </section>
+
+      {/* Animated Client Logos */}
+      <div className={`w-full ${version === 'v2' ? 'bg-gray-50 pt-8' : 'pt-8'}`}>
+        <ClientLogos />
+      </div>
 
       {/* 2. STICKY FILTER NAV */}
       <div className={`sticky top-[72px] z-40 backdrop-blur-xl border-y py-4 ${version === 'v2' ? 'bg-white/90 border-gray-200' : 'bg-apzumi-dark/80 border-white/10'}`}>

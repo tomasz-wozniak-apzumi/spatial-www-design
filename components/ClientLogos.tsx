@@ -7,6 +7,7 @@ const ClientLogos: React.FC = () => {
     <div className="py-12 px-6 overflow-hidden relative w-full">
       <div className="max-w-7xl mx-auto">
         <div className="bg-[#293b7b] rounded-3xl py-12 md:py-16 overflow-hidden shadow-lg border border-[#1e285a]/20">
+          <p className="text-white text-center font-bold text-sm tracking-widest uppercase mb-8 opacity-80">Trusted by Companies</p>
           <div className="w-full flex">
             {/* CSS Animation defined in index.css */}
             <div className="flex animate-scroll whitespace-nowrap items-center">

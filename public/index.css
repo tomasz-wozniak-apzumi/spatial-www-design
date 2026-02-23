@@ -16,6 +16,10 @@
   animation: scroll 30s linear infinite;
 }
 
+.animate-scroll-reverse {
+  animation: scroll 30s linear infinite reverse;
+}
+
 @keyframes scanline {
   0% {
     top: 0%;

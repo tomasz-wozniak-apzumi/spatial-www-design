@@ -6,6 +6,7 @@ import {
 import TextBlock from './TextBlock';
 import { useTextContext } from '../context/TextContext';
 import { ViewState } from '../App';
+import ClientLogos from './ClientLogos';
 
 interface SolutionsPageProps {
   onNavigate?: (view: ViewState) => void;
@@ -383,9 +384,9 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
             </button>
           </div>
 
-          {/* Trust Row Placeholder */}
-          <div className="border-t border-white/10 pt-8 opacity-40 grayscale flex justify-center gap-8 md:gap-16 flex-wrap text-sm font-bold tracking-widest">
-            <span>VW</span> • <span>NGK</span> • <span>KAN</span> • <span>HALEON</span> • <span>IMPEL</span> • <span>TAURON</span>
+          {/* Animated Client Logos */}
+          <div className="mt-8 -mx-6 md:mx-0">
+            <ClientLogos />
           </div>
         </div>
       </section>

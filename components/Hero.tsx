@@ -24,7 +24,7 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
     if (version !== 'v2') return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000); // Change image every 4 seconds
+    }, 5000); // Change image every 5 seconds (from 4s)
     return () => clearInterval(interval);
   }, [version]);
 
@@ -55,8 +55,8 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
   if (version === 'v2') {
     return (
       <section className="bg-white min-h-screen pt-24 pb-0 flex flex-col lg:flex-row relative overflow-hidden">
-        {/* Left Content Area */}
-        <div className="w-full lg:w-5/12 px-6 lg:pl-16 xl:pl-32 xl:pr-12 pt-16 lg:pt-32 flex flex-col justify-center items-start lg:items-start z-10 transition-transform duration-1000 ease-out" style={{ transform: `translateY(${textTranslate}px)` }}>
+        {/* Left Content Area (Wider Now) */}
+        <div className="w-full lg:w-3/5 px-6 lg:pl-16 xl:pl-32 xl:pr-12 pt-16 lg:pt-32 flex flex-col justify-center items-start lg:items-start z-10 transition-transform duration-1000 ease-out" style={{ transform: `translateY(${textTranslate}px)` }}>
 
           {/* Logo */}
           <div className="flex items-center gap-4 mb-4">
@@ -94,27 +94,42 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
           </div>
         </div>
 
-        {/* Right Image Area */}
-        <div className="w-full lg:w-7/12 h-[60vh] lg:h-auto min-h-[500px] mt-12 lg:mt-0 relative">
+        {/* Right Image Area (Narrower Now) */}
+        <div className="w-full lg:w-2/5 h-[60vh] lg:h-auto min-h-[500px] mt-12 lg:mt-0 relative overflow-visible">
           <div
-            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-50px] overflow-hidden rounded-l-[100px] lg:rounded-l-[250px] bg-gray-200 transition-transform duration-1000 ease-out"
+            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-50px] overflow-hidden rounded-l-[100px] lg:rounded-l-[400px] bg-gray-200 transition-transform duration-1000 ease-out z-0"
             style={{
               transform: `scale(${graphicScale}) translate(${scrollY * 0.05}px, ${scrollY * 0.05}px)`
             }}
           >
-            {/* Overlay to give a slightly bluish tint as seen in screenshot */}
-            <div className="absolute inset-0 bg-[#293b7b]/20 mix-blend-multiply z-20 pointer-events-none"></div>
+            {/* Background color behind images */}
+            <div className="absolute inset-0 bg-[#A6B1CD]"></div>
 
-            {/* The Image Slider */}
-            {slides.map((src, index) => (
-              <img
-                key={src}
-                src={src}
-                alt={`Hero Slide ${index + 1}`}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-10 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
-                  }`}
-              />
-            ))}
+            {/* Overlay to give a slightly bluish tint as seen in screenshot */}
+            <div className="absolute inset-0 bg-[#293b7b]/30 mix-blend-multiply z-20 pointer-events-none"></div>
+
+            {/* The Image Slider (Slide from right to left) */}
+            {slides.map((src, index) => {
+              // Calculate position: 
+              // previous slide goes left (-100%)
+              // current slide is center (0%)
+              // next slide is right (100%)
+              let position = 'translate-x-[100%] opacity-0'; // Default right (incoming)
+              if (index === currentSlide) {
+                position = 'translate-x-0 opacity-100'; // Active center
+              } else if (index === (currentSlide - 1 + slides.length) % slides.length) {
+                position = '-translate-x-[100%] opacity-0'; // Previous left (outgoing)
+              }
+
+              return (
+                <img
+                  key={src}
+                  src={src}
+                  alt={`Hero Slide ${index + 1}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out z-10 block ${position}`}
+                />
+              );
+            })}
           </div>
         </div>
       </section>

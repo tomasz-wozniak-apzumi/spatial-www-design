@@ -178,7 +178,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                     {/* Recognition 1 */}
                     <div className="flex flex-col md:flex-row gap-4 h-auto md:h-32">
                         <div className="w-full md:w-1/3 rounded-xl overflow-hidden shadow-sm">
-                            <img src="https://images.unsplash.com/photo-1616599725890-0f231e6b3564?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover" alt="Diamonds" />
+                            <img src="/images/about/about9.png" className="w-full h-full object-cover" alt="Diamonds" />
                         </div>
                         <div className="w-full md:w-2/3 border border-[#2a3c7b] rounded-xl p-6 flex justify-between items-center text-left hover:shadow-md transition-shadow">
                             <div className="pr-6">
@@ -199,14 +199,14 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                             <div className="text-green-500 font-bold text-4xl whitespace-nowrap"><span className="text-xl text-gray-400 font-normal">3x</span> 50</div>
                         </div>
                         <div className="w-full md:w-1/3 rounded-xl overflow-hidden shadow-sm">
-                            <img src="https://images.unsplash.com/photo-1542382103-68d27fb4cefa?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover" alt="Deloitte" />
+                            <img src="/images/about/about10.png" className="w-full h-full object-cover p-8 object-contain bg-gray-50 bg-opacity-50" alt="Deloitte" />
                         </div>
                     </div>
 
                     {/* Recognition 3 */}
                     <div className="flex flex-col md:flex-row gap-4 h-auto md:h-32">
                         <div className="w-full md:w-1/3 rounded-xl overflow-hidden shadow-sm">
-                            <img src="https://images.unsplash.com/photo-1507676184212-d0330a15183ca?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover" alt="Financial Times" />
+                            <img src="/images/about/about11.png" className="w-full h-full object-cover p-8 object-contain bg-gray-50 bg-opacity-50" alt="Financial Times" />
                         </div>
                         <div className="w-full md:w-2/3 border border-[#2a3c7b] rounded-xl p-6 flex justify-between items-center text-left hover:shadow-md transition-shadow">
                             <div className="pr-6">
@@ -231,7 +231,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                             </div>
                         </div>
                         <div className="w-full md:w-1/3 rounded-xl overflow-hidden shadow-sm">
-                            <img src="https://images.unsplash.com/photo-1555529902-5261145633bf?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover" alt="Clutch team" />
+                            <img src="/images/about/about12.png" className="w-full h-full object-cover p-6 object-contain bg-gray-50 bg-opacity-50" alt="Clutch awards" />
                         </div>
                     </div>
                 </div>

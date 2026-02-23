@@ -37,7 +37,7 @@ const App: React.FC = () => {
       >
         <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden relative">
           {currentView !== 'interactive_demo' && (
-            <Navbar currentView={currentView} onNavigate={setCurrentView} />
+            <Navbar currentView={currentView} onNavigate={setCurrentView} version={globalVersion} />
           )}
 
           {currentView === 'home' ? (

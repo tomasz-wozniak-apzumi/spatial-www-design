@@ -1,5 +1,6 @@
 import { X, FileText, Image as ImageIcon, FileCode2, Send, BrainCircuit, Plus, Wand2, Sparkles, Layers, Loader2, Volume2, VolumeX } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
+import { ViewState } from '../App';
 
 interface KnowledgeBaseDemoProps {
     onNavigate: (view: ViewState) => void;
@@ -317,7 +318,7 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                 </div>
 
                 {/* Sticky Chat UI */}
-                <div className={"absolute bottom-0 left-0 w-full bg-[#0a0f1d]/85 backdrop-blur-3xl border-t border-white/10 py-6 px-12 transition-all duration-700 shadow-[0_-30px_80px_rgba(0,0,0,0.6)] " + ((phase === 'ready' || phase === 'chatting') ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0')}>
+                <div className={"absolute bottom-0 left-0 w-full h-[360px] bg-[#0a0f1d]/85 backdrop-blur-3xl border-t border-white/10 py-6 px-12 transition-all duration-700 shadow-[0_-30px_80px_rgba(0,0,0,0.6)] " + ((phase === 'ready' || phase === 'chatting') ? 'translate-y-0 opacity-100 z-[10005]' : 'translate-y-full opacity-0 pointer-events-none')}>
 
                     {/* Chat Header Header */}
                     <div className="flex items-center gap-3 mb-4 pb-4 border-b border-white/5 mx-auto max-w-5xl">
@@ -325,11 +326,11 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                         <span className="text-xs font-bold text-gray-300 uppercase tracking-widest">{hasCustomBase ? 'Apzumi Custom Assistant' : 'Apzumi Spatial Assistant'}</span>
                     </div>
 
-                    <div className="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto w-full">
+                    <div className="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto w-full h-[calc(100%-40px)]">
                         {/* Main Chat Area (Left) */}
-                        <div className="flex-1 flex flex-col">
+                        <div className="flex-1 flex flex-col h-full">
                             {/* Chat History */}
-                            <div className="h-64 overflow-y-auto mb-6 flex flex-col gap-6 pr-4 custom-scrollbar w-full">
+                            <div className="flex-1 overflow-y-auto mb-6 flex flex-col gap-6 pr-4 custom-scrollbar w-full">
                                 {messages.map((m, idx) => (
                                     <div key={idx} className={"flex flex-col max-w-[85%] " + (m.role === 'user' ? 'self-end items-end' : 'self-start items-start')}>
                                         <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 ml-2">
@@ -359,8 +360,8 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                                 )}
                             </div>
 
-                            {/* Chat Input */}
-                            <div className="relative flex items-center gap-4 bg-black/40 p-2.5 rounded-full border border-white/10 shadow-inner w-full">
+                            {/* Chat Input (Sticky at bottom) */}
+                            <div className="relative flex items-center gap-4 bg-black/40 p-2.5 rounded-full border border-white/10 shadow-inner w-full shrink-0">
                                 <div className="relative flex-1">
                                     <input
                                         type="text"
@@ -384,9 +385,9 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                         </div>
 
                         {/* Predefined Questions & File List Sidebar (Right) */}
-                        <div className="w-full md:w-1/3 flex flex-col gap-4 max-h-64 md:max-h-full pb-3 hidden md:flex">
+                        <div className="w-full md:w-1/3 flex flex-col gap-4 h-full pb-3 hidden md:flex">
                             {!hasCustomBase && (
-                                <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-3 shrink-0">
                                     <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Przykładowe pytania</h4>
                                     <div className="flex flex-col gap-2">
                                         {predefinedQuestions.map((q, idx) => (
@@ -404,16 +405,28 @@ const KnowledgeBaseDemo: React.FC<KnowledgeBaseDemoProps> = ({ onNavigate }) => 
                             )}
 
                             {/* File List */}
-                            <div className="flex flex-col gap-3 flex-1 overflow-hidden">
-                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1 mt-1">Dostępne dokumenty ({DEMO_FILES.length})</h4>
-                                <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2 pb-2">
-                                    {DEMO_FILES.map(file => (
-                                        <div key={file.id} className="bg-white/5 border border-white/10 p-2.5 rounded-xl flex items-center gap-3 shrink-0 relative overflow-hidden group hover:bg-white/10 transition-colors">
-                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500/0 via-blue-500/50 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                            {React.createElement(file.icon, { size: 16, className: file.color })}
-                                            <span className="text-xs text-gray-300 truncate font-medium">{file.name}</span>
-                                        </div>
-                                    ))}
+                            <div className="flex flex-col gap-3 flex-1 min-h-0 overflow-hidden">
+                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1 mt-1">
+                                    Dostępne dokumenty ({hasCustomBase ? customSources.length : DEMO_FILES.length})
+                                </h4>
+                                <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2 pb-2 h-full">
+                                    {hasCustomBase ? (
+                                        customSources.map(file => (
+                                            <div key={file.id} className="bg-white/5 border border-white/10 p-2.5 rounded-xl flex items-center gap-3 shrink-0 relative overflow-hidden group hover:bg-white/10 transition-colors">
+                                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-teal-500/0 via-teal-500/50 to-teal-500/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                <Layers size={16} className="text-teal-400 shrink-0" />
+                                                <span className="text-xs text-gray-300 truncate font-medium">{file.name}</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        DEMO_FILES.map(file => (
+                                            <div key={file.id} className="bg-white/5 border border-white/10 p-2.5 rounded-xl flex items-center gap-3 shrink-0 relative overflow-hidden group hover:bg-white/10 transition-colors">
+                                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500/0 via-blue-500/50 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                {React.createElement(file.icon, { size: 16, className: file.color + " shrink-0" })}
+                                                <span className="text-xs text-gray-300 truncate font-medium">{file.name}</span>
+                                            </div>
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         </div>

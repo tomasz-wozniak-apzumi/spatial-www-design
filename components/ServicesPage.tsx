@@ -179,7 +179,7 @@ const ServiceCardV2: React.FC<{
     <div
       className={`group relative p-8 rounded-3xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row items-center gap-8 border backdrop-blur-sm
         ${isActive
-          ? 'bg-emerald-900/30 border-emerald-500/50 shadow-[0_0_40px_rgba(16,185,129,0.15)] scale-[1.02]'
+          ? 'bg-[#1e285a]/40 border-[#4a7de8]/50 shadow-[0_0_40px_rgba(74,125,232,0.15)] scale-[1.02]'
           : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10'
         }`}
     >
@@ -206,7 +206,7 @@ const ServiceCardV2: React.FC<{
       <div className="flex-1 w-full space-y-3">
         {data.bullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2">
-            <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+            <CheckCircle2 size={16} className="text-[#4a7de8] shrink-0 mt-0.5" />
             <span className="text-gray-300 text-sm">{bullet}</span>
           </div>
         ))}
@@ -566,7 +566,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
 
   const getBgClass = () => {
     switch (version) {
-      case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
+      case 'v2': return 'bg-gradient-to-br from-[#3b52a1] to-[#1e285a]';
       case 'v1':
       case 'v3':
       default: return 'bg-apzumi-dark';

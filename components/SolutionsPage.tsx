@@ -301,7 +301,7 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
 
   const getBgClass = () => {
     switch (version) {
-      case 'v2': return 'bg-gradient-to-br from-emerald-900 to-[#0a2e1d]';
+      case 'v2': return 'bg-gradient-to-br from-[#3b52a1] to-[#1e285a]';
       case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
       case 'v1':
       default: return 'bg-apzumi-dark';

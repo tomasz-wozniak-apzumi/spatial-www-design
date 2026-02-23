@@ -19,8 +19,6 @@ interface CommentContextType {
 
 const CommentContext = createContext<CommentContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'apzumi_design_comments_v1';
-
 export const CommentProvider: React.FC<{ children: React.ReactNode, currentView: string }> = ({ children, currentView }) => {
     const [comments, setComments] = useState<DesignComment[]>([]);
     const [activePlacement, setActivePlacement] = useState<{ x: number, y: number } | null>(null);
@@ -29,29 +27,26 @@ export const CommentProvider: React.FC<{ children: React.ReactNode, currentView:
     const isSyncingRef = useRef(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
-    // Initial load & Polling
+    // Fetch on mount and when view changes
     useEffect(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) setComments(JSON.parse(saved));
-        fetchGlobalComments();
+        const storageKey = `apzumi_comments_${currentView}`;
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+            setComments(JSON.parse(saved));
+        } else {
+            setComments([]);
+        }
+        fetchGlobalComments(currentView, storageKey);
+    }, [currentView]);
 
-        const interval = setInterval(() => {
-            if (!isSyncingRef.current) {
-                fetchGlobalComments();
-            }
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    const fetchGlobalComments = async () => {
+    const fetchGlobalComments = async (scope: string, storageKey: string) => {
         try {
-            const response = await fetch('/api/config?type=comments');
+            const response = await fetch(`/api/config?type=comments&scope=${scope}`);
             if (response.ok) {
                 const data = await response.json();
                 if (Array.isArray(data)) {
                     setComments(data);
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    localStorage.setItem(storageKey, JSON.stringify(data));
                     return data as DesignComment[];
                 }
             }
@@ -64,15 +59,18 @@ export const CommentProvider: React.FC<{ children: React.ReactNode, currentView:
     const syncToGlobal = async (mutation: (current: DesignComment[]) => DesignComment[]) => {
         setIsSyncing(true);
         isSyncingRef.current = true;
+        const currentScope = currentView;
+        const storageKey = `apzumi_comments_${currentScope}`;
+
         try {
-            const fresh = await fetchGlobalComments();
+            const fresh = await fetchGlobalComments(currentScope, storageKey);
             const baseComments = fresh || comments;
             const updated = mutation(baseComments);
 
             setComments(updated);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+            localStorage.setItem(storageKey, JSON.stringify(updated));
 
-            await fetch('/api/config?type=comments', {
+            await fetch(`/api/config?type=comments&scope=${currentScope}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updated)
@@ -169,8 +167,8 @@ export const CommentProvider: React.FC<{ children: React.ReactNode, currentView:
                     </div>
                 )}
 
-                {/* Render all comments as sticky notes */}
-                {comments.filter(c => !c.page || c.page === currentView).map(comment => (
+                {/* Render all comments as sticky notes for current scope */}
+                {comments.map(comment => (
                     <div
                         key={comment.id}
                         style={{ left: `${comment.x}%`, top: `${comment.y}%` }}

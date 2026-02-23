@@ -10,7 +10,8 @@ export default async function handler(
 ) {
     try {
         const type = request.query.type as string;
-        const filename = type === 'comments' ? COMMENTS_FILENAME : CONFIG_FILENAME;
+        const scope = (request.query.scope as string) || 'global';
+        const filename = `${scope}-${type === 'comments' ? COMMENTS_FILENAME : CONFIG_FILENAME}`;
 
         if (request.method === 'GET') {
             const { blobs } = await list();
@@ -20,7 +21,15 @@ export default async function handler(
                 return response.status(200).json(type === 'comments' ? [] : {});
             }
 
-            const data = await fetch(configBlob.url).then(r => r.json());
+            // Append a timestamp to the fetch URL to aggressively prevent caching
+            const fetchUrl = `${configBlob.url}?t=${Date.now()}`;
+            const data = await fetch(fetchUrl, { cache: 'no-store' }).then(r => r.json());
+
+            response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+            response.setHeader('Pragma', 'no-cache');
+            response.setHeader('Expires', '0');
+            response.setHeader('Surrogate-Control', 'no-store');
+
             return response.status(200).json(data);
         }
 

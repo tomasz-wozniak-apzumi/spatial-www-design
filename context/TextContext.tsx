@@ -22,8 +22,6 @@ interface TextContextType {
 
 const TextContext = createContext<TextContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'apzumi_text_config_v1';
-
 export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: string }> = ({ children, viewScope }) => {
   // Store the entire configuration state: current text and dynamic alternatives list for each ID
   const [storedConfig, setStoredConfig] = useState<Record<string, StoredConfigItem>>({});
@@ -41,15 +39,17 @@ export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: str
 
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Fetch from global API on mount
-  const fetchGlobalConfig = async () => {
+  // Fetch from global API
+  const fetchGlobalConfig = async (scope: string, storageKey: string) => {
     try {
-      const response = await fetch('/api/config');
+      const response = await fetch(`/api/config?scope=${scope}`);
       if (response.ok) {
         const data = await response.json();
         if (data && Object.keys(data).length > 0) {
           setStoredConfig(data);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          localStorage.setItem(storageKey, JSON.stringify(data));
+        } else {
+          setStoredConfig({});
         }
       }
     } catch (e) {
@@ -60,8 +60,9 @@ export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: str
   // Push to global API
   const syncToGlobal = async (config: Record<string, StoredConfigItem>) => {
     setIsSyncing(true);
+    const scope = viewScope || 'global';
     try {
-      await fetch('/api/config', {
+      await fetch(`/api/config?scope=${scope}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(config)
@@ -73,41 +74,43 @@ export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: str
     }
   };
 
-  // Load from LocalStorage on mount (for immediate display) then fetch global
+  // Load from LocalStorage on mount and when viewScope changes (for immediate display) then fetch global
   useEffect(() => {
+    const scope = viewScope || 'global';
+    const storageKey = `apzumi_text_${scope}`;
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(storageKey);
       if (saved) {
         setStoredConfig(JSON.parse(saved));
+      } else {
+        setStoredConfig({});
       }
     } catch (e) {
       console.error("Failed to load local config", e);
     } finally {
       setIsLoaded(true);
-      fetchGlobalConfig();
+      fetchGlobalConfig(scope, storageKey);
     }
-  }, []);
+  }, [viewScope]);
 
   // Save to LocalStorage whenever config changes locally
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(storedConfig));
+      const scope = viewScope || 'global';
+      const storageKey = `apzumi_text_${scope}`;
+      localStorage.setItem(storageKey, JSON.stringify(storedConfig));
     }
-  }, [storedConfig, isLoaded]);
-
-  const getStorageKey = (id: string) => {
-    return viewScope ? `${id}_${viewScope}` : id;
-  };
+  }, [storedConfig, isLoaded, viewScope]);
 
   const getText = (id: string, defaultText: string) => {
     // If we have a stored version, use it. Otherwise use the JSX default.
-    return storedConfig[getStorageKey(id)]?.current || defaultText;
+    return storedConfig[id]?.current || defaultText;
   };
 
   const getAlternatives = (id: string) => {
     // If we have stored alternatives (because of a previous swap), use them.
     // Otherwise use the static config from file.
-    return storedConfig[getStorageKey(id)]?.alternatives || textConfig[id] || [];
+    return storedConfig[id]?.alternatives || textConfig[id] || [];
   };
 
   const openMenu = (e: React.MouseEvent, id: string, currentText: string) => {
@@ -142,8 +145,6 @@ export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: str
       // Get current available alternatives
       const currentAlternatives = getAlternatives(id);
 
-      const storageKey = getStorageKey(id);
-
       // SWAP LOGIC:
       // 1. Remove the text we just selected from the alternatives list (if it exists there)
       // 2. Add the text that was previously displayed to the alternatives list
@@ -156,7 +157,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: str
 
       const updatedConfig = {
         ...storedConfig,
-        [storageKey]: {
+        [id]: {
           current: newText,
           alternatives: uniqueAlternatives
         }
@@ -175,9 +176,8 @@ export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: str
 
   const handleReset = () => {
     if (menu.id) {
-      const storageKey = getStorageKey(menu.id);
       const newConfig = { ...storedConfig };
-      delete newConfig[storageKey]; // Remove from storage, reverting to JSX default and static config
+      delete newConfig[menu.id]; // Remove from storage, reverting to JSX default and static config
       setStoredConfig(newConfig);
       syncToGlobal(newConfig);
       setMenu(prev => ({ ...prev, visible: false }));

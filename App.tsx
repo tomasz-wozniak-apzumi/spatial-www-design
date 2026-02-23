@@ -27,11 +27,9 @@ const App: React.FC = () => {
 
   return (
     <TextProvider
-      key={`text_${currentView === 'home' ? homeVersion : currentView}`}
       viewScope={currentView === 'home' ? `home_${homeVersion}` : undefined}
     >
       <CommentProvider
-        key={`comment_${currentView === 'home' ? homeVersion : currentView}`}
         currentView={currentView === 'home' ? `home_${homeVersion}` : currentView}
       >
         <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden relative">

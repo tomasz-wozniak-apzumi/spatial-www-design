@@ -56,7 +56,7 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
     return (
       <section className="bg-white min-h-screen pt-24 pb-0 flex flex-col lg:flex-row relative overflow-hidden">
         {/* Left Content Area (Pushed towards center and enlarged) */}
-        <div className="w-full lg:w-[60%] px-6 lg:pl-32 xl:pl-56 xl:pr-12 pt-16 lg:pt-0 flex flex-col justify-center items-start lg:items-start z-10 transition-transform duration-1000 ease-out h-[50vh] lg:h-[80vh]" style={{ transform: `translateY(${textTranslate}px)` }}>
+        <div className="w-full lg:w-[60%] px-6 lg:pl-32 xl:pl-56 xl:pr-12 pt-16 lg:pt-0 flex flex-col justify-center items-start lg:items-start z-10 h-[50vh] lg:h-[80vh]">
 
           {/* Logo */}
           <div className="flex items-center gap-6 mb-4">
@@ -97,10 +97,7 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
         {/* Right Image Area (Reduced width/height, vertically centered) */}
         <div className="w-full lg:w-[40%] h-[50vh] lg:h-[75vh] min-h-[400px] mt-12 lg:mt-0 self-center relative overflow-visible">
           <div
-            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-100px] overflow-hidden rounded-l-[100px] lg:rounded-l-[400px] bg-gray-200 transition-transform duration-1000 ease-out z-0"
-            style={{
-              transform: `scale(${graphicScale}) translate(${scrollY * 0.05}px, ${scrollY * 0.05}px)`
-            }}
+            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-100px] overflow-hidden rounded-l-[100px] lg:rounded-l-[400px] bg-gray-200 z-0"
           >
             {/* Background color behind images */}
             <div className="absolute inset-0 bg-[#A6B1CD]"></div>

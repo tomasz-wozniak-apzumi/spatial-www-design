@@ -132,15 +132,17 @@ const solutionsData: SolutionData[] = [
 const SolutionCard: React.FC<{
   data: SolutionData;
   isActive: boolean;
-  onSelect: () => void
-}> = ({ data, isActive, onSelect }) => {
+  onSelect: () => void;
+  version?: 'v1' | 'v2' | 'v3';
+}> = ({ data, isActive, onSelect, version = 'v1' }) => {
+  const isV2 = version === 'v2';
   return (
     <div
-      className={`group relative p-8 rounded-3xl transition-all duration-500 overflow-hidden flex flex-col h-full border
+      className={`group relative p-8 rounded-3xl transition-all duration-500 overflow-hidden flex flex-col h-full border backdrop-blur-sm
         ${isActive
-          ? 'bg-blue-900/30 border-apzumi-red/50 shadow-[0_0_40px_rgba(240,78,78,0.15)] scale-[1.02]'
-          : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10'
-        } backdrop-blur-sm`}
+          ? (isV2 ? 'bg-[#1e285a]/5 border-[#4a7de8]/50 shadow-md scale-[1.02]' : 'bg-blue-900/30 border-apzumi-red/50 shadow-[0_0_40px_rgba(240,78,78,0.15)] scale-[1.02]')
+          : (isV2 ? 'bg-white border-gray-200 hover:border-gray-300 shadow-sm' : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10')
+        }`}
     >
       {/* Trigger Callout */}
       {isActive && (
@@ -150,10 +152,10 @@ const SolutionCard: React.FC<{
       )}
 
       <div className="mt-6 mb-4">
-        <h3 className="text-2xl font-bold text-white mb-3 leading-tight">
+        <h3 className={`text-2xl font-bold mb-3 leading-tight ${isV2 ? 'text-[#1e285a]' : 'text-white'}`}>
           <TextBlock id={`sol_item_${data.id}_title`}>{data.title}</TextBlock>
         </h3>
-        <p className="text-gray-300 text-sm leading-relaxed min-h-[40px]">
+        <p className={`text-sm leading-relaxed min-h-[40px] ${isV2 ? 'text-gray-600' : 'text-gray-300'}`}>
           <TextBlock id={`sol_item_${data.id}_val`}>{data.valueLine}</TextBlock>
         </p>
       </div>
@@ -161,21 +163,21 @@ const SolutionCard: React.FC<{
       <div className="space-y-3 mb-8 flex-grow">
         {data.bullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2">
-            <CheckCircle2 size={16} className="text-apzumi-red shrink-0 mt-0.5" />
-            <span className="text-gray-400 text-xs">
+            <CheckCircle2 size={16} className={`shrink-0 mt-0.5 ${isV2 ? 'text-[#4a7de8]' : 'text-apzumi-red'}`} />
+            <span className={`text-xs ${isV2 ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>
               <TextBlock id={`sol_item_${data.id}_bull_${idx}`}>{bullet}</TextBlock>
             </span>
           </div>
         ))}
       </div>
 
-      <div className="bg-black/20 rounded-xl p-4 mb-6 border border-white/5">
-        <div className="text-[10px] uppercase tracking-widest text-gray-500 mb-2 font-bold">
+      <div className={`rounded-xl p-4 mb-6 border ${isV2 ? 'bg-gray-50 border-gray-200' : 'bg-black/20 border-white/5'}`}>
+        <div className={`text-[10px] uppercase tracking-widest mb-2 font-bold ${isV2 ? 'text-gray-500' : 'text-gray-500'}`}>
           <TextBlock id="sol_grid_effects_label">Potencjalne efekty</TextBlock>
         </div>
         <div className="space-y-1">
           {data.effects.map((effect, idx) => (
-            <div key={idx} className="text-green-400 text-xs font-mono font-bold">
+            <div key={idx} className={`text-xs font-mono font-bold ${isV2 ? 'text-[#4a7de8]' : 'text-green-400'}`}>
               <TextBlock id={`sol_item_${data.id}_eff_${idx}`}>{effect}</TextBlock>
             </div>
           ))}
@@ -183,13 +185,16 @@ const SolutionCard: React.FC<{
       </div>
 
       {/* Trigger Context */}
-      <div className="mb-6 pl-4 border-l-2 border-gray-600 italic text-gray-400 text-xs">
+      <div className={`mb-6 pl-4 border-l-2 italic text-xs ${isV2 ? 'border-gray-300 text-gray-500' : 'border-gray-600 text-gray-400'}`}>
         "<TextBlock id={`sol_item_${data.id}_trig`}>{data.trigger}</TextBlock>"
       </div>
 
       <button
         onClick={onSelect}
-        className="mt-auto w-full py-3 rounded-xl border border-white/20 text-white font-semibold text-sm hover:bg-white hover:text-apzumi-dark transition-all flex items-center justify-center gap-2 group-hover:border-white/40"
+        className={`mt-auto w-full py-3 rounded-xl border font-semibold text-sm transition-all flex items-center justify-center gap-2 
+          ${isV2
+            ? 'border-gray-300 text-[#1e285a] hover:bg-[#1e285a] hover:text-white group-hover:border-gray-400'
+            : 'border-white/20 text-white hover:bg-white hover:text-apzumi-dark group-hover:border-white/40'}`}
       >
         <TextBlock id="sol_grid_btn_details">Zobacz szczegóły</TextBlock> <ArrowRight size={16} />
       </button>
@@ -301,12 +306,13 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
 
   const getBgClass = () => {
     switch (version) {
-      case 'v2': return 'bg-gradient-to-br from-[#3b52a1] to-[#1e285a]';
+      case 'v2': return 'bg-apzumi-dark'; // Changed from emerald, but keep body mostly dark
       case 'v3': return 'bg-gradient-to-br from-fuchsia-900 to-[#35123d]';
       case 'v1':
       default: return 'bg-apzumi-dark';
     }
   };
+
 
   const scrollToGrid = () => {
     const el = document.getElementById('solutions-grid');
@@ -336,7 +342,7 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
     <div className={`${getBgClass()} min-h-screen text-white font-sans selection:bg-apzumi-red selection:text-white transition-colors duration-500`}>
 
       {/* 1. HERO SECTION */}
-      <section className="relative pt-40 pb-20 px-6 overflow-hidden min-h-[70vh] flex items-center">
+      <section className={`relative pt-40 pb-20 px-6 overflow-hidden min-h-[70vh] flex items-center ${version === 'v2' ? 'bg-[#1e285a] text-white' : ''}`}>
         {/* Background Gradients */}
         <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-apzumi-red/10 blur-[100px] rounded-full pointer-events-none"></div>
@@ -385,9 +391,9 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
       </section>
 
       {/* 2. STICKY FILTER NAV */}
-      <div className="sticky top-[72px] z-40 bg-apzumi-dark/80 backdrop-blur-xl border-y border-white/10 py-4">
+      <div className={`sticky top-[72px] z-40 backdrop-blur-xl border-y py-4 ${version === 'v2' ? 'bg-white/90 border-gray-200' : 'bg-apzumi-dark/80 border-white/10'}`}>
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-sm font-bold text-gray-400 hidden md:block">
+          <div className={`text-sm font-bold hidden md:block ${version === 'v2' ? 'text-gray-500' : 'text-gray-400'}`}>
             <TextBlock id="sol_page_filter_label">Wybierz obszar:</TextBlock>
           </div>
           <div className="flex flex-wrap justify-center gap-2">
@@ -397,30 +403,37 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
               { id: 'maintenance', labelId: 'sol_filter_maintenance', default: 'Utrzymanie ruchu' },
               { id: 'hr', labelId: 'sol_filter_hr', default: 'HR & Kompetencje' },
               { id: 'quality', labelId: 'sol_filter_quality', default: 'Jakość' }
-            ].map((filter) => (
-              <button
-                key={filter.id}
-                onClick={() => handleFilter(filter.id as CategoryId)}
-                className={`px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all border
-                   ${activeCategory === filter.id
-                    ? 'bg-white text-apzumi-dark border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]'
-                    : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white'}`}
-              >
-                <TextBlock id={filter.labelId}>{filter.default}</TextBlock>
-              </button>
-            ))}
+            ].map((filter) => {
+              const isActive = activeCategory === filter.id;
+              const btnClassV2 = isActive
+                ? 'bg-[#1e285a] text-white shadow-md'
+                : 'bg-transparent text-gray-500 border-gray-300 hover:border-gray-400 hover:text-[#1e285a]';
+              const btnClassDark = isActive
+                ? 'bg-white text-apzumi-dark border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]'
+                : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white';
+
+              return (
+                <button
+                  key={filter.id}
+                  onClick={() => handleFilter(filter.id as CategoryId)}
+                  className={`px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all border ${version === 'v2' ? btnClassV2 : btnClassDark}`}
+                >
+                  <TextBlock id={filter.labelId}>{filter.default}</TextBlock>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
       {/* 3. BENTO GRID - SOLUTIONS */}
-      <section id="solutions-grid" className="py-20 px-6">
+      <section id="solutions-grid" className={`py-20 px-6 ${version === 'v2' ? 'bg-gray-50 text-[#1e285a]' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-2">
               <TextBlock id="sol_grid_heading">Wybierz obszar i dopasuj rozwiązanie</TextBlock>
             </h2>
-            <p className="text-gray-400">
+            <p className={`${version === 'v2' ? 'text-gray-500' : 'text-gray-400'}`}>
               <TextBlock id="sol_grid_desc">
                 Jeśli masz konkretny problem — wybierz rozwiązanie. Jeśli dopiero zaczynasz — przejdź do ‘Usług’.
               </TextBlock>
@@ -435,6 +448,7 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
                   data={solution}
                   isActive={activeCategory === solution.category}
                   onSelect={() => scrollToDetail(`detail-${solution.id}`)}
+                  version={version}
                 />
               </div>
             ))}

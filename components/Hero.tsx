@@ -54,7 +54,7 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
 
   if (version === 'v2') {
     return (
-      <section className="bg-white min-h-screen pt-24 pb-0 flex flex-col lg:flex-row relative overflow-hidden">
+      <section className="bg-[#1e285a] min-h-screen pt-24 pb-0 flex flex-col lg:flex-row relative overflow-hidden">
         {/* Left Content Area (Pushed towards center and enlarged) */}
         <div className="w-full lg:w-[60%] px-6 lg:pl-32 xl:pl-56 xl:pr-12 pt-16 lg:pt-0 flex flex-col justify-center items-start lg:items-start z-10 h-[50vh] lg:h-[80vh]">
 
@@ -68,11 +68,11 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
               <div className="h-1.5 w-11 xl:w-12 bg-[#e11d48] rounded-full self-center"></div>
               <div className="h-1.5 w-full bg-[#e11d48] rounded-full"></div>
             </div>
-            <span className="font-extrabold text-5xl xl:text-6xl tracking-wide text-[#1e285a]">Apzumi Spatial</span>
+            <span className="font-extrabold text-5xl xl:text-6xl tracking-wide text-white">Apzumi Spatial</span>
           </div>
 
           {/* Tagline */}
-          <h1 className="text-3xl xl:text-4xl text-[#4a5568] mb-12 pl-2 leading-snug font-medium">
+          <h1 className="text-3xl xl:text-4xl text-gray-300 mb-12 pl-2 leading-snug font-medium">
             <TextBlock id="hero_tagline_v2" as="span">
               Apzumi Spatial <br /> Twój partner w procesach przemysłowych
             </TextBlock>
@@ -80,13 +80,13 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pl-2">
-            <button className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-gray-300 text-[#1e285a] hover:bg-gray-50 transition-colors font-medium text-sm">
+            <button className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors font-medium text-sm">
               <TextBlock id="hero_services_btn_v2">Our Services</TextBlock>
-              <Search size={16} className="text-[#1e285a]/70" />
+              <Search size={16} className="text-white/70" />
             </button>
             <button
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#293b7b] hover:bg-[#1e285a] transition-colors text-white font-medium text-sm shadow-md shadow-blue-900/20"
+              className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-apzumi-red hover:bg-red-600 transition-colors text-white font-bold text-sm shadow-md shadow-apzumi-red/20"
             >
               <TextBlock id="hero_contact_btn_v2">Skontaktuj się z nami</TextBlock>
               <svg className="w-4 h-4 ml-1 transform rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
@@ -97,10 +97,10 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
         {/* Right Image Area (Reduced width/height, vertically centered) */}
         <div className="w-full lg:w-[40%] h-[50vh] lg:h-[75vh] min-h-[400px] mt-12 lg:mt-0 self-center relative overflow-visible">
           <div
-            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-100px] overflow-hidden rounded-l-[100px] lg:rounded-l-[400px] bg-gray-200 z-0"
+            className="absolute inset-y-0 right-0 left-4 lg:left-0 lg:ml-[-100px] overflow-hidden rounded-l-[100px] lg:rounded-l-[400px] bg-[#1e285a] z-0 shadow-[-20px_0_50px_rgba(0,0,0,0.3)]"
           >
             {/* Background color behind images */}
-            <div className="absolute inset-0 bg-[#A6B1CD]"></div>
+            <div className="absolute inset-0 bg-[#0f1535]"></div>
 
             {/* Overlay to give a slightly bluish tint as seen in screenshot */}
             <div className="absolute inset-0 bg-[#293b7b]/30 mix-blend-multiply z-20 pointer-events-none"></div>

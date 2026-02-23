@@ -179,25 +179,25 @@ const ServiceCardV2: React.FC<{
     <div
       className={`group relative p-8 rounded-3xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row items-center gap-8 border backdrop-blur-sm
         ${isActive
-          ? 'bg-[#1e285a]/40 border-[#4a7de8]/50 shadow-[0_0_40px_rgba(74,125,232,0.15)] scale-[1.02]'
-          : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10'
+          ? 'bg-[#1e285a]/5 border-[#4a7de8]/50 shadow-md scale-[1.02]'
+          : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm'
         }`}
     >
       <div className="flex-1 w-full">
         {/* Chips */}
         <div className="flex flex-wrap gap-2 mb-4">
           {data.chips.map((chip, idx) => (
-            <span key={idx} className="bg-white/10 text-gray-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+            <span key={idx} className="bg-gray-100 text-gray-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
               {chip}
             </span>
           ))}
         </div>
 
         <div className="mb-4 md:mb-0">
-          <h3 className="text-2xl font-bold text-white mb-2 leading-tight">
+          <h3 className="text-2xl font-bold text-[#1e285a] mb-2 leading-tight">
             <TextBlock id={data.titleKey}>{textConfig[data.titleKey]?.[0] || ''}</TextBlock>
           </h3>
-          <p className="text-gray-300 text-sm leading-relaxed max-w-xl">
+          <p className="text-gray-600 text-sm leading-relaxed max-w-xl">
             <TextBlock id={data.valKey}>{textConfig[data.valKey]?.[0] || ''}</TextBlock>
           </p>
         </div>
@@ -207,7 +207,7 @@ const ServiceCardV2: React.FC<{
         {data.bullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2">
             <CheckCircle2 size={16} className="text-[#4a7de8] shrink-0 mt-0.5" />
-            <span className="text-gray-300 text-sm">{bullet}</span>
+            <span className="text-gray-600 text-sm">{bullet}</span>
           </div>
         ))}
       </div>
@@ -566,7 +566,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
 
   const getBgClass = () => {
     switch (version) {
-      case 'v2': return 'bg-gradient-to-br from-[#3b52a1] to-[#1e285a]';
+      case 'v2': return 'bg-apzumi-dark'; // Changed from emerald, but keep body mostly dark
       case 'v1':
       case 'v3':
       default: return 'bg-apzumi-dark';
@@ -599,7 +599,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
     <div className={`${getBgClass()} min-h-screen text-white font-sans selection:bg-apzumi-red selection:text-white transition-colors duration-500`}>
 
       {/* 1. HERO */}
-      <section className="relative pt-40 pb-20 px-6 overflow-hidden min-h-[70vh] flex items-center">
+      <section className={`relative pt-40 pb-20 px-6 overflow-hidden min-h-[70vh] flex items-center ${version === 'v2' ? 'bg-[#1e285a] text-white' : ''}`}>
         {/* Background Gradients */}
         <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/20 blur-[100px] rounded-full pointer-events-none"></div>
@@ -639,32 +639,38 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
 
       {/* 2. STICKY FILTER - HIDDEN IN V3 */}
       {version !== 'v3' && (
-        <div className="sticky top-[72px] z-40 bg-apzumi-dark/90 backdrop-blur-xl border-y border-white/10 py-6">
+        <div className={`sticky top-[72px] z-40 backdrop-blur-xl border-y py-6 ${version === 'v2' ? 'bg-white/90 border-gray-200' : 'bg-apzumi-dark/90 border-white/10'}`}>
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-lg font-bold mb-4">
+            <h2 className={`text-lg font-bold mb-4 ${version === 'v2' ? 'text-gray-700' : ''}`}>
               <TextBlock id="serv_filter_title">{textConfig['serv_filter_title'][0]}</TextBlock>
             </h2>
-            <div className="inline-flex bg-white/5 rounded-full p-1 border border-white/10">
+            <div className={`inline-flex rounded-full p-1 border ${version === 'v2' ? 'bg-gray-100 border-gray-200' : 'bg-white/5 border-white/10'}`}>
               {[
                 { id: 'start', labelKey: 'serv_filter_start' },
                 { id: 'valid', labelKey: 'serv_filter_valid' },
                 { id: 'build', labelKey: 'serv_filter_build' }
-              ].map((opt) => (
-                <button
-                  key={opt.id}
-                  onClick={() => handleFilter(opt.id as SituationId)}
-                  className={`px-6 py-2 rounded-full text-sm font-bold transition-all
-                    ${activeSituation === opt.id
-                      ? 'bg-white text-apzumi-dark shadow-md'
-                      : 'text-gray-400 hover:text-white'}`}
-                >
-                  <TextBlock id={opt.labelKey}>{textConfig[opt.labelKey]?.[0] || ''}</TextBlock>
-                </button>
-              ))}
+              ].map((opt) => {
+                const isActive = activeSituation === opt.id;
+                const btnClassV2 = isActive
+                  ? 'bg-[#1e285a] text-white shadow-md'
+                  : 'text-gray-500 hover:text-[#1e285a]';
+                const btnClassDark = isActive
+                  ? 'bg-white text-apzumi-dark shadow-md'
+                  : 'text-gray-400 hover:text-white';
+                return (
+                  <button
+                    key={opt.id}
+                    onClick={() => handleFilter(opt.id as SituationId)}
+                    className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${version === 'v2' ? btnClassV2 : btnClassDark}`}
+                  >
+                    <TextBlock id={opt.labelKey}>{textConfig[opt.labelKey]?.[0] || ''}</TextBlock>
+                  </button>
+                )
+              })}
             </div>
 
             <div className="mt-4 text-xs text-gray-500 flex items-center justify-center gap-2">
-              <span className="bg-apzumi-red/20 text-apzumi-red px-2 py-0.5 rounded uppercase font-bold tracking-wider">
+              <span className={`px-2 py-0.5 rounded uppercase font-bold tracking-wider ${version === 'v2' ? 'bg-[#1e285a]/10 text-[#1e285a]' : 'bg-apzumi-red/20 text-apzumi-red'}`}>
                 <TextBlock id="serv_rec_label">{textConfig['serv_rec_label'][0]}</TextBlock>
               </span>
               <TextBlock id="serv_filter_desc">{textConfig['serv_filter_desc'][0]}</TextBlock>
@@ -674,7 +680,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
       )}
 
       {/* 3. BENTO GRID */}
-      <section id="services-grid" className="py-20 px-6 relative">
+      <section id="services-grid" className={`py-20 px-6 relative ${version === 'v2' ? 'bg-gray-50' : ''}`}>
         <div className="max-w-7xl mx-auto relative z-10">
           {version === 'v3' ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 min-h-[500px]">

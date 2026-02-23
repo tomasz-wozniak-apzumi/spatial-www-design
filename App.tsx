@@ -26,8 +26,14 @@ const App: React.FC = () => {
   const [homeVersion, setHomeVersion] = useState<'v1' | 'v2' | 'v3'>('v1');
 
   return (
-    <TextProvider>
-      <CommentProvider currentView={currentView === 'home' ? `home_${homeVersion}` : currentView}>
+    <TextProvider
+      key={`text_${currentView === 'home' ? homeVersion : currentView}`}
+      viewScope={currentView === 'home' ? `home_${homeVersion}` : undefined}
+    >
+      <CommentProvider
+        key={`comment_${currentView === 'home' ? homeVersion : currentView}`}
+        currentView={currentView === 'home' ? `home_${homeVersion}` : currentView}
+      >
         <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden relative">
           {currentView !== 'interactive_demo' && (
             <Navbar currentView={currentView} onNavigate={setCurrentView} />

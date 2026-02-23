@@ -24,7 +24,7 @@ const TextContext = createContext<TextContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'apzumi_text_config_v1';
 
-export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const TextProvider: React.FC<{ children: React.ReactNode, viewScope?: string }> = ({ children, viewScope }) => {
   // Store the entire configuration state: current text and dynamic alternatives list for each ID
   const [storedConfig, setStoredConfig] = useState<Record<string, StoredConfigItem>>({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -95,15 +95,19 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [storedConfig, isLoaded]);
 
+  const getStorageKey = (id: string) => {
+    return viewScope ? `${id}_${viewScope}` : id;
+  };
+
   const getText = (id: string, defaultText: string) => {
     // If we have a stored version, use it. Otherwise use the JSX default.
-    return storedConfig[id]?.current || defaultText;
+    return storedConfig[getStorageKey(id)]?.current || defaultText;
   };
 
   const getAlternatives = (id: string) => {
     // If we have stored alternatives (because of a previous swap), use them.
     // Otherwise use the static config from file.
-    return storedConfig[id]?.alternatives || textConfig[id] || [];
+    return storedConfig[getStorageKey(id)]?.alternatives || textConfig[id] || [];
   };
 
   const openMenu = (e: React.MouseEvent, id: string, currentText: string) => {
@@ -138,6 +142,8 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Get current available alternatives
       const currentAlternatives = getAlternatives(id);
 
+      const storageKey = getStorageKey(id);
+
       // SWAP LOGIC:
       // 1. Remove the text we just selected from the alternatives list (if it exists there)
       // 2. Add the text that was previously displayed to the alternatives list
@@ -150,7 +156,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const updatedConfig = {
         ...storedConfig,
-        [id]: {
+        [storageKey]: {
           current: newText,
           alternatives: uniqueAlternatives
         }
@@ -169,8 +175,9 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const handleReset = () => {
     if (menu.id) {
+      const storageKey = getStorageKey(menu.id);
       const newConfig = { ...storedConfig };
-      delete newConfig[menu.id]; // Remove from storage, reverting to JSX default and static config
+      delete newConfig[storageKey]; // Remove from storage, reverting to JSX default and static config
       setStoredConfig(newConfig);
       syncToGlobal(newConfig);
       setMenu(prev => ({ ...prev, visible: false }));

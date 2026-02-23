@@ -171,6 +171,59 @@ const ServiceCard: React.FC<{
   );
 };
 
+const ServiceCardV2: React.FC<{
+  data: ServiceData;
+  isActive: boolean;
+}> = ({ data, isActive }) => {
+  return (
+    <div
+      className={`group relative p-8 rounded-3xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row items-center gap-8 border backdrop-blur-sm
+        ${isActive
+          ? 'bg-emerald-900/30 border-emerald-500/50 shadow-[0_0_40px_rgba(16,185,129,0.15)] scale-[1.02]'
+          : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10'
+        }`}
+    >
+      <div className="flex-1 w-full">
+        {/* Chips */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {data.chips.map((chip, idx) => (
+            <span key={idx} className="bg-white/10 text-gray-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+              {chip}
+            </span>
+          ))}
+        </div>
+
+        <div className="mb-4 md:mb-0">
+          <h3 className="text-2xl font-bold text-white mb-2 leading-tight">
+            <TextBlock id={data.titleKey}>{textConfig[data.titleKey]?.[0] || ''}</TextBlock>
+          </h3>
+          <p className="text-gray-300 text-sm leading-relaxed max-w-xl">
+            <TextBlock id={data.valKey}>{textConfig[data.valKey]?.[0] || ''}</TextBlock>
+          </p>
+        </div>
+      </div>
+
+      <div className="flex-1 w-full space-y-3">
+        {data.bullets.map((bullet, idx) => (
+          <div key={idx} className="flex items-start gap-2">
+            <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+            <span className="text-gray-300 text-sm">{bullet}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="md:w-56 w-full flex-shrink-0 mt-6 md:mt-0">
+        <button
+          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          className="w-full py-4 rounded-xl border border-white/20 text-white font-bold text-sm bg-apzumi-red hover:bg-red-600 transition-all flex items-center justify-center shadow-lg shadow-apzumi-red/20"
+        >
+          <TextBlock id="serv_card_btn_v2">Umów konsultację</TextBlock> <ArrowRight size={16} className="ml-2" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const ServiceDetail: React.FC<{ data: ServiceData }> = ({ data }) => {
   // Tabs now include the 4 items that were previously in the grid + the 2 original bottom tabs
   const [activeTab, setActiveTab] = useState<'who' | 'when' | 'what' | 'effect' | 'process' | 'arts'>('who');
@@ -436,57 +489,73 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
       {/* 3. BENTO GRID */}
       <section id="services-grid" className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {servicesData.map((service) => (
-              <div key={service.id} className={`transition-all duration-500
-                 ${activeSituation === service.situation ? 'opacity-100 scale-100' : 'opacity-40 scale-95'}`}>
-                <ServiceCard
-                  data={service}
-                  isActive={activeSituation === service.situation}
-                  onSelect={() => scrollToDetail(service.id)}
-                />
-              </div>
-            ))}
-          </div>
+          {version === 'v2' ? (
+            <div className="grid grid-cols-1 gap-6 lg:gap-8">
+              {servicesData.map((service) => (
+                <div key={service.id} className={`transition-all duration-500
+                   ${activeSituation === service.situation ? 'opacity-100 scale-100' : 'opacity-40 scale-95'}`}>
+                  <ServiceCardV2
+                    data={service}
+                    isActive={activeSituation === service.situation}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+              {servicesData.map((service) => (
+                <div key={service.id} className={`transition-all duration-500
+                   ${activeSituation === service.situation ? 'opacity-100 scale-100' : 'opacity-40 scale-95'}`}>
+                  <ServiceCard
+                    data={service}
+                    isActive={activeSituation === service.situation}
+                    onSelect={() => scrollToDetail(service.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
           <p className="text-center text-gray-500 text-xs mt-8">
             <TextBlock id="serv_grid_note">{textConfig['serv_grid_note'][0]}</TextBlock>
           </p>
         </div>
       </section>
 
-      {/* 4. DETAILS */}
-      {servicesData.map((service) => (
+      {/* 4. DETAILS - HIDDEN IN V2 */}
+      {version !== 'v2' && servicesData.map((service) => (
         <ServiceDetail key={service.id} data={service} />
       ))}
 
-      {/* 5. PROCESS (3 STEPS) */}
-      <section className="py-24 bg-white text-apzumi-dark px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-16">
-            <TextBlock id="sol_proc_heading">{textConfig['sol_proc_heading'][0]}</TextBlock>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            <div className="hidden md:block absolute top-6 left-0 w-full h-1 bg-gray-200 z-0"></div>
-            {[
-              { step: "1", titleKey: "sol_proc_step1_title", descKey: "sol_proc_step1_desc" },
-              { step: "2", titleKey: "sol_proc_step2_title", descKey: "sol_proc_step2_desc" },
-              { step: "3", titleKey: "sol_proc_step3_title", descKey: "sol_proc_step3_desc" }
-            ].map((item, idx) => (
-              <div key={idx} className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-14 h-14 bg-apzumi-red text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 shadow-xl border-4 border-white">
-                  {item.step}
+      {/* 5. PROCESS (3 STEPS) - HIDDEN IN V2 */}
+      {version !== 'v2' && (
+        <section className="py-24 bg-white text-apzumi-dark px-6">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-16">
+              <TextBlock id="sol_proc_heading">{textConfig['sol_proc_heading'][0]}</TextBlock>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+              <div className="hidden md:block absolute top-6 left-0 w-full h-1 bg-gray-200 z-0"></div>
+              {[
+                { step: "1", titleKey: "sol_proc_step1_title", descKey: "sol_proc_step1_desc" },
+                { step: "2", titleKey: "sol_proc_step2_title", descKey: "sol_proc_step2_desc" },
+                { step: "3", titleKey: "sol_proc_step3_title", descKey: "sol_proc_step3_desc" }
+              ].map((item, idx) => (
+                <div key={idx} className="relative z-10 flex flex-col items-center text-center">
+                  <div className="w-14 h-14 bg-apzumi-red text-white rounded-full flex items-center justify-center font-bold text-xl mb-6 shadow-xl border-4 border-white">
+                    {item.step}
+                  </div>
+                  <h3 className="font-bold text-xl mb-3">
+                    <TextBlock id={item.titleKey}>{textConfig[item.titleKey]?.[0] || ''}</TextBlock>
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed max-w-xs">
+                    <TextBlock id={item.descKey}>{textConfig[item.descKey]?.[0] || ''}</TextBlock>
+                  </p>
                 </div>
-                <h3 className="font-bold text-xl mb-3">
-                  <TextBlock id={item.titleKey}>{textConfig[item.titleKey]?.[0] || ''}</TextBlock>
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed max-w-xs">
-                  <TextBlock id={item.descKey}>{textConfig[item.descKey]?.[0] || ''}</TextBlock>
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 8. FINAL FORM */}
       <section id="contact" className="py-24 bg-apzumi-dark px-6 border-t border-white/10">

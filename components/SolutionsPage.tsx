@@ -376,7 +376,7 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
 
       {/* Animated Client Logos */}
       <div className={`w-full ${version === 'v2' ? 'bg-gray-50 pt-8' : 'pt-8'}`}>
-        <ClientLogos />
+        <ClientLogos version={version} />
       </div>
 
       {/* 2. STICKY FILTER NAV */}

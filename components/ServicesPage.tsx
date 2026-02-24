@@ -623,7 +623,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
 
       {/* Animated Client Logos */}
       <div className={`w-full ${version === 'v2' ? 'bg-gray-50 pt-8' : 'pt-8'}`}>
-        <ClientLogos />
+        <ClientLogos version={version} />
       </div>
 
       {/* 2. STICKY FILTER - HIDDEN IN V3 */}

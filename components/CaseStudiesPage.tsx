@@ -341,7 +341,7 @@ const CaseStudiesPage: React.FC<{ onNavigate?: (view: ViewState) => void, versio
 
                {/* Proof Strip */}
                <div className="pt-8">
-                  <ClientLogos />
+                  <ClientLogos version={version} />
                </div>
             </div>
          </section>

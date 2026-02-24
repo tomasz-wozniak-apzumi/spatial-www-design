@@ -323,4 +323,6 @@ export const textConfig: Record<string, string[]> = {
   "serv_form_desc": ["W 15 minut zbierzemy kontekst i zaproponujemy najlepszą ścieżkę: warsztat, prototyp lub PoC-first.", "W 15 minut zbierzemy kontekst i zaproponujemy najlepszą ścieżkę: warsztat.", "W 15 minut zbierzemy kontekst i zaproponujemy najlepszą ścieżkę: warsztat, prototyp lub PoC-first."],
   "serv_form_btn": ["Porozmawiajmy", "Porozmawiajmy", "Porozmawiajmy"],
   "serv_form_link": ["Poproś o demo", "Zobacz demo", "Umów prezentację"],
+  "logos_trusted": ["Historie Sukcesu", "Success Stories", "Zaufali nam"],
+  "logos_partners": ["Nasi Partnerzy", "Our Partners", "Partnerzy Technologiczni"],
 };

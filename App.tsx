@@ -47,7 +47,7 @@ const App: React.FC = () => {
             <>
               <Hero version={globalVersion} />
               <Awards version={globalVersion} />
-              <ClientLogos />
+              <ClientLogos version={globalVersion} />
               <DemoVideo version={globalVersion} />
               <Solutions onNavigate={setCurrentView} version={globalVersion} />
               <Process />

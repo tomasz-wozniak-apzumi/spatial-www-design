@@ -1,4 +1,5 @@
 import React from 'react';
+import TextBlock from './TextBlock';
 
 const logos = Array.from({ length: 15 }, (_, i) => `/images/logos/logo_${i + 1}.png`);
 const partners = [
@@ -10,12 +11,16 @@ const partners = [
 ];
 const extendedPartners = [...partners, ...partners, ...partners];
 
-const ClientLogos: React.FC = () => {
+const ClientLogos: React.FC<{ version?: 'v1' | 'v2' | 'v3' }> = ({ version = 'v1' }) => {
   return (
     <div className="py-12 px-6 overflow-hidden relative w-full">
       <div className="max-w-7xl mx-auto">
         <div className="bg-[#293b7b] rounded-3xl py-12 md:py-16 overflow-hidden shadow-lg border border-[#1e285a]/20">
-          <p className="text-white text-center font-bold text-sm tracking-widest uppercase mb-8 opacity-80">Trusted by Companies</p>
+          <p className="text-white text-center font-bold text-sm tracking-widest uppercase mb-8 opacity-80">
+            <TextBlock id="logos_trusted">
+              {version === 'v2' ? 'Historie Sukcesu' : 'Trusted by Companies'}
+            </TextBlock>
+          </p>
           <div className="w-full flex mb-12">
             {/* First Row: Trusted by Companies */}
             <div className="flex animate-scroll whitespace-nowrap items-center w-[200%]">
@@ -33,7 +38,11 @@ const ClientLogos: React.FC = () => {
           </div>
 
           {/* Second Row: Our Partners */}
-          <p className="text-white text-center font-bold text-sm tracking-widest uppercase mb-8 opacity-80 mt-8">Our Partners</p>
+          <p className="text-white text-center font-bold text-sm tracking-widest uppercase mb-8 opacity-80 mt-8">
+            <TextBlock id="logos_partners">
+              {version === 'v2' ? 'Nasi Partnerzy' : 'Our Partners'}
+            </TextBlock>
+          </p>
           <div className="w-full flex">
             <div className="flex animate-scroll-reverse whitespace-nowrap items-center w-[200%]">
               {extendedPartners.map((src, idx) => (

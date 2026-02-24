@@ -616,26 +616,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate, version = 'v1' 
             <TextBlock id="serv_hero_sublead">{textConfig['serv_hero_sublead'][0]}</TextBlock>
           </p>
 
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
-            <button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-apzumi-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(240,78,78,0.4)]"
-            >
-              <TextBlock id="serv_hero_cta_primary">Porozmawiajmy</TextBlock>
-            </button>
-            <button
-              onClick={() => { onNavigate('solutions'); window.scrollTo(0, 0); }}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-[0_0_30px_rgba(37,99,235,0.4)]"
-            >
-              <TextBlock id="serv_hero_cta_secondary">Zobacz rozwiązania</TextBlock>
-            </button>
-            <button
-              onClick={() => { onNavigate('casestudies'); window.scrollTo(0, 0); }}
-              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg backdrop-blur-sm transition-all"
-            >
-              <TextBlock id="serv_hero_cta_cases">Zobacz Case Studies</TextBlock>
-            </button>
-          </div>
+
 
         </div>
       </section>

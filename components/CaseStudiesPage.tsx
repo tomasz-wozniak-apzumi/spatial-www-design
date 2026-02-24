@@ -322,26 +322,7 @@ const CaseStudiesPage: React.FC<{ onNavigate?: (view: ViewState) => void, versio
                   <TextBlock id="cs_hero_lead">{textConfig['cs_hero_lead'][0]}</TextBlock>
                </p>
 
-               <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-                  <button
-                     onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                     className="bg-apzumi-red hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full shadow-lg shadow-apzumi-red/25 transition-transform hover:scale-105"
-                  >
-                     <TextBlock id="cs_hero_cta_primary">Porozmawiajmy</TextBlock>
-                  </button>
-                  <button
-                     onClick={() => { onNavigate && onNavigate('solutions'); window.scrollTo(0, 0); }}
-                     className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-8 rounded-full shadow-lg shadow-blue-500/25 transition-transform hover:scale-105"
-                  >
-                     <TextBlock id="cs_hero_cta_secondary">Zobacz rozwiązania</TextBlock>
-                  </button>
-                  <button
-                     onClick={() => { onNavigate && onNavigate('services'); window.scrollTo(0, 0); }}
-                     className="bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full backdrop-blur-sm border border-white/20 transition-all"
-                  >
-                     <TextBlock id="cs_hero_cta_services">Zobacz Usługi</TextBlock>
-                  </button>
-               </div>
+
 
                {/* Proof Strip */}
                <div className="pt-8">

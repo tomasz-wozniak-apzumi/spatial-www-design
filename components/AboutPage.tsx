@@ -1,6 +1,8 @@
 import React from 'react';
 import TextBlock from './TextBlock';
 import { ViewState } from '../App';
+import { Target, Cpu, Zap, Layers } from 'lucide-react';
+
 
 interface AboutPageProps {
     onNavigate: (view: ViewState) => void;
@@ -259,6 +261,87 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                     </div>
                 </div>
             </section>
+
+            {/* MISSION & VALUES (V2 ONLY) */}
+            {version === 'v2' && (
+                <section className="max-w-[1200px] mx-auto px-6 mb-24">
+                    <div className="bg-[#2a3c7b] rounded-[2rem] p-8 md:p-12 shadow-xl">
+                        <h2 className="text-center text-3xl md:text-4xl text-white mb-12">
+                            <TextBlock id="about_v2_heading">Misja & <span className="font-extrabold">Wartości</span></TextBlock>
+                        </h2>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                            {/* Left Column */}
+                            <div className="flex flex-col h-full">
+                                <h3 className="text-white text-xl font-bold mb-6"><TextBlock id="about_v2_mission_heading">Nasza Misja</TextBlock></h3>
+                                <div className="bg-white rounded-2xl flex flex-col overflow-hidden shadow-lg h-full relative">
+                                    <div className="flex-1 w-full bg-gray-100">
+                                        <img src="/images/about/about15.png" alt="Apzumi Team" className="w-full h-[300px] lg:h-full object-cover object-center" />
+                                    </div>
+                                    <div className="p-8 md:p-10 relative bg-white flex flex-col items-center justify-center shrink-0 min-h-[140px]">
+                                        <span className="text-[#2a3c7b] text-6xl md:text-7xl font-serif font-bold absolute top-2 left-6 leading-none">“</span>
+                                        <p className="text-lg md:text-xl font-extrabold text-center text-black px-6 z-10 w-full relative pt-2">
+                                            <TextBlock id="about_v2_mission_quote">Przekształcamy złożone wyzwania produkcyjne w mierzalne zyski.</TextBlock>
+                                        </p>
+                                        <span className="text-[#2a3c7b] text-6xl md:text-7xl font-serif font-bold absolute bottom-0 right-6 leading-none rotate-180">“</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right Column */}
+                            <div className="flex flex-col h-full">
+                                <h3 className="text-white text-xl font-bold mb-6"><TextBlock id="about_v2_comp_heading">Kompetencje i doświadczenie</TextBlock></h3>
+                                <div className="flex flex-col gap-4">
+                                    {/* Podejscie */}
+                                    <div className="bg-white rounded-2xl p-6 flex items-start gap-4 shadow-sm">
+                                        <div className="w-12 h-12 rounded-full border-2 border-[#2a3c7b]/20 text-[#2a3c7b] flex items-center justify-center flex-shrink-0 bg-blue-50">
+                                            <Target size={22} className="text-[#2a3c7b]" />
+                                        </div>
+                                        <div className="mt-1">
+                                            <h4 className="font-extrabold text-black mb-1 text-sm"><TextBlock id="about_v2_approach_t">Wiodące Podejście</TextBlock></h4>
+                                            <p className="text-xs font-semibold text-gray-700 leading-relaxed"><TextBlock id="about_v2_approach_d">Proces wyznacza cel, technologia podąża za nim.</TextBlock></p>
+                                        </div>
+                                    </div>
+
+                                    {/* Comp 1 */}
+                                    <div className="bg-white rounded-2xl p-6 flex items-start gap-4 shadow-sm">
+                                        <div className="w-12 h-12 rounded-full border-2 border-[#2a3c7b]/20 text-[#2a3c7b] flex items-center justify-center flex-shrink-0 bg-blue-50">
+                                            <Cpu size={22} />
+                                        </div>
+                                        <div className="mt-1">
+                                            <h4 className="font-extrabold text-black mb-1 text-sm"><TextBlock id="about_v2_exp1_t">Spatial Computing & AI</TextBlock></h4>
+                                            <p className="text-xs font-semibold text-gray-700 leading-relaxed"><TextBlock id="about_v2_exp1_d">Doświadczenie w pracy z technologiami Spatial Computing i AI oraz głębokie zrozumienie specyfiki nowoczesnego przemysłu.</TextBlock></p>
+                                        </div>
+                                    </div>
+
+                                    {/* Comp 2 */}
+                                    <div className="bg-white rounded-2xl p-6 flex items-start gap-4 shadow-sm">
+                                        <div className="w-12 h-12 rounded-full border-2 border-red-500/20 text-apzumi-red flex items-center justify-center flex-shrink-0 bg-red-50">
+                                            <Zap size={22} className="text-apzumi-red" />
+                                        </div>
+                                        <div className="mt-1">
+                                            <h4 className="font-extrabold text-black mb-1 text-sm"><TextBlock id="about_v2_exp2_t">Agile & Rapid Prototyping</TextBlock></h4>
+                                            <p className="text-xs font-semibold text-gray-700 leading-relaxed"><TextBlock id="about_v2_exp2_d">Zwinne podejście do rozwoju, szybkie prototypowanie (PoC) oraz błyskawiczna walidacja w warunkach fabrycznych.</TextBlock></p>
+                                        </div>
+                                    </div>
+
+                                    {/* Comp 3 */}
+                                    <div className="bg-white rounded-2xl p-6 flex items-start gap-4 shadow-sm">
+                                        <div className="w-12 h-12 rounded-full border-2 border-[#2a3c7b]/20 text-[#2a3c7b] flex items-center justify-center flex-shrink-0 bg-blue-50">
+                                            <Layers size={22} />
+                                        </div>
+                                        <div className="mt-1">
+                                            <h4 className="font-extrabold text-black mb-1 text-sm"><TextBlock id="about_v2_exp3_t">Unikalne Know-how</TextBlock></h4>
+                                            <p className="text-xs font-semibold text-gray-700 leading-relaxed"><TextBlock id="about_v2_exp3_d">Unikalne wiedza umożliwiająca szybkie dostarczanie wartości w oparciu o otwartą platformę Apzumi Spatial.</TextBlock></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
 
         </div>
     );

@@ -203,12 +203,12 @@ const SolutionCard: React.FC<{
   );
 };
 
-const DetailSection: React.FC<{ data: SolutionData; id: string; onNavigate?: (view: ViewState) => void }> = ({ data, id, onNavigate }) => {
+const DetailSection: React.FC<{ data: SolutionData; id: string; onNavigate?: (view: ViewState) => void; version?: 'v1' | 'v2' | 'v3' }> = ({ data, id, onNavigate, version = 'v1' }) => {
   const [activeTab, setActiveTab] = useState<'problem' | 'how' | 'what' | 'who'>('problem');
 
   return (
-    <section id={id} className="py-24 border-t border-white/5 bg-apzumi-darker/50">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id={id} className={version === 'v2' ? "bg-white/5 border border-white/10 rounded-[2rem] p-8 md:p-12 shadow-lg mb-8 mx-auto" : "py-24 border-t border-white/5 bg-apzumi-darker/50"}>
+      <div className={version === 'v2' ? "w-full" : "max-w-7xl mx-auto px-6"}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Header */}
           <div className="lg:col-span-1">
@@ -452,11 +452,13 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
       )}
 
       {/* 4. DETAILS SECTIONS */}
-      {solutionsData.map((solution) => (
-        <div key={solution.id} id={`detail-${solution.id}`}>
-          <DetailSection data={solution} id={`detail-${solution.id}`} />
-        </div>
-      ))}
+      <div className={version === 'v2' ? "max-w-7xl mx-auto px-6 pt-12 pb-12" : ""}>
+        {solutionsData.map((solution) => (
+          <div key={solution.id} id={`detail-${solution.id}`}>
+            <DetailSection data={solution} id={`detail-${solution.id}`} version={version} />
+          </div>
+        ))}
+      </div>
 
       {/* 5. PLATFORM SECTION */}
       <section className="py-24 bg-gradient-to-b from-apzumi-dark to-[#050a1f] px-6">

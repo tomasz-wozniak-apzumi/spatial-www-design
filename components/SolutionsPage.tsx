@@ -377,75 +377,79 @@ const SolutionsPage: React.FC<SolutionsPageProps> = ({ onNavigate, version = 'v1
       </div>
 
       {/* 2. STICKY FILTER NAV */}
-      <div className={`sticky top-[72px] z-40 backdrop-blur-xl border-y py-4 ${version === 'v2' ? 'bg-white/90 border-gray-200' : 'bg-apzumi-dark/80 border-white/10'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className={`text-sm font-bold hidden md:block ${version === 'v2' ? 'text-gray-500' : 'text-gray-400'}`}>
-            <TextBlock id="sol_page_filter_label">Wybierz obszar:</TextBlock>
-          </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {[
-              { id: 'all', labelId: 'sol_filter_all', default: 'Wszystkie' },
-              { id: 'production', labelId: 'sol_filter_production', default: 'Produkcja' },
-              { id: 'maintenance', labelId: 'sol_filter_maintenance', default: 'Utrzymanie ruchu' },
-              { id: 'hr', labelId: 'sol_filter_hr', default: 'HR & Kompetencje' },
-              { id: 'quality', labelId: 'sol_filter_quality', default: 'Jakość' }
-            ].map((filter) => {
-              const isActive = activeCategory === filter.id;
-              const btnClassV2 = isActive
-                ? 'bg-[#1e285a] text-white shadow-md'
-                : 'bg-transparent text-gray-500 border-gray-300 hover:border-gray-400 hover:text-[#1e285a]';
-              const btnClassDark = isActive
-                ? 'bg-white text-apzumi-dark border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]'
-                : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white';
+      {version !== 'v2' && (
+        <div className={`sticky top-[72px] z-40 backdrop-blur-xl border-y py-4 ${version === 'v2' ? 'bg-white/90 border-gray-200' : 'bg-apzumi-dark/80 border-white/10'}`}>
+          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className={`text-sm font-bold hidden md:block ${version === 'v2' ? 'text-gray-500' : 'text-gray-400'}`}>
+              <TextBlock id="sol_page_filter_label">Wybierz obszar:</TextBlock>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2">
+              {[
+                { id: 'all', labelId: 'sol_filter_all', default: 'Wszystkie' },
+                { id: 'production', labelId: 'sol_filter_production', default: 'Produkcja' },
+                { id: 'maintenance', labelId: 'sol_filter_maintenance', default: 'Utrzymanie ruchu' },
+                { id: 'hr', labelId: 'sol_filter_hr', default: 'HR & Kompetencje' },
+                { id: 'quality', labelId: 'sol_filter_quality', default: 'Jakość' }
+              ].map((filter) => {
+                const isActive = activeCategory === filter.id;
+                const btnClassV2 = isActive
+                  ? 'bg-[#1e285a] text-white shadow-md'
+                  : 'bg-transparent text-gray-500 border-gray-300 hover:border-gray-400 hover:text-[#1e285a]';
+                const btnClassDark = isActive
+                  ? 'bg-white text-apzumi-dark border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]'
+                  : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white';
 
-              return (
-                <button
-                  key={filter.id}
-                  onClick={() => handleFilter(filter.id as CategoryId)}
-                  className={`px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all border ${version === 'v2' ? btnClassV2 : btnClassDark}`}
-                >
-                  <TextBlock id={filter.labelId}>{filter.default}</TextBlock>
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={filter.id}
+                    onClick={() => handleFilter(filter.id as CategoryId)}
+                    className={`px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all border ${version === 'v2' ? btnClassV2 : btnClassDark}`}
+                  >
+                    <TextBlock id={filter.labelId}>{filter.default}</TextBlock>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 3. BENTO GRID - SOLUTIONS */}
-      <section id="solutions-grid" className={`py-20 px-6 ${version === 'v2' ? 'bg-gray-50 text-[#1e285a]' : ''}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-2">
-              <TextBlock id="sol_grid_heading">Wybierz obszar i dopasuj rozwiązanie</TextBlock>
-            </h2>
-            <p className={`${version === 'v2' ? 'text-gray-500' : 'text-gray-400'}`}>
-              <TextBlock id="sol_grid_desc">
-                Jeśli masz konkretny problem — wybierz rozwiązanie. Jeśli dopiero zaczynasz — przejdź do ‘Usług’.
+      {version !== 'v2' && (
+        <section id="solutions-grid" className={`py-20 px-6 ${version === 'v2' ? 'bg-gray-50 text-[#1e285a]' : ''}`}>
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-2">
+                <TextBlock id="sol_grid_heading">Wybierz obszar i dopasuj rozwiązanie</TextBlock>
+              </h2>
+              <p className={`${version === 'v2' ? 'text-gray-500' : 'text-gray-400'}`}>
+                <TextBlock id="sol_grid_desc">
+                  Jeśli masz konkretny problem — wybierz rozwiązanie. Jeśli dopiero zaczynasz — przejdź do ‘Usług’.
+                </TextBlock>
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {solutionsData.map((solution) => (
+                <div key={solution.id} className={`transition-opacity duration-500 
+                ${activeCategory !== 'all' && activeCategory !== solution.category ? 'opacity-40 blur-[1px]' : 'opacity-100'}`}>
+                  <SolutionCard
+                    data={solution}
+                    isActive={activeCategory === solution.category}
+                    onSelect={() => scrollToDetail(`detail-${solution.id}`)}
+                    version={version}
+                  />
+                </div>
+              ))}
+            </div>
+            <p className="text-center text-gray-500 text-xs mt-8">
+              <TextBlock id="sol_grid_disclaimer">
+                Wartości efektów są orientacyjne — zależą od procesu, danych i warunków wdrożenia.
               </TextBlock>
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {solutionsData.map((solution) => (
-              <div key={solution.id} className={`transition-opacity duration-500 
-                ${activeCategory !== 'all' && activeCategory !== solution.category ? 'opacity-40 blur-[1px]' : 'opacity-100'}`}>
-                <SolutionCard
-                  data={solution}
-                  isActive={activeCategory === solution.category}
-                  onSelect={() => scrollToDetail(`detail-${solution.id}`)}
-                  version={version}
-                />
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-gray-500 text-xs mt-8">
-            <TextBlock id="sol_grid_disclaimer">
-              Wartości efektów są orientacyjne — zależą od procesu, danych i warunków wdrożenia.
-            </TextBlock>
-          </p>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 4. DETAILS SECTIONS */}
       {solutionsData.map((solution) => (

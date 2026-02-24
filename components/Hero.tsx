@@ -74,7 +74,7 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
           {/* Tagline */}
           <h1 className="text-3xl xl:text-4xl text-gray-300 mb-12 pl-2 leading-snug font-medium">
             <TextBlock id="hero_tagline_v2" as="span">
-              Apzumi Spatial <br /> Twój partner w procesach przemysłowych
+              Apzumi Spatial <br /> Twój partner w cyfrowej transformacji i wdrożeniach AI
             </TextBlock>
           </h1>
 
@@ -153,7 +153,7 @@ const Hero: React.FC<HeroProps> = ({ version = 'v1' }) => {
         >
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             <TextBlock id="hero_title" as="span" className="block">
-              Apzumi Spatial — Twój partner w procesach przemysłowych
+              Apzumi Spatial — Twój partner w cyfrowej transformacji i wdrożeniach AI
             </TextBlock>
           </h1>
           <TextBlock id="hero_lead" as="p" className="text-gray-300 text-lg md:text-xl max-w-xl leading-relaxed">

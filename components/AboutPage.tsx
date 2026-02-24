@@ -70,10 +70,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
 
                     <div className="max-w-[600px] mx-auto py-12 relative z-10 px-4 sm:px-0">
                         <h1 className="text-5xl md:text-[64px] font-extrabold mb-4 text-white tracking-tight">
-                            <TextBlock id="about_main_title">About</TextBlock>
+                            <TextBlock id="about_main_title">Apzumi Spatial</TextBlock>
                         </h1>
                         <p className="text-sm md:text-[15px] leading-relaxed text-gray-300 mx-auto mb-8 max-w-[480px]">
-                            <TextBlock id="about_main_subtitle">Get to know the people, purpose, and principles behind our operations in the digital health industry</TextBlock>
+                            <TextBlock id="about_main_subtitle">Twój partner w digitalizacji.<br />Tworzymy inteligentne rozwiązania AI, które przekładają się na realny wzrost efektywności w przemyśle</TextBlock>
                         </p>
                     </div>
                 </div>
@@ -82,13 +82,13 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
             {/* WHO WE ARE */}
             <section className="max-w-[1000px] mx-auto px-6 mb-20">
                 <div className="bg-[#2a3c7b] rounded-[2rem] p-8 md:p-12 text-center text-white shadow-xl relative overflow-hidden">
-                    <h2 className="text-2xl font-bold mb-10"><TextBlock id="about_who_we_are">Who <span className="font-extrabold">We Are</span></TextBlock></h2>
+                    <h2 className="text-2xl font-bold mb-10"><TextBlock id="about_who_we_are">Kim <span className="font-extrabold">Jesteśmy</span></TextBlock></h2>
 
                     <div className="bg-white rounded-2xl flex flex-col md:flex-row overflow-hidden text-left mb-8">
                         <div className="p-8 md:p-10 md:w-1/2 flex flex-col justify-center">
-                            <p className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2"><TextBlock id="about_who_pre">We are a</TextBlock></p>
-                            <h3 className="text-[#2a3c7b] text-3xl font-extrabold mb-4 leading-tight"><TextBlock id="about_who_title">Digital Health<br />Software House</TextBlock></h3>
-                            <p className="text-gray-700 text-sm font-semibold pr-4"><TextBlock id="about_who_desc">Software experts shaping digital solutions in the fields of Healthcare, Fitness & Wellness and Digital Insurance</TextBlock></p>
+                            <p className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2"><TextBlock id="about_who_pre">Jesteśmy</TextBlock></p>
+                            <h3 className="text-[#2a3c7b] text-3xl font-extrabold mb-4 leading-tight"><TextBlock id="about_who_title">Ekspertami od Software<br />i Artificial Intelligence</TextBlock></h3>
+                            <p className="text-gray-700 text-sm font-semibold pr-4"><TextBlock id="about_who_desc">Eksperci od oprogramowania tworzący inteligentne rozwiązania dla przemysłu 4.0, logistyki i produkcji</TextBlock></p>
                         </div>
                         <div className="md:w-1/2 h-64 md:h-auto overflow-hidden">
                             <img src="/images/about/about3.png" className="w-full h-full object-cover" alt="Apzumi Team" />
@@ -97,10 +97,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
 
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { stat: "12+", label: "years on the market", id: "1" },
-                            { stat: "150+", label: "completed projects", id: "2" },
-                            { stat: "70+", label: "people on board", id: "3" },
-                            { stat: "15+", label: "markets reached", id: "4" }
+                            { stat: "12+", label: "lat na rynku", id: "1" },
+                            { stat: "150+", label: "zrealizowanych projektów", id: "2" },
+                            { stat: "70+", label: "osób w zespole", id: "3" },
+                            { stat: "15+", label: "obsłużonych rynków", id: "4" }
                         ].map((item) => (
                             <div key={item.id} className="bg-white text-[#2a3c7b] py-6 px-4 rounded-xl flex flex-col items-center justify-center shadow-sm">
                                 <span className="text-2xl font-extrabold mb-1"><TextBlock id={`about_stat_${item.id}`}>{item.stat}</TextBlock></span>
@@ -113,46 +113,46 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
 
             {/* ADDED VALUE */}
             <section className="max-w-[1000px] mx-auto px-6 mb-20 text-center">
-                <h2 className="text-xl md:text-2xl font-bold mb-8 text-black">Added <span className="font-extrabold">Value</span></h2>
+                <h2 className="text-xl md:text-2xl font-bold mb-8 text-black">Wartość <span className="font-extrabold">Dodana</span></h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     {/* Card 1 */}
                     <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-between items-center shadow-sm hover:shadow-md transition-shadow min-h-[160px]">
                         <div className="flex-1 flex items-center justify-center mb-4 min-h-[64px] w-full">
                             <img src="/images/about/about4.png" className="h-20 w-auto object-contain" alt="12 years" />
                         </div>
-                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Stable Partner</p>
+                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Stabilny Partner</p>
                     </div>
                     {/* Card 2 */}
                     <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-between items-center shadow-sm hover:shadow-md transition-shadow min-h-[160px]">
                         <div className="flex-1 flex items-center justify-center mb-4 min-h-[64px] w-full">
                             <img src="/images/about/about5.png" className="h-[52px] w-auto object-contain" alt="Cost Effectiveness" />
                         </div>
-                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Cost-Effectiveness</p>
+                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Optymalizacja Kosztów</p>
                     </div>
                     {/* Card 3 */}
                     <div className="border border-[#2a3c7b] rounded-xl p-6 flex flex-col justify-between items-center shadow-sm hover:shadow-md transition-shadow min-h-[160px]">
                         <div className="flex-1 flex items-center justify-center mb-4 min-h-[64px] w-full">
                             <img src="/images/about/about6.png" className="h-16 w-auto object-contain" alt="Market Recognition" />
                         </div>
-                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Market Recognition</p>
+                        <p className="text-sm font-bold text-black border-t border-gray-100 pt-4 w-full">Uznanie w Branży</p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Card 4 */}
                     <div className="border border-[#2a3c7b] rounded-xl p-6 flex items-start text-left shadow-sm hover:shadow-md transition-shadow">
-                        <img src="/images/about/about7.png" className="w-14 h-14 object-contain mr-4 flex-shrink-0" alt="Digital Health Specialization" />
+                        <img src="/images/about/about7.png" className="w-14 h-14 object-contain mr-4 flex-shrink-0" alt="Specjalizacja Przemysłowa" />
                         <div>
-                            <p className="text-sm font-bold text-black mb-1">Digital Health Specialization</p>
-                            <p className="text-[13px] leading-relaxed text-black font-semibold">Go beyond standard software house; choose partner with deep understanding of healthcare software requirements.</p>
+                            <p className="text-sm font-bold text-black mb-1">Specjalizacja Przemysłowa</p>
+                            <p className="text-[13px] leading-relaxed text-black font-semibold">Wybierz sprawdzonego partnera z głębokim zrozumieniem wymagań technologicznych dla przemysłu 4.0 i produkcji.</p>
                         </div>
                     </div>
                     {/* Card 5 */}
                     <div className="border border-[#2a3c7b] rounded-xl p-6 flex items-start text-left shadow-sm hover:shadow-md transition-shadow">
-                        <img src="/images/about/about8.png" className="w-14 h-14 object-contain mr-4 flex-shrink-0" alt="Problem Solving" />
+                        <img src="/images/about/about8.png" className="w-14 h-14 object-contain mr-4 flex-shrink-0" alt="Rozwiązywanie Problemów" />
                         <div>
-                            <p className="text-sm font-bold text-black mb-1">Problem Solving</p>
-                            <p className="text-[13px] leading-relaxed text-black font-semibold">We focus on your business needs - we analyze challenges, and seek solutions that solve real problems and deliver value.</p>
+                            <p className="text-sm font-bold text-black mb-1">Rozwiązywanie Problemów</p>
+                            <p className="text-[13px] leading-relaxed text-black font-semibold">Skupiamy się na Twoich biznesowych wyzwaniach - analizujemy potrzeby i dostarczamy rozwiązania dające realną wartość.</p>
                         </div>
                     </div>
                 </div>
@@ -160,7 +160,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
 
             {/* INDUSTRY RECOGNITION */}
             <section className="max-w-[1000px] mx-auto px-6 mb-24 text-center">
-                <h2 className="text-xl md:text-2xl font-bold mb-8 text-black">Industry <span className="font-extrabold">Recognition</span></h2>
+                <h2 className="text-xl md:text-2xl font-bold mb-8 text-black">Uznanie <span className="font-extrabold">Branżowe</span></h2>
 
                 <div className="grid gap-4">
                     {/* Recognition 1 */}
@@ -170,8 +170,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                         </div>
                         <div className="w-full md:w-2/3 border border-[#2a3c7b] rounded-xl p-6 flex justify-between items-center text-left hover:shadow-md transition-shadow">
                             <div className="pr-6">
-                                <h4 className="font-bold text-black mb-2 text-sm">Forbes Diamond Award</h4>
-                                <p className="text-[10px] text-gray-700 font-semibold">Apzumi has been awarded the prestigious Forbes Diamonds title for 2024, ranking among the fastest growing Polish companies.</p>
+                                <h4 className="font-bold text-black mb-2 text-sm">Diamenty Forbesa</h4>
+                                <p className="text-[10px] text-gray-700 font-semibold">Firma Apzumi zdobyła prestiżowy tytuł Diamentów Forbesa w 2024 roku, dołączając do grona najszybciej rozwijających się polskich przedsiębiorstw.</p>
                             </div>
                             <div className="w-16 h-16 flex-shrink-0 opacity-80 border-2 border-blue-400 rotate-45 flex items-center justify-center p-2"><span className="text-[8px] -rotate-45 block font-bold text-blue-500 text-center">Forbes<br />2024</span></div>
                         </div>
@@ -182,7 +182,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                         <div className="w-full md:w-2/3 border border-[#2a3c7b] rounded-xl p-6 flex justify-between items-center text-left hover:shadow-md transition-shadow">
                             <div className="pr-6">
                                 <h4 className="font-bold text-black mb-2 text-sm">Deloitte Fast 50</h4>
-                                <p className="text-[10px] text-gray-700 font-semibold">For three consecutive years - 2022, 2023, and 2024 we were recognized in the Deloitte Fast 50 ranking.</p>
+                                <p className="text-[10px] text-gray-700 font-semibold">Przez trzy lata z rzędu w latach 2022, 2023 i 2024 zostaliśmy wyróżnieni w rankingu Deloitte Fast 50 w Europie Środkowej.</p>
                             </div>
                             <div className="text-green-500 font-bold text-4xl whitespace-nowrap"><span className="text-xl text-gray-400 font-normal">3x</span> 50</div>
                         </div>
@@ -198,8 +198,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                         </div>
                         <div className="w-full md:w-2/3 border border-[#2a3c7b] rounded-xl p-6 flex justify-between items-center text-left hover:shadow-md transition-shadow">
                             <div className="pr-6">
-                                <h4 className="font-bold text-black mb-2 text-sm">Finacial Times</h4>
-                                <p className="text-[10px] text-gray-700 font-semibold">Apzumi has earned a spot in the prestigious Financial Times 1000 list of Europe's Fastest Growing Companies for 2024!</p>
+                                <h4 className="font-bold text-black mb-2 text-sm">Financial Times</h4>
+                                <p className="text-[10px] text-gray-700 font-semibold">Zdobycie miejsca w prestiżowym rankingu Financial Times Top 1000 najszybciej rozwijających się firm w Europie 2024!</p>
                             </div>
                             <div className="text-right text-[8px] text-gray-400 font-bold leading-tight">FINANCIAL TIMES<br /><br />1000 Europe's<br />Fastest Growing Companies<br />2024</div>
                         </div>
@@ -209,8 +209,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                     <div className="flex flex-col md:flex-row gap-4 h-auto md:h-32">
                         <div className="w-full md:w-2/3 border border-[#2a3c7b] rounded-xl p-6 flex justify-between items-center text-left hover:shadow-md transition-shadow">
                             <div className="pr-6">
-                                <h4 className="font-bold text-black mb-2 text-sm">Clutch Awards</h4>
-                                <p className="text-[10px] text-gray-700 font-semibold">Apzumi has earned multiple Clutch awards, like Top Health & Wellness App Developers and Top B2B Worldwide.</p>
+                                <h4 className="font-bold text-black mb-2 text-sm">Nagrody Clutch</h4>
+                                <p className="text-[10px] text-gray-700 font-semibold">Apzumi zyskało miano lidera i wielokrotnie zostało nagrodzone statuetkami serwisu Clutch, w tym tytułem Top B2B Worldwide.</p>
                             </div>
                             <div className="flex gap-2">
                                 <div className="w-6 h-8 bg-gray-200 rounded-sm"></div>
@@ -229,7 +229,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
             <section className="max-w-[1000px] mx-auto px-6 mb-24">
                 <div className="bg-[#1e285a] rounded-3xl py-14 px-8 shadow-xl text-center text-white">
                     <h2 className="text-2xl md:text-3xl font-medium mb-10">
-                        Quality <span className="font-bold">Standardization</span>
+                        Standardy <span className="font-bold">Jakości</span>
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
                         {/* Card 1 */}
@@ -240,7 +240,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                             <div className="p-8">
                                 <h3 className="text-black font-extrabold text-lg mb-3">ISO 27001</h3>
                                 <p className="text-gray-600 text-[11px] leading-relaxed font-semibold">
-                                    Apzumi's <span className="font-extrabold text-black">Information Security Management System</span> is <span className="font-extrabold text-black">ISO 27001</span> certified, ensuring the highest standards of data protection and risk management.
+                                    Nasz system zarządzania bezpieczeństwem informacji posiada certyfikat <span className="font-extrabold text-black">ISO 27001</span>, zapewniając najwyższe standardy ochrony danych i zarządzania ryzykiem.
                                 </p>
                             </div>
                         </div>
@@ -252,7 +252,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, version = 'v1' }) => 
                             <div className="p-8">
                                 <h3 className="text-black font-extrabold text-lg mb-3">ISO 13485</h3>
                                 <p className="text-gray-600 text-[11px] leading-relaxed font-semibold">
-                                    Systems developed by Apzumi are fully compliant with the <span className="font-extrabold text-black">ISO 13485</span> standard, ensuring the highest quality in the <span className="font-extrabold text-black">Design and Manufacture of Medical Devices</span>
+                                    Rozwiązania tworzone przez Apzumi są zgodne z procedurami opartymi o <span className="font-extrabold text-black">ISO 13485</span> w pełnym procesie kontroli wytwarzania oprogramowania, zapewniając najwyższą jakość wdrażanych systemów dla naszych klientów.
                                 </p>
                             </div>
                         </div>

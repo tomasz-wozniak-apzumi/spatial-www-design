@@ -90,7 +90,7 @@ const caseStudiesData: RichCaseStudy[] = [
    }
 ];
 
-const CaseStudyCard: React.FC<{ data: RichCaseStudy; index: number }> = ({ data, index }) => {
+const CaseStudyCard: React.FC<{ data: RichCaseStudy; index: number; version?: 'v1' | 'v2' | 'v3' }> = ({ data, index, version = 'v1' }) => {
    const [isExpanded, setIsExpanded] = useState(false);
 
    // Dynamic color for tags based on index to add variety
@@ -228,6 +228,21 @@ const CaseStudyCard: React.FC<{ data: RichCaseStudy; index: number }> = ({ data,
                               </TextBlock>
                            </p>
                         </div>
+
+                        {/* Video for KAN in V2 */}
+                        {version === 'v2' && data.id === 'kan' && (
+                           <div className="mt-12 rounded-2xl overflow-hidden shadow-lg border border-gray-100 bg-black">
+                              <div className="relative pt-[56.25%] w-full h-0">
+                                 <iframe
+                                    src="https://player.vimeo.com/video/818641504?title=0&byline=0&portrait=0"
+                                    className="absolute top-0 left-0 w-full h-full"
+                                    frameBorder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture"
+                                    allowFullScreen
+                                 ></iframe>
+                              </div>
+                           </div>
+                        )}
                      </div>
                   </div>
 
@@ -335,7 +350,7 @@ const CaseStudiesPage: React.FC<{ onNavigate?: (view: ViewState) => void, versio
          <section className="py-20 px-6">
             <div className="max-w-6xl mx-auto">
                {caseStudiesData.map((item, idx) => (
-                  <CaseStudyCard key={item.id} data={item} index={idx} />
+                  <CaseStudyCard key={item.id} data={item} index={idx} version={version} />
                ))}
             </div>
          </section>

@@ -257,7 +257,10 @@ const DetailSection: React.FC<{ data: SolutionData; id: string; onNavigate?: (vi
 
             <div className="bg-white/5 border border-white/10 rounded-3xl p-8 min-h-[250px] relative overflow-hidden backdrop-blur-md">
               <div className="absolute top-0 right-0 p-8 opacity-10">
-                <Activity size={120} className="text-white" />
+                {data.id === 'proc' && <Layers size={120} className="text-white" />}
+                {data.id === 'remote' && <Activity size={120} className="text-white" />}
+                {data.id === 'skills' && <Users size={120} className="text-white" />}
+                {data.id === 'cv' && <Eye size={120} className="text-white" />}
               </div>
 
               <div className="relative z-10 animate-in fade-in zoom-in-95 duration-300" key={activeTab}>

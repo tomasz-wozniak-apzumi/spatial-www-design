@@ -47,11 +47,11 @@ const servicesData: ServiceData[] = [
     valKey: 'serv_item_workshop_val',
     trigKey: 'serv_item_workshop_trig',
     btnKey: 'serv_item_workshop_btn',
-    chips: ['Średnie firmy', 'Produkcja', 'Logistyka'],
+    chips: ['serv_workshop_chip_1', 'serv_workshop_chip_2', 'serv_workshop_chip_3'],
     bullets: [
-      'Mapa procesów i problemów + priorytetyzacja',
-      'KPI i kryteria sukcesu (mierzalne)',
-      'Roadmapa: pilot → skalowanie'
+      'serv_workshop_bullet_1',
+      'serv_workshop_bullet_2',
+      'serv_workshop_bullet_3'
     ],
     details: {
       descKey: 'serv_workshop_desc',
@@ -72,11 +72,11 @@ const servicesData: ServiceData[] = [
     valKey: 'serv_item_proto_val',
     trigKey: 'serv_item_proto_trig',
     btnKey: 'serv_item_proto_btn',
-    chips: ['Duże firmy', 'Innowacje', 'R&D'],
+    chips: ['serv_proto_chip_1', 'serv_proto_chip_2', 'serv_proto_chip_3'],
     bullets: [
-      'Discovery + wymagania + prototyp w 48h',
-      'Testy z użytkownikami (User Testing)',
-      'Raport z weryfikacji i plan pilota'
+      'serv_proto_bullet_1',
+      'serv_proto_bullet_2',
+      'serv_proto_bullet_3'
     ],
     details: {
       descKey: 'serv_proto_desc',
@@ -97,11 +97,11 @@ const servicesData: ServiceData[] = [
     valKey: 'serv_item_custom_val',
     trigKey: 'serv_item_custom_trig',
     btnKey: 'serv_item_custom_btn',
-    chips: ['Duże firmy', 'Operacje', 'IT/OT'],
+    chips: ['serv_custom_chip_1', 'serv_custom_chip_2', 'serv_custom_chip_3'],
     bullets: [
-      'PoC-first: działający fragment jako dowód',
-      'Integracje Enterprise (ERP/MES)',
-      'Pełne IP i kod źródłowy'
+      'serv_custom_bullet_1',
+      'serv_custom_bullet_2',
+      'serv_custom_bullet_3'
     ],
     details: {
       descKey: 'serv_custom_desc',
@@ -134,7 +134,7 @@ const ServiceCard: React.FC<{
       <div className="flex flex-wrap gap-2 mb-6">
         {data.chips.map((chip, idx) => (
           <span key={idx} className="bg-white/10 text-gray-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-            {chip}
+            <TextBlock id={chip}>{textConfig[chip]?.[0] || ''}</TextBlock>
           </span>
         ))}
       </div>
@@ -152,7 +152,9 @@ const ServiceCard: React.FC<{
         {data.bullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2">
             <CheckCircle2 size={16} className="text-apzumi-red shrink-0 mt-0.5" />
-            <span className="text-gray-400 text-xs">{bullet}</span>
+            <span className="text-gray-400 text-xs">
+              <TextBlock id={bullet}>{textConfig[bullet]?.[0] || ''}</TextBlock>
+            </span>
           </div>
         ))}
       </div>
@@ -189,7 +191,7 @@ const ServiceCardV2: React.FC<{
         <div className="flex flex-wrap gap-2 mb-4">
           {data.chips.map((chip, idx) => (
             <span key={idx} className="bg-gray-100 text-gray-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-              {chip}
+              <TextBlock id={chip}>{textConfig[chip]?.[0] || ''}</TextBlock>
             </span>
           ))}
         </div>
@@ -208,7 +210,9 @@ const ServiceCardV2: React.FC<{
         {data.bullets.map((bullet, idx) => (
           <div key={idx} className="flex items-start gap-2">
             <CheckCircle2 size={16} className="text-[#4a7de8] shrink-0 mt-0.5" />
-            <span className="text-gray-600 text-sm">{bullet}</span>
+            <span className="text-gray-600 text-sm">
+              <TextBlock id={bullet}>{textConfig[bullet]?.[0] || ''}</TextBlock>
+            </span>
           </div>
         ))}
       </div>
@@ -246,7 +250,7 @@ const ServiceCardV3: React.FC<{
           {/* Top Tag */}
           <div className="flex flex-wrap gap-2 mb-8">
             <span className="text-gray-400 font-semibold text-[10px] tracking-[0.1em] uppercase border border-gray-600/50 px-3 py-1 bg-black/20">
-              {data.chips[0]}
+              <TextBlock id={data.chips[0]}>{textConfig[data.chips[0]]?.[0] || ''}</TextBlock>
             </span>
           </div>
 
@@ -269,7 +273,9 @@ const ServiceCardV3: React.FC<{
             {data.bullets.map((bullet, idx) => (
               <div key={idx} className="flex items-start gap-4">
                 <span className="text-apzumi-red font-bold text-lg leading-none mt-1 shrink-0">-</span>
-                <span className="text-gray-300 font-medium text-sm leading-relaxed tracking-wide">{bullet}</span>
+                <span className="text-gray-300 font-medium text-sm leading-relaxed tracking-wide">
+                  <TextBlock id={bullet}>{textConfig[bullet]?.[0] || ''}</TextBlock>
+                </span>
               </div>
             ))}
           </div>
@@ -319,7 +325,7 @@ const ServiceSectionV3: React.FC<{
       <div className="flex flex-wrap gap-3 mb-8">
         {data.chips.map((chip, idx) => (
           <span key={idx} className="bg-transparent border border-white/20 text-gray-300 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest">
-            {chip}
+            <TextBlock id={chip}>{textConfig[chip]?.[0] || ''}</TextBlock>
           </span>
         ))}
       </div>
@@ -342,7 +348,9 @@ const ServiceSectionV3: React.FC<{
         {data.bullets.map((bullet, idx) => (
           <div key={idx} className="flex items-center gap-6 border-b border-white/10 pb-6">
             <span className="text-apzumi-red font-mono text-sm opacity-50">0{idx + 1}</span>
-            <span className="text-gray-300 text-lg md:text-2xl">{bullet}</span>
+            <span className="text-gray-300 text-lg md:text-2xl">
+              <TextBlock id={bullet}>{textConfig[bullet]?.[0] || ''}</TextBlock>
+            </span>
           </div>
         ))}
       </div>

@@ -26,7 +26,7 @@ export type HomeVersion = 'v1' | 'v2' | 'v3';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
-  const [globalVersion, setGlobalVersion] = useState<'v1' | 'v2' | 'v3'>('v1');
+  const [globalVersion, setGlobalVersion] = useState<'v1' | 'v2' | 'v3'>('v2');
 
   const isDemoPage = currentView === 'interactive_demo' || currentView === 'knowledge_base';
   const scopeId = isDemoPage ? currentView : `${currentView}_${globalVersion}`;
@@ -81,9 +81,8 @@ const App: React.FC = () => {
                 onChange={(e) => setGlobalVersion(e.target.value as 'v1' | 'v2' | 'v3')}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 outline-none cursor-pointer"
               >
-                <option value="v1">Wersja 1 (Domyślna)</option>
-                <option value="v2">Wersja 2 (Zielona)</option>
-                <option value="v3">Wersja 3 (Purpurowa)</option>
+                <option value="v2">Wersja 2 (Zielona) - Podstawowa</option>
+                <option value="v1">Wersja 1 (Oryginalna)</option>
               </select>
             </div>
           )}

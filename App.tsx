@@ -81,8 +81,8 @@ const App: React.FC = () => {
                 onChange={(e) => setGlobalVersion(e.target.value as 'v1' | 'v2' | 'v3')}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 outline-none cursor-pointer"
               >
-                <option value="v2">Wersja 2 (Zielona) - Podstawowa</option>
-                <option value="v1">Wersja 1 (Oryginalna)</option>
+                <option value="v2">Wersja 1</option>
+                <option value="v1">Wersja 2 (tej wersji raczej nie użyjemy)</option>
               </select>
             </div>
           )}
